@@ -1,3 +1,10 @@
+<a href="https://github.com/camaraproject/DeviceStatus/commits/" title="Last Commit"><img src="https://img.shields.io/github/last-commit/camaraproject/DeviceStatus?style=plastic"></a>
+<a href="https://github.com/camaraproject/DeviceStatus/issues" title="Open Issues"><img src="https://img.shields.io/github/issues/camaraproject/DeviceStatus?style=plastic"></a>
+<a href="https://github.com/camaraproject/DeviceStatus/pulls" title="Open Pull Requests"><img src="https://img.shields.io/github/issues-pr/camaraproject/DeviceStatus?style=plastic"></a>
+<a href="https://github.com/camaraproject/DeviceStatus/graphs/contributors" title="Contributors"><img src="https://img.shields.io/github/contributors/camaraproject/DeviceStatus?style=plastic"></a>
+<a href="https://github.com/camaraproject/DeviceStatus" title="Repo Size"><img src="https://img.shields.io/github/repo-size/camaraproject/DeviceStatus?style=plastic"></a>
+<a href="https://github.com/camaraproject/DeviceStatus/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
+
 # DeviceStatus
 Repository to describe, develop, document and test the DeviceStatus API family
 
