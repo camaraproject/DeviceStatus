@@ -5,3 +5,4 @@
 | Telefonica | Jose A Ordonez Lucena |
 | Vodafone | Kevin Smith |
 | Vodafone | Eric Murray |
+| Ericsson | Joachim Dahlgren |
