@@ -13,7 +13,7 @@ externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 security:
-  - {}
+#  - {}
   - oAuth2ClientCredentials: []
 #  - BasicAuth: []
 #  - apiKey: []
