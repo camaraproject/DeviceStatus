@@ -2,7 +2,8 @@
 | -----------------------| ----------------------------------------------------|
 | Deutsche Telekom AG | Noel Wirzius |
 | Orange | Sylvain Morel |
-| Telefonica | Jose A Ordonez Lucena |
+| Telefonica | Jesus Pena |
+| Telefonica | Mona Mokhber |
 | Vodafone | Kevin Smith |
 | Vodafone | Eric Murray |
 | Ericsson | Joachim Dahlgren |
