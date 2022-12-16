@@ -22,7 +22,7 @@ The API user wants to execute a check of connectivity status for a user equipmen
 ### 4.1 Endpoint Definitions
 
 <span class="colour" style="color:rgb(23, 43, 77)"><span class="colour" style="color:rgb(36, 41, 47)">Following table
-defines API endpoints of exposed REST based for QoD throughput management operations. </span></span>
+defines API endpoints of exposed REST based for device status query operations. </span></span>
 
 | **Endpoint**                            | **Operation**             | **Description**               |
 |-----------------------------------------|---------------------------|-------------------------------|
