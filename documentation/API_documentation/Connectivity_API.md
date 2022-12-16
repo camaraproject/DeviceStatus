@@ -6,7 +6,8 @@ This API makes possible to query the connectivity status of user equipment.
 
 ## 2\. Quick Start
 DeviceStatus API v0.2.0 exposes only one endpoint, which can be used to check connectivity status for user equipment. To do so user has to pass following parameters in request body:
-1. **ueId** - an object with four fields, each of them make possible to pass ueId in different format: externalId [1], msisdn, ipv4Addr and ipv6Add
+1. **ueId** - an object with four fields, each of them make possible to pass ueId in different format: externalId [1], msisdn, ipv4Addr and ipv6Addr
+2. **uePort** - if a public ipv4Addr is provided for the ueId object, the port allocated to the UE must also be specified
 2. **eventType** - string value which determines the connectivity event to check its status, for now only "UE_ROAMING_STATUS" is supported.
 
 Sample API invocation is presented in Section 4.4.
