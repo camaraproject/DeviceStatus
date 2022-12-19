@@ -1,0 +1,310 @@
+openapi: 3.0.3
+info:
+  title: Device Roaming Status - DRAFT VERSION
+  description: |-
+    Service Enabling Network Function API to check *device roaming status*
+
+    # Relevant  Definitions and concepts
+    - **NaaS**: *Network-as-a-Service* model where Telco Network resources are exposed to third parties through APIs. In this particular API, Device Roaming Status is exposed following this model. 
+
+    # API Functionality 
+    It allows an API Client to check if device is roaming or not
+
+    # Resources and Operations overview
+    This API currently provides the single endpoint of **Device Roaming Status** which checks if the device is roaming or not
+  version: 0.3.0
+  termsOfService: http://example.com/terms/
+  contact:
+    name: API Support
+    url: http://www.example.com/support
+    email: support@example.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://{host}{basePath}
+    variables:
+      host:
+        default: api.example.com
+        description: Host that serves the API
+      basePath:
+        default: /device-roaming-status/v0
+        description: Base path for the device roaming status API
+tags:
+  - name: Device roaming status
+    description: API operations to manage device roaming status
+paths:
+  /roaming:
+    get:
+      tags:
+        - Device roaming status
+      summary: 'Returns the last known device roaming status'
+      description:  |-
+        Checks the device roaming status.
+         - The roaming status will be validated for the user whose `sub` is in the access token used to call this endpoint, and for the user device associated with the phone number also deducted from the information included in the access token.
+      operationId: verifyRoamingStatus
+      parameters:
+        - in: header
+          name: x-correlator
+          required: false
+          description: Correlation id for the different services
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-correlator:
+              description: Correlation id for the different services
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoamingStatusResponse'
+        '400':
+          $ref: '#/components/responses/InvalidArgument'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/PermissionDenied'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+        '504':
+          $ref: '#/components/responses/Timeout'
+      security:
+        - three_legged:
+          - device-roaming-status-roaming-read
+components:
+  securitySchemes:
+    three_legged:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  schemas:
+    RoamingStatusResponse:
+      type: object
+      required:
+        - roaming
+      properties:
+        roaming:
+          $ref: '#/components/schemas/ActiveRoaming'
+    ActiveRoaming:
+      description: Roaming status. True, if it is roaming
+      type: boolean
+    ModelError:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          pattern: '^[1-5][0-9][0-9]$'
+          description: HTTP response status code
+        message:
+          type: string
+          description: A human readable description of what the event represent
+  responses:
+    InvalidArgument:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - INVALID_ARGUMENT
+                    default: INVALID_ARGUMENT
+                    description: Client specified an invalid argument, request body or query param.
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "400"
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param
+    Unauthenticated:
+      description: Authentication problem with the client request
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - UNAUTHENTICATED
+                    default: UNAUTHENTICATED
+                    description: Request not authenticated due to missing, invalid, or expired credentials.
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "401"
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials
+    PermissionDenied:
+      description: Client does not have sufficient permission
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - PERMISSION_DENIED
+                    default: PERMISSION_DENIED
+                    description: Client does not have sufficient permissions to perform this action.
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "403"
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action
+    NotFound:
+      description: Resource Not Found
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - NOT_FOUND
+                    default: NOT_FOUND
+                    description: The specified resource is not found
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "404"
+                code: NOT_FOUND
+                message: A specified resource is not found
+    Internal:
+      description: Server error
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - INTERNAL
+                    default: INTERNAL
+                    description: Unknown server error.Typically a server bug.
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "500"
+                code: INTERNAL
+                message: Server error
+    Unavailable:
+      description: Service unavailable. Typically the server is down.
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - UNAVAILABLE
+                    default: UNAVAILABLE
+                    description: Request timeout exceeded
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "503"
+                code: UNAVAILABLE
+                message: Service unavailable
+    Timeout:
+      description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - TIMEOUT
+                    default: TIMEOUT
+                    description: Request timeout exceeded
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "504"
+                code: TIMEOUT
+                message: Request timeout exceeded. Try later.
+externalDocs:
+  description: Project documentation at CAMARA
+  url: https://github.com/camaraproject/DeviceStatus
