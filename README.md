@@ -19,8 +19,8 @@ Repository to describe, develop, document and test the DeviceStatus API family
 
 ## Meetings
 * Meetings are held virtually
-* Schedule: tbd
-* Meeting link: tbd
+* Schedule: 01.02.2023 - 11:00AM CET 
+* Meeting link: <a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_NDQwYTlkZjYtOTc0NS00MjA5LWE2YjItMWFjYTczZTM4NTEx%40thread.v2/0?context=%7b%22Tid%22%3a%22bde4dffc-4b60-4cf6-8b04-a5eeb25f5c4f%22%2c%22Oid%22%3a%22389ab01b-6fbd-4e02-8f1a-1be1e09c95e8%22%7d">Microsoft Teams Meeting</a>
 
 ## Results
 * Sub Project is in progress
