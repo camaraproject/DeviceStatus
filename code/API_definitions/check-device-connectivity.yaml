@@ -8,7 +8,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.2.0
+  version: 0.2.1
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -30,7 +30,7 @@ servers:
         description: Base path for Device Connectivity API
 tags:
   - name: Device Connectivity Status
-    description: Operations to validate device connectivity status
+    description: Operations to validate device connectivity status and Country information.
 paths:
    /status:
     post:
@@ -99,10 +99,16 @@ components:
           $ref: "#/components/schemas/ConnectivityEventType"
         eventStatus:
           $ref: "#/components/schemas/EventStatusType"
+        countryCode:
+          $ref: "#/components/schemas/CountryCode"
+        countryName:
+          $ref: "#/components/schemas/CountryName"  
       required:
         - ueId
         - eventType
         - eventStatus
+        - countryCode
+        - countryName
     UeId:
       description: User equipment identifier
       type: object
@@ -158,6 +164,14 @@ components:
       enum:
         - ROAMING_ON
         - ROAMING_OFF
+    CountryCode:
+      description: The country calling code as an identifier for the country and the dependent areas.
+      type: string
+      example: "49"
+    CountryName:
+      description: The ISO Code of the country.
+      type: string
+      example: "DE"
     RequestStatus:
       type: object
       properties:
