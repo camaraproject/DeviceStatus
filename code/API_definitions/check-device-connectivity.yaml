@@ -56,7 +56,6 @@ paths:
                   value:
                     ueId:
                       msisdn: 123456789
-                    uePort: 5090
                     eventType: UE_ROAMING_STATUS
                     eventStatus: ROAMING_ON
                     countryCode: 901
@@ -65,7 +64,6 @@ paths:
                   value:
                     ueId:
                       msisdn: 123456789
-                    uePort: 5090
                     eventType: UE_ROAMING_STATUS
                     eventStatus: ROAMING_ON
                     countryCode: 262
@@ -74,7 +72,6 @@ paths:
                   value:
                     ueId:
                       msisdn: 123456789
-                    uePort: 5090
                     eventType: UE_ROAMING_STATUS
                     eventStatus: ROAMING_ON
                     countryCode: 340
