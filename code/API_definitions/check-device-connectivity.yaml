@@ -60,7 +60,7 @@ paths:
                     eventType: UE_ROAMING_STATUS
                     eventStatus: ROAMING_ON
                     countryCode: 901
-                    countryName: ["xx"]
+                    countryName: []
                 Single-Country-Code:
                   value:
                     ueId:
