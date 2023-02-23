@@ -8,7 +8,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.2.0
+  version: 0.3.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -30,7 +30,7 @@ servers:
         description: Base path for Device Connectivity API
 tags:
   - name: Device Connectivity Status
-    description: Operations to validate device connectivity status
+    description: Operations to validate device connectivity status and Country information.
 paths:
    /status:
     post:
@@ -51,6 +51,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConnectivityEventReport'
+              examples:
+                No-Country-Code:
+                  value:
+                    ueId:
+                      msisdn: 123456789
+                    eventType: UE_ROAMING_STATUS
+                    eventStatus: ROAMING_ON
+                    countryCode: 901
+                    countryName: []
+                Single-Country-Code:
+                  value:
+                    ueId:
+                      msisdn: 123456789
+                    eventType: UE_ROAMING_STATUS
+                    eventStatus: ROAMING_ON
+                    countryCode: 262
+                    countryName: ["DE"]
+                Multiple-Country-Codes:
+                  value:
+                    ueId:
+                      msisdn: 123456789
+                    eventType: UE_ROAMING_STATUS
+                    eventStatus: ROAMING_ON
+                    countryCode: 340
+                    countryName: [ "BL","GF","GP","MF","MQ" ]    
         '400':
           $ref: "#/components/responses/Generic400"
         '401':
@@ -99,6 +124,10 @@ components:
           $ref: "#/components/schemas/ConnectivityEventType"
         eventStatus:
           $ref: "#/components/schemas/EventStatusType"
+        countryCode:
+          $ref: "#/components/schemas/CountryCode"
+        countryName:
+          $ref: "#/components/schemas/CountryName"  
       required:
         - ueId
         - eventType
@@ -158,6 +187,14 @@ components:
       enum:
         - ROAMING_ON
         - ROAMING_OFF
+    CountryCode:
+      description: The Mobile country code (MCC) as an geographic region identifier for the country and the dependent areas.
+      type: integer
+    CountryName:
+      description: The ISO 3166 ALPHA-2 country-codes of mapped to mobile country code(MCC). If there is mapping of one MCC to multiple countries, then we have list of countries. If there is no mapping of MCC to any country, then ["xx"] will be used.
+      type: array
+      items:
+        type: string
     RequestStatus:
       type: object
       properties:
