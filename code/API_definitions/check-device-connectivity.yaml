@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Device Roaming Status
-  description: Service Enabling Network Function API for monitoring device roaming status
+  title: Device Status
+  description: Service Enabling Network Function API for monitoring device status
   termsOfService: http://swagger.io/terms/
   contact:
     email: project-email@sample.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.3.0
+  version: 0.4.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -18,7 +18,7 @@ security:
 #  - BasicAuth: []
 #  - apiKey: []
   - three_legged:
-    - device-roaming-status-roaming-read
+    - device-status-roaming-read
 servers:
   - url: '{apiRoot}/{basePath}'
     variables:
@@ -26,23 +26,23 @@ servers:
         default: http://localhost:9091
         description: API root
       basePath:
-        default: /device-roaming-status/v0
-        description: Base path for the device roaming status API
+        default: /device-status/v0
+        description: Base path for the device status API
 tags:
   - name: Device roaming status
-    description: Operations to validate device roaming status
+    description: Operations to validate device roaming status and country information
 paths:
    /roaming:
     post:
       tags:
         - Device roaming status
-      summary: 'Get the current roaming status'
-      operationId: verifyRoamingStatus
+      summary: 'Get the current roaming status and the country information'
+      operationId: getRoamingStatus
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestStatus'
+              $ref: '#/components/schemas/RequestRoamingStatus'
         required: true
       responses:
         '200':
@@ -51,6 +51,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RoamingStatusResponse'
+              examples:
+                No-Country-Code:
+                  value:
+                    roaming: true
+                    countryCode: 901
+                    countryName: []
+                Single-Country-Code:
+                  value:
+                    roaming: true
+                    countryCode: 262
+                    countryName: ["DE"]
+                Multiple-Country-Codes:
+                  value:
+                    roaming: true
+                    countryCode: 340
+                    countryName: [ "BL","GF","GP","MF","MQ" ]
         '400':
           $ref: "#/components/responses/Generic400"
         '401':
@@ -86,7 +102,7 @@ components:
           authorizationUrl: https://auth.example.com/authorize
           tokenUrl: https://auth.example.com/token
           scopes:
-            device-roaming-status-roaming-read: Read device roaming status
+            device-status-roaming-read: Read device roaming status
   schemas:
     RoamingStatusResponse:
       type: object
@@ -95,6 +111,10 @@ components:
       properties:
         roaming:
           $ref: '#/components/schemas/ActiveRoaming'
+        countryCode:
+          $ref: '#/components/schemas/CountryCode'
+        countryName:
+          $ref: '#/components/schemas/CountryName'
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
       type: boolean
@@ -144,7 +164,15 @@ components:
           - address/mask - an IP v6 number with a mask:
             - 2001:db8:85a3:8d3::0/64
             - 2001:db8:85a3:8d3::/64
-    RequestStatus:
+    CountryCode:
+      description: The Mobile country code (MCC) as an geographic region identifier for the country and the dependent areas.
+      type: integer
+    CountryName:
+      description: The ISO 3166 ALPHA-2 country-codes of mapped to mobile country code(MCC). If there is mapping of one MCC to multiple countries, then we have list of countries. If there is no mapping of MCC to any country, then ["xx"] will be used.
+      type: array
+      items:
+        type: string
+    RequestRoamingStatus:
       type: object
       properties:
         ueId:
