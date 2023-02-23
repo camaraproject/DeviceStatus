@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Device Status
-  description: Service Enabling Network Function API for monitoring device status
+  title: Check device connectivity API
+  description: Service Enabling Network Function API for monitoring device connectivity
   termsOfService: http://swagger.io/terms/
   contact:
     email: project-email@sample.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.4.0
+  version: 0.3.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -18,7 +18,7 @@ security:
 #  - BasicAuth: []
 #  - apiKey: []
   - three_legged:
-    - device-status-roaming-read
+    - device-connectivity-read
 servers:
   - url: '{apiRoot}/{basePath}'
     variables:
@@ -26,47 +26,56 @@ servers:
         default: http://localhost:9091
         description: API root
       basePath:
-        default: /device-status/v0
-        description: Base path for the device status API
+        default: connectivity/v0
+        description: Base path for Device Connectivity API
 tags:
-  - name: Device roaming status
-    description: Operations to validate device roaming status and country information
+  - name: Device Connectivity Status
+    description: Operations to validate device connectivity status and Country information.
 paths:
-   /roaming:
+   /status:
     post:
       tags:
-        - Device roaming status
-      summary: 'Get the current roaming status and the country information'
-      operationId: getRoamingStatus
+        - Device Connectivity Status
+      summary: 'Get the current connectivity status'
+      operationId: getStatus
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestRoamingStatus'
+              $ref: '#/components/schemas/RequestStatus'
         required: true
       responses:
         '200':
-          description: Contains information about current roaming status
+          description: Contains information about current connectivity status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoamingStatusResponse'
+                $ref: '#/components/schemas/ConnectivityEventReport'
               examples:
                 No-Country-Code:
                   value:
-                    roaming: true
+                    ueId:
+                      msisdn: 123456789
+                    eventType: UE_ROAMING_STATUS
+                    eventStatus: ROAMING_ON
                     countryCode: 901
                     countryName: []
                 Single-Country-Code:
                   value:
-                    roaming: true
+                    ueId:
+                      msisdn: 123456789
+                    eventType: UE_ROAMING_STATUS
+                    eventStatus: ROAMING_ON
                     countryCode: 262
                     countryName: ["DE"]
                 Multiple-Country-Codes:
                   value:
-                    roaming: true
+                    ueId:
+                      msisdn: 123456789
+                    eventType: UE_ROAMING_STATUS
+                    eventStatus: ROAMING_ON
                     countryCode: 340
-                    countryName: [ "BL","GF","GP","MF","MQ" ]
+                    countryName: [ "BL","GF","GP","MF","MQ" ]    
         '400':
           $ref: "#/components/responses/Generic400"
         '401':
@@ -102,22 +111,27 @@ components:
           authorizationUrl: https://auth.example.com/authorize
           tokenUrl: https://auth.example.com/token
           scopes:
-            device-status-roaming-read: Read device roaming status
+            device-connectivity-read: Read device roaming status
   schemas:
-    RoamingStatusResponse:
-      type: object
-      required:
-        - roaming
+    ConnectivityEventReport:
+      type: "object"
       properties:
-        roaming:
-          $ref: '#/components/schemas/ActiveRoaming'
+        ueId:
+          $ref: "#/components/schemas/UeId"
+        uePort:
+          $ref: '#/components/schemas/Port'
+        eventType:
+          $ref: "#/components/schemas/ConnectivityEventType"
+        eventStatus:
+          $ref: "#/components/schemas/EventStatusType"
         countryCode:
-          $ref: '#/components/schemas/CountryCode'
+          $ref: "#/components/schemas/CountryCode"
         countryName:
-          $ref: '#/components/schemas/CountryName'
-    ActiveRoaming:
-      description: Roaming status. True, if it is roaming
-      type: boolean
+          $ref: "#/components/schemas/CountryName"  
+      required:
+        - ueId
+        - eventType
+        - eventStatus
     UeId:
       description: User equipment identifier
       type: object
@@ -164,6 +178,15 @@ components:
           - address/mask - an IP v6 number with a mask:
             - 2001:db8:85a3:8d3::0/64
             - 2001:db8:85a3:8d3::/64
+    ConnectivityEventType:
+      type: string
+      enum:
+        - UE_ROAMING_STATUS
+    EventStatusType:
+      type: string
+      enum:
+        - ROAMING_ON
+        - ROAMING_OFF
     CountryCode:
       description: The Mobile country code (MCC) as an geographic region identifier for the country and the dependent areas.
       type: integer
@@ -172,15 +195,18 @@ components:
       type: array
       items:
         type: string
-    RequestRoamingStatus:
+    RequestStatus:
       type: object
       properties:
         ueId:
           $ref: '#/components/schemas/UeId'
         uePort:
           $ref: '#/components/schemas/Port'
+        eventType:
+          $ref: '#/components/schemas/ConnectivityEventType'
       required:
         - ueId
+        - eventType
     Port:
       description: User equipment port. Device port may be required along with IP address to identify the target device
       type: integer
