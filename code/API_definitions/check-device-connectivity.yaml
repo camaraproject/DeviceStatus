@@ -43,6 +43,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RequestStatus'
+            example:
+              [{ ueId: { msisdn: 123456789 },
+                port: 5060,
+                eventType: UE_ROAMING_STATUS },
+              { ueId: { msisdn: 987654321, ipv4Addr: "192.168.0.1/24" },
+                eventType: UE_ROAMING_STATUS }]
         required: true
       responses:
         '200':
@@ -54,28 +60,40 @@ paths:
               examples:
                 No-Country-Code:
                   value:
-                    ueId:
-                      msisdn: 123456789
-                    eventType: UE_ROAMING_STATUS
-                    eventStatus: ROAMING_ON
-                    countryCode: 901
-                    countryName: []
+                    [{ ueId: { msisdn: 123456789 },
+                      eventType: UE_ROAMING_STATUS,
+                      eventStatus: ROAMING_ON,
+                      countryCode: 901,
+                      countryName: [ ] },
+                    { ueId: { msisdn: 987654321 },
+                      eventType: UE_ROAMING_STATUS,
+                      eventStatus: ROAMING_ON,
+                      countryCode: 901,
+                      countryName: [ ] }]
                 Single-Country-Code:
                   value:
-                    ueId:
-                      msisdn: 123456789
-                    eventType: UE_ROAMING_STATUS
-                    eventStatus: ROAMING_ON
-                    countryCode: 262
-                    countryName: ["DE"]
+                    [{ ueId: { msisdn: 123456789 },
+                      eventType: UE_ROAMING_STATUS,
+                      eventStatus: ROAMING_ON,
+                      countryCode: 262,
+                      countryName: [ "DE" ] },
+                    { ueId: { msisdn: 987654321 },
+                      eventType: UE_ROAMING_STATUS,
+                      eventStatus: ROAMING_ON,
+                      countryCode: 616,
+                      countryName: [ "PL" ] }]
                 Multiple-Country-Codes:
                   value:
-                    ueId:
-                      msisdn: 123456789
-                    eventType: UE_ROAMING_STATUS
-                    eventStatus: ROAMING_ON
-                    countryCode: 340
-                    countryName: [ "BL","GF","GP","MF","MQ" ]    
+                    [{ ueId: { msisdn: 123456789 },
+                      eventType: UE_ROAMING_STATUS,
+                      eventStatus: ROAMING_ON,
+                      countryCode: 340,
+                      countryName: [ "BL","GF","GP","MF","MQ" ] },
+                    { ueId: { msisdn: 987654321 },
+                      eventType: UE_ROAMING_STATUS,
+                      eventStatus: ROAMING_ON,
+                      countryCode: 340,
+                      countryName: [ "BL","GF","GP","MF","MQ" ] }]
         '400':
           $ref: "#/components/responses/Generic400"
         '401':
@@ -114,6 +132,12 @@ components:
             device-connectivity-read: Read device roaming status
   schemas:
     ConnectivityEventReport:
+      description: List of connectivity report for each device
+      type: array
+      items:
+        $ref: '#/components/schemas/ConnectivityEventReportDevice'
+    ConnectivityEventReportDevice:
+      description: Connectivity report for the given device
       type: "object"
       properties:
         ueId:
@@ -127,7 +151,7 @@ components:
         countryCode:
           $ref: "#/components/schemas/CountryCode"
         countryName:
-          $ref: "#/components/schemas/CountryName"  
+          $ref: "#/components/schemas/CountryName"
       required:
         - ueId
         - eventType
@@ -196,6 +220,12 @@ components:
       items:
         type: string
     RequestStatus:
+      description: Request for connectivity status for each device
+      type: array
+      items:
+        $ref: '#/components/schemas/RequestStatusDevice'
+    RequestStatusDevice:
+      description: Request for connectivity status for the given device
       type: object
       properties:
         ueId:
