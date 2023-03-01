@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: Device Status
-  description: Service Enabling Network Function API for monitoring device status
+  description: Service Enabling Network Function API for monitoring device status. This API allows to query device roaming status and subscribe to event related to device network status (roaming but also loss of connectivity and reachability )
   termsOfService: http://swagger.io/terms/
   contact:
     email: project-email@sample.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.4.0
+  version: 0.5.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -19,6 +19,7 @@ security:
 #  - apiKey: []
   - three_legged:
     - device-status-roaming-read
+    - device-status-roaming-event
 servers:
   - url: '{apiRoot}/{basePath}'
     variables:
@@ -32,7 +33,60 @@ tags:
   - name: Device roaming status
     description: Operations to validate device roaming status and country information
 paths:
-   /roaming:
+  /subscriptions:
+    post:
+      tags:
+        - Device Status Subscription
+      summary: 'Create a device status subscription for a device'
+      operationId: createSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSubscription'
+        required: true
+      responses:
+        '201':
+          description: Created (Successful creation of subscription)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionInfo'
+        '400':
+          $ref: '#/components/responses/Generic400'
+        '401':
+          $ref: '#/components/responses/Generic401'
+        '403':
+          $ref: '#/components/responses/Generic403'
+        '409':
+          $ref: '#/components/responses/Generic409'
+        '500':
+          $ref: '#/components/responses/Generic500'
+        '503':
+          $ref: '#/components/responses/Generic503'
+  /notifications:
+    post:
+      tags:
+        - Notification Callback
+      summary: "Subscription notification callback"
+      operationId: postNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Notification"
+            examples:
+              UE_REACHABILITY:
+                $ref: '#/components/examples/UE_REACHABILITY'
+              ROAMING_STATUS:
+                $ref: '#/components/examples/ROAMING_STATUS'  
+              LOSS_OF_CONNECTIVITY:
+                $ref: '#/components/examples/LOSS_OF_CONNECTIVITY'
+      responses:
+        '204':
+          description: No Content
+  /roaming:
     post:
       tags:
         - Device roaming status
@@ -199,6 +253,146 @@ components:
         message:
           type: string
           description: Detailed error description
+    DeviceStatusEventType:
+      description: |
+        LOSS_OF_CONNECTIVITY - Device status event triggered when the UE is no longer reachable
+        UE_REACHABILITY - Device status event triggered when the UE becomes reachable for sending either SMS or downlink data
+        ROAMING_STATUS - Device status event triggered when the UE switch from roaming ON to roaming OFF and conversely 
+      type: string
+      enum:
+        - LOSS_OF_CONNECTIVITY
+        - UE_REACHABILITY
+        - ROAMING_STATUS
+    DeviceStatusEventTypeList:
+      description: List of Device Status Event Type
+      type: array
+      items:
+        $ref: '#/components/schemas/DeviceStatusEventType'
+      example: [ LOSS_OF_CONNECTIVITY, UE_REACHABILITY, ROAMING_STATUS]
+    CreateSubscription:
+      description: The request for creating a Device Status Subscription
+      type: object
+      properties:
+        ueId:
+          $ref: '#/components/schemas/UeIdList'
+        eventType:
+          $ref: '#/components/schemas/DeviceStatusEventTypeList'
+        notificationUrl:
+          type: string
+          example: "https://application-server.com"
+          description: Allows asynchronous delivery of device status related events
+        notificationAuthToken:
+          type: string
+          example: "c8974e592c2fa383d4a3960714"
+          description: Authentification token for callback API
+        subscriptionExpireTime:
+          type: string
+          format: date-time
+          example: 2023-01-17T13:18:23.682Z
+          description: The subscription expiration time in date-time format.
+      required:
+        - ueId
+        - eventType
+        - notificationUrl
+        - notificationAuthToken
+        - subscriptionExpireTime
+    UeIdList:
+      description: List of User equipment identifiers
+      type: array
+      items:
+        $ref: '#/components/schemas/UeId'
+    SubscriptionInfo:
+      description: Represents a device status subscription.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CreateSubscription'
+        - type: object
+          properties:
+            subscriptionId:
+              $ref: '#/components/schemas/SubscriptionId'
+            startedAt:
+              type: string
+              format: date-time
+            expiresAt:
+              type: string
+              format: date-time
+          required:
+            - subscriptionId
+            - startedAt
+            - expiresAt
+    SubscriptionId:
+      type: string
+      description: The subscription identifier.
+    EventTime:
+      format: date-time
+      type: string
+      description: The time when the event was notified.
+    Notification:
+      description: The notification callback.
+      type: object
+      required:
+        - subscriptionId
+        - event
+        - eventTime
+        - ueId
+      properties:
+        subscriptionId:
+          $ref: '#/components/schemas/SubscriptionId'
+        ueId:
+          $ref: '#/components/schemas/UeId'
+        eventType:
+          $ref: "#/components/schemas/DeviceStatusEventType"
+        eventTime:
+          $ref: '#/components/schemas/EventTime'
+        eventDetail:
+          $ref: '#/components/schemas/EventDetail'
+    EventDetail:
+      description: A detailed event structure depending on the eventType
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/LOSS_OF_CONNECTIVITY'
+        - $ref: '#/components/schemas/UE_REACHABILITY'  
+        - $ref: '#/components/schemas/ROAMING_STATUS'
+      discriminator:
+        propertyName: 'type'
+        mapping:
+          LOSS_OF_CONNECTIVITY: '#/components/schemas/LOSS_OF_CONNECTIVITY'
+          UE_REACHABILITY: '#/components/schemas/UE_REACHABILITY'
+          ROAMING_STATUS: '#/components/schemas/ROAMING_STATUS'
+    LOSS_OF_CONNECTIVITY:
+      description: Event detail structure for LOSS_OF_CONNECTIVITY event
+      type : object
+      required:
+        - type
+      properties:
+        type: 
+          type: string
+    UE_REACHABILITY:
+      description: Event detail structure for UE_REACHABILITY event
+      type : object
+      required:
+        - type
+        - reachabilityType
+      properties:
+        type: 
+          type: string
+        reachabilityType:
+          type: string
+          description: This parameter is used to identify whether the request is for "Reachability for SMS" or "Reachability for Data"
+          enum:
+            - SMS
+            - DATA
+    ROAMING_STATUS:
+      description: Event detail structure for ROAMING_STATUS event
+      type : object
+      required:
+        - type
+      properties:
+        type: 
+          type: string
+        roaming:
+          type: boolean
+          description:  Roaming status. True, if it is roaming.
   responses:
     Generic400:
       description: Invalid input
@@ -236,6 +430,15 @@ components:
           example:
             code: NOT_FOUND
             message: "The specified resource is not found"
+    Generic409:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            code: CONFLICT
+            message: "The specified resource is in a conflict"
     Generic500:
       description: Internal server error
       content:
@@ -254,3 +457,16 @@ components:
           example:
             code: SERVICE_UNAVAILABLE
             message: "Service unavailable"
+  examples:
+    LOSS_OF_CONNECTIVITY:
+      value:
+        type: LOSS_OF_CONNECTIVITY
+    UE_REACHABILITY:
+      value:
+        type: UE_REACHABILITY
+        reachabilityType: DATA
+    ROAMING_STATUS:
+      value:
+        type: ROAMING_STATUS
+        roaming: true
+  
