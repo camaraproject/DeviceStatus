@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
   title: Device Status
-  description: Service Enabling Network Function API for monitoring device status
+  description: Service Enabling Network Function API for monitoring device status. This API allows to query device roaming status and subscribe to event related to device network status (roaming but also loss of connectivity and reachability )
   termsOfService: http://swagger.io/terms/
   contact:
     email: project-email@sample.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.4.1
+  version: 0.5.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -19,6 +19,9 @@ security:
 #  - apiKey: []
   - three_legged:
     - device-status-roaming-read
+    - device-status-roaming-event
+    - device-status-reachability-event
+    - device-status-loss-of-connectivity
 servers:
   - url: '{apiRoot}/{basePath}'
     variables:
@@ -30,9 +33,37 @@ servers:
         description: Base path for the device status API
 tags:
   - name: Device roaming status
-    description: Operations to validate device roaming status and country information
+    description: Operations to get device roaming status and country information on the fly
+  - name: Device roaming status subscription
+    description: Operation to manage subscription on device status roaming event
+  - name: Device status subscription
+    description: Operation to manage subscription on device status event (roaming, connectivity)
+  - name: Notification Callback
+    description: Notification received on subscription listener side
 paths:
-   /roaming:
+  /notifications:
+    post:
+      tags:
+        - Notification Callback
+      summary: "Subscription notification callback"
+      operationId: postNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Notification"
+            examples:
+              UE_REACHABILITY:
+                $ref: '#/components/examples/UE_REACHABILITY'
+              ROAMING_STATUS:
+                $ref: '#/components/examples/ROAMING_STATUS'  
+              LOSS_OF_CONNECTIVITY:
+                $ref: '#/components/examples/LOSS_OF_CONNECTIVITY'
+      responses:
+        '204':
+          description: No Content
+  /roaming:
     post:
       tags:
         - Device roaming status
@@ -78,6 +109,167 @@ paths:
         '500':
           $ref: "#/components/responses/Generic500"
         '503':
+          $ref: "#/components/responses/Generic503"
+  /subscriptions/roaming:
+    post:
+      tags:
+        - Device roaming status subscription
+      summary: 'Create a device roaming status subscription for a device'
+      operationId: createRoamingSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoamingSubscription'
+        required: true
+      responses:
+        '201':
+          description: Created 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionInfo'
+        '400':
+          $ref: '#/components/responses/Generic400'
+        '401':
+          $ref: '#/components/responses/Generic401'
+        '403':
+          $ref: '#/components/responses/Generic403'
+        '409':
+          $ref: '#/components/responses/Generic409'
+        '500':
+          $ref: '#/components/responses/Generic500'
+        '503':
+          $ref: '#/components/responses/Generic503'
+  /subscriptions:
+    get:
+      tags:
+        - Device status subscription
+      summary: 'Retrieve a list of device status subscription'
+      operationId: retrieveSubscription
+      responses:
+        '200':
+          description: List of subscription details
+          content:
+            application/json:
+              schema:
+                type: array 
+                items:
+                  $ref: '#/components/schemas/SubscriptionInfo'
+        '400':
+          $ref: '#/components/responses/Generic400'
+        '401':
+          $ref: '#/components/responses/Generic401'
+        '403':
+          $ref: '#/components/responses/Generic403'
+        '409':
+          $ref: '#/components/responses/Generic409'
+        '500':
+          $ref: '#/components/responses/Generic500'
+        '503':
+          $ref: '#/components/responses/Generic503' 
+  /subscriptions/{subscriptionId}:
+    get:
+      tags:
+        - Device status subscription
+      summary: 'Retrieve a device status subscription for a device'
+      operationId: retrieveSubscription
+      description: retrieve subscription information for a given subscription.
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: subscription identifier that was obtained from the create subscription operation
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionInfo'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorInfo"
+              examples:
+                Generic400:
+                  summary: Schema validation failed
+                  value: 
+                    code: INVALID_INPUT
+                    status: 400
+                    message: "Schema validation failed at  ..."
+                subscriptionIdRequired:
+                  summary: subscription id is required
+                  value: 
+                    code: INVALID_INPUT
+                    status: 400
+                    message: "Expected property is missing: subscriptionId"
+        401:
+          $ref: "#/components/responses/Generic401"
+        403:
+          $ref: "#/components/responses/Generic403"
+        404:
+          $ref: "#/components/responses/Generic404"
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorInfo"
+        503:
+          $ref: "#/components/responses/Generic503"
+    delete:
+      tags:
+        - Device status subscription
+      summary: 'Delete a device status subscription for a device'
+      operationId: deleteSubscription
+      description: delete a  given subscription.
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: subscription identifier that was obtained from the create subscription operation
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: subscription deleted
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorInfo"
+              examples:
+                Generic400:
+                  summary: Schema validation failed
+                  value: 
+                    code: INVALID_INPUT
+                    status: 400
+                    message: "Schema validation failed at  ..."
+                subscriptionIdRequired:
+                  summary: subscription id is required
+                  value: 
+                    code: INVALID_INPUT
+                    status: 400
+                    message: "Expected property is missing: subscriptionId"
+        401:
+          $ref: "#/components/responses/Generic401"
+        403:
+          $ref: "#/components/responses/Generic403"
+        404:
+          $ref: "#/components/responses/Generic404"
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorInfo"
+        503:
           $ref: "#/components/responses/Generic503"
 components:
   securitySchemes:
@@ -168,7 +360,7 @@ components:
       description: The Mobile country code (MCC) as an geographic region identifier for the country and the dependent areas.
       type: integer
     CountryName:
-      description: The ISO 3166 ALPHA-2 country-codes of mapped to mobile country code(MCC). If there is mapping of one MCC to multiple countries, then we have list of countries. If there is no mapping of MCC to any country, then an empty array [] shall be returned.
+      description: The ISO 3166 ALPHA-2 country-codes of mapped to mobile country code(MCC). If there is mapping of one MCC to multiple countries, then we have list of countries. If there is no mapping of MCC to any country, then ["xx"] will be used.
       type: array
       items:
         type: string
@@ -199,6 +391,168 @@ components:
         message:
           type: string
           description: Detailed error description
+    DeviceStatusEventType:
+      description: |
+        LOSS_OF_CONNECTIVITY - Device status event triggered when the UE is no longer reachable
+        UE_REACHABILITY - Device status event triggered when the UE becomes reachable for sending either SMS or downlink data
+        ROAMING_STATUS - Device status event triggered when the UE switch from roaming ON to roaming OFF and conversely 
+      type: string
+      enum:
+        - LOSS_OF_CONNECTIVITY
+        - UE_REACHABILITY
+        - ROAMING_STATUS
+    DeviceStatusEventTypeList:
+      description: List of Device Status Event Type
+      type: array
+      items:
+        $ref: '#/components/schemas/DeviceStatusEventType'
+      example: [ LOSS_OF_CONNECTIVITY, UE_REACHABILITY, ROAMING_STATUS]
+    CreateSubscription:
+      description: The request for creating a Device Status Subscription
+      type: object
+      properties:
+        notificationUrl:
+          type: string
+          example: "https://application-server.com"
+          description: Allows asynchronous delivery of device status related events
+        notificationAuthToken:
+          type: string
+          example: "c8974e592c2fa383d4a3960714"
+          description: Authentification token for callback API
+        subscriptionDetail:
+          $ref: '#/components/schemas/SubscriptionDetail'
+        subscriptionExpireTime:
+          type: string
+          format: date-time
+          example: 2023-01-17T13:18:23.682Z
+          description: The subscription expiration time in date-time format.
+      required:
+        - ueId
+        - notificationUrl
+    SubscriptionDetail:
+      description: The detail of the requested description
+      type: object
+      properties:
+        ueId:
+          $ref: '#/components/schemas/UeId'
+        uePort:
+          $ref: '#/components/schemas/Port'
+    CreateRoamingSubscription:
+      allOf:
+        - $ref: '#/components/schemas/CreateSubscription'
+        - type: object
+    UeIdList:
+      description: List of User equipment identifiers
+      type: array
+      items:
+        $ref: '#/components/schemas/UeId'
+    SubscriptionInfo:
+      description: Represents a device status subscription.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CreateSubscription'
+        - type: object
+          properties:
+            subscriptionId:
+              $ref: '#/components/schemas/SubscriptionId'
+            startedAt:
+              type: string
+              format: date-time
+            expiresAt:
+              type: string
+              format: date-time
+          required:
+            - subscriptionId
+            - startedAt
+            - expiresAt
+    SubscriptionId:
+      type: string
+      description: The subscription identifier.
+    EventTime:
+      format: date-time
+      type: string
+      description: The time when the event was notified.
+    Notification:
+      description: The notification callback.
+      type: object
+      required:
+        - eventType
+        - eventTime
+      properties:
+        subscriptionId:
+          $ref: '#/components/schemas/SubscriptionId'
+        eventType:
+          $ref: "#/components/schemas/DeviceStatusEventType"
+        eventTime:
+          $ref: '#/components/schemas/EventTime'
+        eventDetail:
+          $ref: '#/components/schemas/EventDetail'
+    EventDetail:
+      description: A detailed event structure depending on the eventType
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/LOSS_OF_CONNECTIVITY'
+        - $ref: '#/components/schemas/UE_REACHABILITY'  
+        - $ref: '#/components/schemas/ROAMING_STATUS'
+      discriminator:
+        propertyName: 'type'
+        mapping:
+          LOSS_OF_CONNECTIVITY: '#/components/schemas/LOSS_OF_CONNECTIVITY'
+          UE_REACHABILITY: '#/components/schemas/UE_REACHABILITY'
+          ROAMING_STATUS: '#/components/schemas/ROAMING_STATUS'
+    LOSS_OF_CONNECTIVITY:
+      description: Event detail structure for LOSS_OF_CONNECTIVITY event
+      type : object
+      required:
+        - type
+        - ueId
+      properties:
+        ueId:
+          $ref: '#/components/schemas/UeId'
+        uePort:
+          $ref: '#/components/schemas/Port'
+        type: 
+          type: string
+    UE_REACHABILITY:
+      description: Event detail structure for UE_REACHABILITY event
+      type : object
+      required:
+        - type
+        - reachabilityType
+        - ueId
+      properties:
+        ueId:
+          $ref: '#/components/schemas/UeId'
+        uePort:
+          $ref: '#/components/schemas/Port'
+        type: 
+          type: string
+        reachabilityType:
+          type: string
+          description: This parameter is used to identify whether the request is for "Reachability for SMS" or "Reachability for Data"
+          enum:
+            - SMS
+            - DATA
+    ROAMING_STATUS:
+      description: Event detail structure for ROAMING_STATUS event
+      type : object
+      required:
+        - type
+        - ueId
+      properties:
+        ueId:
+          $ref: '#/components/schemas/UeId'
+        uePort:
+          $ref: '#/components/schemas/Port'
+        type: 
+          type: string
+        roaming:
+          type: boolean
+          description:  Roaming status. True, if it is roaming.
+        countryCode:
+          $ref: '#/components/schemas/CountryCode'
+        countryName:
+          $ref: '#/components/schemas/CountryName'
   responses:
     Generic400:
       description: Invalid input
@@ -236,6 +590,15 @@ components:
           example:
             code: NOT_FOUND
             message: "The specified resource is not found"
+    Generic409:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            code: CONFLICT
+            message: "The specified resource is in a conflict"
     Generic500:
       description: Internal server error
       content:
@@ -254,3 +617,24 @@ components:
           example:
             code: SERVICE_UNAVAILABLE
             message: "Service unavailable"
+  examples:
+    LOSS_OF_CONNECTIVITY:
+      value:
+        ueId:
+          msisdn: 123456789
+        type: LOSS_OF_CONNECTIVITY
+    UE_REACHABILITY:
+      value:
+        ueId:
+          msisdn: 123456789
+        type: UE_REACHABILITY
+        reachabilityType: DATA
+    ROAMING_STATUS:
+      value:
+        ueId:
+          msisdn: 123456789
+        type: ROAMING_STATUS
+        roaming: true
+        countryCode: 208
+        countryName: 
+          FR 
