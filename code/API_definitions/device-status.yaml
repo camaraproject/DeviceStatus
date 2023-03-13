@@ -146,7 +146,7 @@ paths:
       tags:
         - Device status subscription
       summary: 'Retrieve a list of device status subscription'
-      operationId: retrieveSubscription
+      operationId: retrieveSubscriptionList
       responses:
         '200':
           description: List of subscription details
