@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Device Status
-  description: Service Enabling Network Function API for monitoring device status. This API allows to query device roaming status and subscribe to event related to device network status (roaming but also loss of connectivity and reachability )
+  description: Service Enabling Network Function API for monitoring device status. This API allows to query device roaming status and subscribe to event related to device roaming status.
   termsOfService: http://swagger.io/terms/
   contact:
     email: project-email@sample.com
@@ -20,8 +20,6 @@ security:
   - three_legged:
     - device-status-roaming-read
     - device-status-roaming-event
-    - device-status-reachability-event
-    - device-status-loss-of-connectivity
 servers:
   - url: '{apiRoot}/{basePath}'
     variables:
@@ -54,12 +52,8 @@ paths:
             schema:
               $ref: "#/components/schemas/Notification"
             examples:
-              UE_REACHABILITY:
-                $ref: '#/components/examples/UE_REACHABILITY'
               ROAMING_STATUS:
                 $ref: '#/components/examples/ROAMING_STATUS'  
-              LOSS_OF_CONNECTIVITY:
-                $ref: '#/components/examples/LOSS_OF_CONNECTIVITY'
       responses:
         '204':
           description: No Content
@@ -393,20 +387,16 @@ components:
           description: Detailed error description
     DeviceStatusEventType:
       description: |
-        LOSS_OF_CONNECTIVITY - Device status event triggered when the UE is no longer reachable
-        UE_REACHABILITY - Device status event triggered when the UE becomes reachable for sending either SMS or downlink data
         ROAMING_STATUS - Device status event triggered when the UE switch from roaming ON to roaming OFF and conversely 
       type: string
       enum:
-        - LOSS_OF_CONNECTIVITY
-        - UE_REACHABILITY
         - ROAMING_STATUS
     DeviceStatusEventTypeList:
       description: List of Device Status Event Type
       type: array
       items:
         $ref: '#/components/schemas/DeviceStatusEventType'
-      example: [ LOSS_OF_CONNECTIVITY, UE_REACHABILITY, ROAMING_STATUS]
+      example: [ ROAMING_STATUS]
     CreateSubscription:
       description: The request for creating a Device Status Subscription
       type: object
@@ -455,14 +445,21 @@ components:
           properties:
             subscriptionId:
               $ref: '#/components/schemas/SubscriptionId'
+            type:
+              type: string
+              description: type of notification like ROAMING_STATUS for example
+              example: ROAMING_STATUS
             startedAt:
               type: string
               format: date-time
+              description: date time when subscription started
             expiresAt:
               type: string
               format: date-time
+              description: date time when subscription will expire or expired
           required:
             - subscriptionId
+            - type
             - startedAt
             - expiresAt
     SubscriptionId:
@@ -491,61 +488,22 @@ components:
       description: A detailed event structure depending on the eventType
       type: object
       oneOf:
-        - $ref: '#/components/schemas/LOSS_OF_CONNECTIVITY'
-        - $ref: '#/components/schemas/UE_REACHABILITY'  
         - $ref: '#/components/schemas/ROAMING_STATUS'
       discriminator:
         propertyName: 'type'
         mapping:
-          LOSS_OF_CONNECTIVITY: '#/components/schemas/LOSS_OF_CONNECTIVITY'
-          UE_REACHABILITY: '#/components/schemas/UE_REACHABILITY'
           ROAMING_STATUS: '#/components/schemas/ROAMING_STATUS'
-    LOSS_OF_CONNECTIVITY:
-      description: Event detail structure for LOSS_OF_CONNECTIVITY event
-      type : object
-      required:
-        - type
-        - ueId
-      properties:
-        ueId:
-          $ref: '#/components/schemas/UeId'
-        uePort:
-          $ref: '#/components/schemas/Port'
-        type: 
-          type: string
-    UE_REACHABILITY:
-      description: Event detail structure for UE_REACHABILITY event
-      type : object
-      required:
-        - type
-        - reachabilityType
-        - ueId
-      properties:
-        ueId:
-          $ref: '#/components/schemas/UeId'
-        uePort:
-          $ref: '#/components/schemas/Port'
-        type: 
-          type: string
-        reachabilityType:
-          type: string
-          description: This parameter is used to identify whether the request is for "Reachability for SMS" or "Reachability for Data"
-          enum:
-            - SMS
-            - DATA
     ROAMING_STATUS:
       description: Event detail structure for ROAMING_STATUS event
       type : object
       required:
-        - type
         - ueId
+        - roaming
       properties:
         ueId:
           $ref: '#/components/schemas/UeId'
         uePort:
           $ref: '#/components/schemas/Port'
-        type: 
-          type: string
         roaming:
           type: boolean
           description:  Roaming status. True, if it is roaming.
@@ -618,23 +576,15 @@ components:
             code: SERVICE_UNAVAILABLE
             message: "Service unavailable"
   examples:
-    LOSS_OF_CONNECTIVITY:
-      value:
-        ueId:
-          msisdn: 123456789
-        type: LOSS_OF_CONNECTIVITY
-    UE_REACHABILITY:
-      value:
-        ueId:
-          msisdn: 123456789
-        type: UE_REACHABILITY
-        reachabilityType: DATA
     ROAMING_STATUS:
       value:
-        ueId:
-          msisdn: 123456789
-        type: ROAMING_STATUS
-        roaming: true
-        countryCode: 208
-        countryName: 
-          FR 
+        subscriptionId: 123654
+        eventType: ROAMING_STATUS
+        eventTime: 2023-01-17T13:18:23.682Z
+        eventDetail:
+          ueId:
+            msisdn: 123456789
+          roaming: true
+          countryCode: 208
+          countryName: 
+            FR 
