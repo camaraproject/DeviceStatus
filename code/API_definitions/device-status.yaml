@@ -8,7 +8,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.4.1
+  version: 0.5.0-wip
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -79,6 +79,8 @@ paths:
           $ref: "#/components/responses/Generic500"
         '503':
           $ref: "#/components/responses/Generic503"
+        '504':
+          $ref: "#/components/responses/Generic504"
 components:
   securitySchemes:
     oAuth2ClientCredentials:
@@ -190,9 +192,13 @@ components:
     ErrorInfo:
       type: object
       required:
+        - status
         - code
         - message
       properties:
+        status:
+          type: integer
+          description: HTTP response status code
         code:
           type: string
           description: Code given to this error
@@ -201,56 +207,72 @@ components:
           description: Detailed error description
   responses:
     Generic400:
-      description: Invalid input
+      description: Problem with the client request
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            code: INVALID_INPUT
-            message: "Invalid input"
+            status: 400
+            code: "INVALID_ARGUMENT"
+            message: "Client specified an invalid argument, request body or query param"
     Generic401:
-      description: Unauthorized
+      description: Authentication problem with the client request
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            code: UNAUTHORIZED
-            message: "Authorization failed: ..."
+            status: 401
+            code: "UNAUTHENTICATED"
+            message: "Request not authenticated due to missing, invalid, or expired credentials"
     Generic403:
-      description: Forbidden
+      description: Client does not have sufficient permission
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            code: FORBIDDEN
-            message: "Operation not allowed: ..."
+            status: 403
+            code: "PERMISSION_DENIED"
+            message: "Client does not have sufficient permissions to perform this action"
     Generic404:
-      description: Not found
+      description: Resource Not Found
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            code: NOT_FOUND
-            message: "The specified resource is not found"
+            status: 404
+            code: "NOT_FOUND"
+            message: "A specified resource is not found"
     Generic500:
-      description: Internal server error
+      description: Server error
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            code: INTERNAL_SERVER_ERROR
-            message: "Internal server error"
+            status: 500
+            code: "INTERNAL"
+            message: "Server error"
     Generic503:
-      description: Service unavailable
+      description: Service unavailable. Typically the server is down.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            code: SERVICE_UNAVAILABLE
+            status: 503
+            code: "UNAVAILABLE"
             message: "Service unavailable"
+    Generic504:
+      description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 504
+            code: "TIMEOUT"
+            message: "Request timeout exceeded. Try later."
