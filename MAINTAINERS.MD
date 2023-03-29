@@ -7,3 +7,4 @@
 | Vodafone | Kevin Smith |
 | Vodafone | Eric Murray |
 | Ericsson | Joachim Dahlgren |
+| Verizon/5GFF | Mahesh Chapalamadugu |
