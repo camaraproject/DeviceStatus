@@ -1,5 +1,34 @@
-# v0.2.0
+# v0.4.1
+### This is the second pre-release of the CAMARA Device Status API
+- API [definition](https://github.com/camaraproject/DeviceStatus/blob/release-0.4.1/code/API_definitions/device-status.yaml)
+- API [documentation](https://github.com/camaraproject/DeviceStatus/blob/release-0.4.1/documentation/API_documentation/Connectivity_API.md)
 
+### Please note:
+- This is a pre-release version, and should be considered as a draft for further development
+- There are bug fixes and breaking changes to be expected in later versions
+- The release is suitable for test implementations, but it is not recommended for use in production environments
+
+### Added
+* Add new return parameters MCC (Mobile Country Code) and ISO 3166-1 alpha-2 Country Code by @ravindrapalaskar17 in https://github.com/camaraproject/DeviceStatus/pull/21
+
+### Changed
+* API simplified by @monamok in https://github.com/camaraproject/DeviceStatus/pull/23
+  - base path renamed to `device-status`
+  - `/status` path renamed to `/roaming` 
+  - required status type is now implicit from path name, and does not need to be passed by parameter `eventType`
+
+### Fixed
+* Fix typo in filename and in CountryName response field by @ravindrapalaskar17 in https://github.com/camaraproject/DeviceStatus/pull/30
+
+### Removed
+- Objects `ConnectivityEventType` and `EventStatusType`
+
+## New Contributors
+* @ravindrapalaskar17 made their first contribution in https://github.com/camaraproject/DeviceStatus/pull/21
+
+**Full Changelog**: https://github.com/camaraproject/DeviceStatus/compare/v0.2.0...v0.4.1
+
+# v0.2.0
 ### This is the first pre-release of the CAMARA Device Status API
 - API [definition](https://github.com/camaraproject/DeviceStatus/blob/release-0.2.0/code/API_definitions/check-device-connectivity.yaml)
 - API [documentation](https://github.com/camaraproject/DeviceStatus/blob/release-0.2.0/documentation/API_documentation/Connectivity_API.md)
