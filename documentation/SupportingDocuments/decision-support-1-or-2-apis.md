@@ -37,13 +37,14 @@ Pros:
 
 Cons:
 - For more complex use cases many device status-APIs are needed (find, subscribe, integrate, etc.)
-- 
 
 
 **Common basepath**
 
 Pros:
 - For a use case with multiple areas of interest or the intention to extend the usage later a combined API with all device status related information is more comfortable 
+- Only one API onboarding
+- In this very specific context, the 2 functions are very close.
 
 Cons:
 - If only one specific status is needed, then it might take longer to find the right information
@@ -66,6 +67,7 @@ Cons:
 
 Pros:
 - Efficient development (especially when all status information can be gathered from the same southbound service)
+- Model generation performed once
 
 Cons:
 - If different southbound services are used the service gets more complex
@@ -121,7 +123,7 @@ Cons:
 
 | Company | Preference |
 | ------- | ---------- |
-|  |  |
+| Orange  | Slight preference for one API with 2 resources but not a 'structral' point for us for this API. |
 
 
 
