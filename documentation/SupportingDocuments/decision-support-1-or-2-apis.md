@@ -125,6 +125,7 @@ Cons:
 | ------- | ---------- |
 | Orange  | Slight preference for one API with 2 resources but not a 'structral' point for us for this API. |
 | Vodafone  | Based on the information shared at https://github.com/camaraproject/WorkingGroups/discussions/218 against different other aspects, our preference is to have separate APIs for each status (Roaming/Connectivity).   |
+| Deutsche Telekom  | We prefer the solution with a common basepath (1 API), however in specific cases a separation is conceivable |
 
 
 
