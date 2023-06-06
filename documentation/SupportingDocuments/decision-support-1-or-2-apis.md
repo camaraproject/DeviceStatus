@@ -71,6 +71,7 @@ Pros:
 
 Cons:
 - If different southbound services are used the service gets more complex
+- It might lead to partial implementations when there is an interest in some of the use cases and not the others
 
 
 ### 3. API maintenance & releasing - Camara view
@@ -80,6 +81,7 @@ Aspects of maintenance (add, delete, change functionality) and releasing (versio
 
 Pros:
 - A simple service is easier to maintain and release
+- Version changes are tightly related to the API functionality
 
 Cons:
 - The overall effort (discussions, YAML work, etc.) for the API family is higher 
@@ -93,6 +95,7 @@ Pros:
 
 Cons:
 - Longer release cycles (more content, more discussions)
+- Introducing changes/updates in one of the endpoints will result a version change affecting other unrelated endpoints (specially when they are not backward compatible)
 
 
 ### 4. Harmonization - technical view
@@ -126,6 +129,7 @@ Cons:
 | Orange  | Slight preference for one API with 2 resources but not a 'structral' point for us for this API. |
 | Vodafone  | Based on the information shared at https://github.com/camaraproject/WorkingGroups/discussions/218 against different other aspects, our preference is to have separate APIs for each status (Roaming/Connectivity).   |
 | Deutsche Telekom  | We prefer the solution with a common basepath (1 API), however in specific cases a separation is conceivable |
+| Telfónica  | Our preference is to have separate APIs for different types of status |
 
 
 
