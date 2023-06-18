@@ -54,6 +54,12 @@ paths:
             examples:
               ROAMING_STATUS:
                 $ref: '#/components/examples/ROAMING_STATUS'  
+              ROAMING_CHANGE_COUNTRY:
+                $ref: '#/components/examples/ROAMING_CHANGE_COUNTRY' 
+              ROAMING_ON:
+                $ref: '#/components/examples/ROAMING_ON'
+              ROAMING_OFF:
+                $ref: '#/components/examples/ROAMING_OFF'
       responses:
         '204':
           description: No Content
@@ -104,7 +110,7 @@ paths:
           $ref: "#/components/responses/Generic500"
         '503':
           $ref: "#/components/responses/Generic503"
-  /subscriptions/roaming:
+  /roaming/event-subscription:
     post:
       tags:
         - Device roaming status subscription
@@ -135,7 +141,7 @@ paths:
           $ref: '#/components/responses/Generic500'
         '503':
           $ref: '#/components/responses/Generic503'
-  /subscriptions:
+  /roaming/event-subscriptions:
     get:
       tags:
         - Device status subscription
@@ -162,7 +168,7 @@ paths:
           $ref: '#/components/responses/Generic500'
         '503':
           $ref: '#/components/responses/Generic503' 
-  /subscriptions/{subscriptionId}:
+  /roaming/event-subscriptions/{subscriptionId}:
     get:
       tags:
         - Device status subscription
@@ -390,11 +396,13 @@ components:
           type: string
           description: Detailed error description
     DeviceStatusEventType:
-      description: |
-        ROAMING_STATUS - Device status event triggered when the UE switch from roaming ON to roaming OFF and conversely 
+      description: Type of the event
       type: string
       enum:
         - ROAMING_STATUS
+        - ROAMING_ON
+        - ROAMING_OFF
+        - ROAMING_CHANGE_COUNTRY
     DeviceStatusEventTypeList:
       description: List of Device Status Event Type
       type: array
@@ -405,14 +413,6 @@ components:
       description: The request for creating a Device Status Subscription
       type: object
       properties:
-        notificationUrl:
-          type: string
-          example: "https://application-server.com"
-          description: Allows asynchronous delivery of device status related events
-        notificationAuthToken:
-          type: string
-          example: "c8974e592c2fa383d4a3960714"
-          description: Authentification token for callback API
         subscriptionDetail:
           $ref: '#/components/schemas/SubscriptionDetail'
         subscriptionExpireTime:
@@ -420,9 +420,20 @@ components:
           format: date-time
           example: 2023-01-17T13:18:23.682Z
           description: The subscription expiration time in date-time format.
-      required:
-        - ueId
-        - notificationUrl
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+    Webhook:
+      description: Webhook information for event channel
+      type: object
+      properties: 
+        notificationUrl:
+          type: string
+          example: "https://application-server.com"
+          description: Allows asynchronous delivery of device status related events
+        notificationAuthToken:
+          type: string
+          example: "c8974e592c2fa383d4a3960714"
+          description: Authentification token for callback API  
     SubscriptionDetail:
       description: The detail of the requested description
       type: object
@@ -431,6 +442,23 @@ components:
           $ref: '#/components/schemas/UeId'
         uePort:
           $ref: '#/components/schemas/Port'
+        eventType:
+          $ref: '#/components/schemas/RoamingEventType'
+    RoamingEventType:
+      type: string
+      description: |
+        ROAMING_STATUS - Device status event triggered when the UE switch from roaming ON to roaming OFF and conversely
+
+        ROAMING_ON - Device status event triggered when the UE switch from roaming OFF to roaming on
+
+        ROAMING_OFF: Device status event triggered when the UE switch from roaming ON to roaming OFF
+
+        ROAMING_CHANGE_COUNTRY: Device status event triggered when the UE in roaming change country code|
+      enum:
+        - ROAMING_STATUS
+        - ROAMING_ON
+        - ROAMING_OFF
+        - ROAMING_CHANGE_COUNTRY
     CreateRoamingSubscription:
       allOf:
         - $ref: '#/components/schemas/CreateSubscription'
@@ -449,11 +477,7 @@ components:
           properties:
             subscriptionId:
               $ref: '#/components/schemas/SubscriptionId'
-            type:
-              type: string
-              description: type of notification like ROAMING_STATUS for example
-              example: ROAMING_STATUS
-            startedAt:
+            startsAt:
               type: string
               format: date-time
               description: date time when subscription started
@@ -464,8 +488,6 @@ components:
           required:
             - subscriptionId
             - type
-            - startedAt
-            - expiresAt
     SubscriptionId:
       type: string
       description: The subscription identifier.
@@ -482,21 +504,67 @@ components:
       properties:
         subscriptionId:
           $ref: '#/components/schemas/SubscriptionId'
+        event: 
+          $ref: '#/components/schemas/Event'
+    Event: 
+      description: Generic event structure
+      oneOf:
+        - $ref: '#/components/schemas/EventRoamingStatus'
+        - $ref: '#/components/schemas/EventRoamingChange'
+        - $ref: '#/components/schemas/EventChangeCountry'
+      discriminator:
+        propertyName: 'eventType'
+        mapping:
+          ROAMING_STATUS: '#/components/schemas/EventRoamingStatus'
+          ROAMING_CHANGE_COUNTRY : '#/components/schemas/EventChangeCountry'
+          ROAMING_OFF: '#/components/schemas/EventRoamingChange'
+          ROAMING_ON: '#/components/schemas/EventRoamingChange'
+    EventRoamingStatus:
+      description:  event structure for roaming status change
+      required:
+        - eventType
+        - eventTime
+        - eventDetail
+      properties:
         eventType:
-          $ref: "#/components/schemas/DeviceStatusEventType"
+          type: string
+          enum: 
+            - ROAMING_STATUS
         eventTime:
           $ref: '#/components/schemas/EventTime'
         eventDetail:
-          $ref: '#/components/schemas/EventDetail'
-    EventDetail:
-      description: A detailed event structure depending on the eventType
-      type: object
-      oneOf:
-        - $ref: '#/components/schemas/ROAMING_STATUS'
-      discriminator:
-        propertyName: 'type'
-        mapping:
-          ROAMING_STATUS: '#/components/schemas/ROAMING_STATUS'
+          $ref: '#/components/schemas/ROAMING_STATUS'
+    EventRoamingChange:
+      description:  event structure for roaming on and roaming off change
+      required:
+        - eventType
+        - eventTime
+        - eventDetail
+      properties:
+        eventType:
+          type: string
+          enum: 
+            - ROAMING_ON
+            - ROAMING_OFF
+        eventTime:
+          $ref: '#/components/schemas/EventTime'
+        eventDetail:
+          $ref: '#/components/schemas/ROAMING_CHANGE'
+    EventChangeCountry:
+      description:  event structure for roaming change country
+      required:
+        - eventType
+        - eventTime
+        - eventDetail
+      properties:
+        eventType:
+          type: string
+          enum: 
+            - ROAMING_CHANGE_COUNTRY
+        eventTime:
+          $ref: '#/components/schemas/EventTime'
+        eventDetail:
+          $ref: '#/components/schemas/ROAMING_CHANGE_COUNTRY'  
     ROAMING_STATUS:
       description: Event detail structure for ROAMING_STATUS event
       type : object
@@ -511,6 +579,30 @@ components:
         roaming:
           type: boolean
           description:  Roaming status. True, if it is roaming.
+        countryCode:
+          $ref: '#/components/schemas/CountryCode'
+        countryName:
+          $ref: '#/components/schemas/CountryName'
+    ROAMING_CHANGE:
+      description: Event detail structure for ROAMING_ON & ROAMING_OFF event
+      type : object
+      required:
+        - ueId
+      properties:
+        ueId:
+          $ref: '#/components/schemas/UeId'
+        uePort:
+          $ref: '#/components/schemas/Port'
+    ROAMING_CHANGE_COUNTRY:
+      description: Event detail structure for ROAMING_CHANGE_COUNTRY event
+      type : object
+      required:
+        - ueId
+      properties:
+        ueId:
+          $ref: '#/components/schemas/UeId'
+        uePort:
+          $ref: '#/components/schemas/Port'
         countryCode:
           $ref: '#/components/schemas/CountryCode'
         countryName:
@@ -588,13 +680,43 @@ components:
     ROAMING_STATUS:
       value:
         subscriptionId: 123654
-        eventType: ROAMING_STATUS
-        eventTime: 2023-01-17T13:18:23.682Z
-        eventDetail:
-          ueId:
-            msisdn: 123456789
-          roaming: true
-          countryCode: 208
-          countryName: 
-            FR 
-
+        event:
+          eventType: ROAMING_STATUS
+          eventTime: 2023-01-17T13:18:23.682Z
+          eventDetail:
+            ueId:
+              msisdn: 123456789
+            roaming: true
+            countryCode: 208
+            countryName: 
+              FR 
+    ROAMING_OFF:
+      value:
+        subscriptionId: 123655
+        event:
+          eventType: ROAMING_OFF
+          eventTime: 2023-01-17T13:18:23.682Z
+          eventDetail:
+            ueId:
+              msisdn: 123456789
+    ROAMING_ON:
+      value:
+        subscriptionId: 123655
+        event:
+          eventType: ROAMING_ON
+          eventTime: 2023-01-17T13:18:23.682Z
+          eventDetail:
+            ueId:
+              msisdn: 123456789
+    ROAMING_CHANGE_COUNTRY:
+      value:
+        subscriptionId: 123655
+        event:
+          eventType: ROAMING_CHANGE_COUNTRY
+          eventTime: 2023-01-17T13:18:23.682Z
+          eventDetail:
+            ueId:
+              msisdn: 123456789
+            countryCode: 214
+            countryName: 
+              SP 
