@@ -518,28 +518,26 @@ components:
         - ROAMING_ON
         - ROAMING_OFF
         - ROAMING_CHANGE_COUNTRY
-        -
 
     SubscriptionInfo:
       description: Represents a device status subscription.
-      type: object
       allOf:
         - $ref: '#/components/schemas/CreateSubscription'
-      properties:
-        subscriptionId:
-          $ref: '#/components/schemas/SubscriptionId'
-        startsAt:
-          type: string
-          format: date-time
-          description: date time when subscription started
-        expiresAt:
-          type: string
-          format: date-time
-          description: date time when subscription will expire or expired
-      required:
-        - subscriptionId
-        - type
-
+        - type: object
+          properties:
+            subscriptionId:
+              $ref: '#/components/schemas/SubscriptionId'
+            startsAt:
+              type: string
+              format: date-time
+              description: date time when subscription started
+            expiresAt:
+              type: string
+              format: date-time
+              description: date time when subscription will expire or expired
+          required:
+            - subscriptionId
+            - type
     SubscriptionId:
       type: string
       description: The subscription identifier.
@@ -584,51 +582,51 @@ components:
 
     EventRoamingStatus:
       description:  event structure for roaming status change
-      type: object
       allOf:
         - $ref: '#/components/schemas/Event'
-      properties:
-        eventDetail:
-          $ref: '#/components/schemas/RoamingStatus'
+        - type: object
+          properties:
+            eventDetail:
+              $ref: '#/components/schemas/RoamingStatus'
 
     EventRoamingOn:
       description:  event structure for roaming on and roaming off change
-      type: object
       allOf:
         - $ref: '#/components/schemas/Event'
-      properties:
-        eventType:
-          type: string
-          enum:
-            - ROAMING_ON
-        eventDetail:
-          $ref: '#/components/schemas/RoamingChange'
+        - type: object
+          properties:
+            eventType:
+              type: string
+              enum:
+                - ROAMING_ON
+            eventDetail:
+              $ref: '#/components/schemas/RoamingChange'
 
     EventRoamingOff:
       description:  event structure for roaming on and roaming off change
-      type: object
       allOf:
         - $ref: '#/components/schemas/Event'
-      properties:
-        eventType:
-          type: string
-          enum:
-            - ROAMING_OFF
-        eventDetail:
-          $ref: '#/components/schemas/RoamingChange'
+        - type: object
+          properties:
+            eventType:
+              type: string
+              enum:
+                - ROAMING_OFF
+            eventDetail:
+              $ref: '#/components/schemas/RoamingChange'
 
     EventChangeCountry:
       description:  event structure for roaming change country
-      type: object
       allOf:
         - $ref: '#/components/schemas/Event'
-      properties:
-        eventType:
-          type: string
-          enum:
-            - ROAMING_CHANGE_COUNTRY
-        eventDetail:
-          $ref: '#/components/schemas/RoamingChangeCountry'
+        - type: object
+          properties:
+            eventType:
+              type: string
+              enum:
+                - ROAMING_CHANGE_COUNTRY
+            eventDetail:
+              $ref: '#/components/schemas/RoamingChangeCountry'
 
     RoamingStatus:
       description: Event detail structure for ROAMING_STATUS event
