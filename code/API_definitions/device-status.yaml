@@ -32,21 +32,22 @@ servers:
 tags:
   - name: Device roaming status
     description: Operation to get device roaming status and country information (if roaming) synchronously
-  - name: Device status subscription
-    description: Operation to manage subscription on device status event (roaming, connectivity)
+  - name: Device status event subscription
+    description: Operation to manage event subscription on device status event (roaming, connectivity)
   - name: Notification Callback
     description: |
       Notification received on subscription listener side. 
       
       **WARNING**: This endpoint must be exposed on the listener side as POST /notifications 
-      will be posted by the Roaming resource server to the url provided by notification 
+      will be posted by the device status resource server to the url provided by notification 
       listener.
 paths:
   /notifications:
     post:
       tags:
         - Notification Callback
-      summary: "Subscription notification callback"
+      summary: "Notification endpoint to notify listener that a subscribed event occurred"
+      description: Notification endpoint to notify listener that a subscribed event occurred. This endpoint must be exposed on the listener side.
       operationId: postNotification
       requestBody:
         required: true
@@ -63,8 +64,10 @@ paths:
                 $ref: '#/components/examples/ROAMING_ON'
               ROAMING_OFF:
                 $ref: '#/components/examples/ROAMING_OFF'
+              SUBSCRIPTION_ENDS:
+                $ref: '#/components/examples/SUBSCRIPTION_ENDS'
       responses:
-        '204':
+        204:
           description: No Content
         400:
           $ref: "#/components/responses/Generic400"
@@ -85,6 +88,7 @@ paths:
       tags:
         - Device roaming status
       summary: 'Get the current roaming status and the country information'
+      description: Get the current roaming status and the country information
       operationId: getRoamingStatus
       requestBody:
         content:
@@ -93,7 +97,7 @@ paths:
               $ref: '#/components/schemas/RequestRoamingStatus'
         required: true
       responses:
-        '200':
+        200:
           description: Contains information about current roaming status
           content:
             application/json:
@@ -115,84 +119,92 @@ paths:
                     roaming: true
                     countryCode: 340
                     countryName: [ "BL","GF","GP","MF","MQ" ]
-        '400':
+        400:
           $ref: "#/components/responses/Generic400"
-        '401':
+        401:
           $ref: "#/components/responses/Generic401"
-        '403':
+        403:
           $ref: "#/components/responses/Generic403"
-        '404':
+        404:
           $ref: "#/components/responses/Generic404"
-        '500':
+        500:
           $ref: "#/components/responses/Generic500"
-        '503':
+        503:
           $ref: "#/components/responses/Generic503"
   /event-subscriptions:
     post:
       tags:
-        - Device status subscription
-      summary: 'Create a device status subscription for a device'
-      operationId: createDevicStatusSubscription
+        - Device status event subscription
+      summary: 'Create a device status event subscription for a device'
+      description: Create a device status event subscription for a device
+      operationId: createDevicStatusEventSubscription
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateSubscription'
+              $ref: '#/components/schemas/CreateEventSubscription'
         required: true
       responses:
-        '201':
+        201:
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionInfo'
-        '400':
+                $ref: '#/components/schemas/EventSubscriptionInfo'
+        202 :
+          description: Request accepted to be processed. It applies for async creation process.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventSubscriptionAsync'
+        400:
           $ref: '#/components/responses/Generic400'
-        '401':
+        401:
           $ref: '#/components/responses/Generic401'
-        '403':
+        403:
           $ref: '#/components/responses/Generic403'
-        '409':
+        409:
           $ref: '#/components/responses/Generic409'
-        '500':
+        500:
           $ref: '#/components/responses/Generic500'
-        '503':
+        503:
           $ref: '#/components/responses/Generic503'
     get:
       tags:
-        - Device status subscription
-      summary: 'Retrieve a list of device status subscription'
-      operationId: retrieveSubscriptionList
+        - Device status event subscription
+      summary: 'Retrieve a list of device status event subscription'
+      description: Retrieve a list of device status event subscription(s)
+      operationId: retrieveEventSubscriptionList
       responses:
-        '200':
-          description: List of subscription details
+        200:
+          description: List of event subscription details
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SubscriptionInfo'
-        '400':
+                  $ref: '#/components/schemas/EventSubscriptionInfo'
+        400:
           $ref: '#/components/responses/Generic400'
-        '401':
+        401:
           $ref: '#/components/responses/Generic401'
-        '403':
+        403:
           $ref: '#/components/responses/Generic403'
-        '500':
+        500:
           $ref: '#/components/responses/Generic500'
-        '503':
+        503:
           $ref: '#/components/responses/Generic503'
-  /event-subscriptions/{subscriptionId}:
+  /event-subscriptions/{eventSubscriptionId}:
     get:
       tags:
-        - Device status subscription
-      summary: 'Retrieve a device status subscription for a device'
-      operationId: retrieveSubscription
-      description: retrieve subscription information for a given subscription.
+        - Device status event subscription
+      summary: 'Retrieve a device status event subscription for a device'
+      operationId: retrieveEventSubscription
+      description: retrieve event subscription information for a given subscription.
       parameters:
-        - name: subscriptionId
+        - name: eventSubscriptionId
           in: path
-          description: subscription identifier that was obtained from the create subscription operation
+          description: Event subscription identifier that was obtained from the create subscription operation
           required: true
           schema:
             type: string
@@ -202,7 +214,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionInfo'
+                $ref: '#/components/schemas/EventSubscriptionInfo'
         400:
           description: Invalid input
           content:
@@ -217,11 +229,11 @@ paths:
                     status: 400
                     message: "Schema validation failed at  ..."
                 subscriptionIdRequired:
-                  summary: subscription id is required
+                  summary: eventSubscription id is required
                   value:
                     code: INVALID_INPUT
                     status: 400
-                    message: "Expected property is missing: subscriptionId"
+                    message: "Expected property is missing: eventSubscriptionId"
         401:
           $ref: "#/components/responses/Generic401"
         403:
@@ -238,20 +250,26 @@ paths:
           $ref: "#/components/responses/Generic503"
     delete:
       tags:
-        - Device status subscription
-      summary: 'Delete a device status subscription for a device'
-      operationId: deleteSubscription
-      description: delete a  given subscription.
+        - Device status event subscription
+      summary: 'Delete a device status event subscription for a device'
+      operationId: deleteEventSubscription
+      description: delete a  given event subscription.
       parameters:
-        - name: subscriptionId
+        - name: eventSubscriptionId
           in: path
-          description: subscription identifier that was obtained from the create subscription operation
+          description: Event subscription identifier that was obtained from the create event subscription operation
           required: true
           schema:
             type: string
       responses:
-        200:
-          description: subscription deleted
+        204:
+          description: event subscription deleted
+        202 :
+          description: Request accepted to be processed. It applies for async deletion process.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventSubscriptionAsync'
         400:
           description: Invalid input
           content:
@@ -266,11 +284,11 @@ paths:
                     status: 400
                     message: "Schema validation failed at  ..."
                 subscriptionIdRequired:
-                  summary: subscription id is required
+                  summary: eventSubscription id is required
                   value:
                     code: INVALID_INPUT
                     status: 400
-                    message: "Expected property is missing: subscriptionId"
+                    message: "Expected property is missing: eventSubscriptionId"
         401:
           $ref: "#/components/responses/Generic401"
         403:
@@ -424,12 +442,14 @@ components:
           $ref: '#/components/schemas/Device'
       required:
         - device
+
     Port:
       description: User equipment port. Device port may be required along with IP address to identify the target device
       type: integer
       minimum: 0
       maximum: 65535
       example: 5060
+
     ErrorInfo:
       type: object
       required:
@@ -446,29 +466,15 @@ components:
         message:
           type: string
           description: Detailed error description
-    DeviceStatusEventType:
-      description: Type of the event
-      type: string
-      enum:
-        - ROAMING_STATUS
-        - ROAMING_ON
-        - ROAMING_OFF
-        - ROAMING_CHANGE_COUNTRY
-    DeviceStatusEventTypeList:
-      description: List of Device Status Event Type
-      type: array
-      items:
-        $ref: '#/components/schemas/DeviceStatusEventType'
-      example: [ROAMING_STATUS]
-
-    CreateSubscription:
-      description: The request for creating a Device Status Subscription
+        
+    CreateEventSubscription:
+      description: The request for creating a Device Status event subscription
       type: object
       required:
         - webhook
       properties:
         subscriptionDetail:
-          $ref: '#/components/schemas/SubscriptionDetail'
+          $ref: '#/components/schemas/EventSubscriptionDetail'
         subscriptionExpireTime:
           type: string
           format: date-time
@@ -486,14 +492,15 @@ components:
         notificationUrl:
           type: string
           example: "https://application-server.com"
-          description: Allows asynchronous delivery of device status related events
+          description: https callback address where the event notification must be POST-ed
         notificationAuthToken:
           type: string
           example: "c8974e592c2fa383d4a3960714"
-          description: Authentification token for callback API
+          description: | 
+            OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken
 
-    SubscriptionDetail:
-      description: The detail of the requested description
+    EventSubscriptionDetail:
+      description: The detail of the requested event subscription
       type: object
       required:
         - eventType
@@ -506,27 +513,27 @@ components:
     RoamingEventType:
       type: string
       description: |
-        ROAMING_STATUS - Device status event triggered when the UE switch from roaming ON to roaming OFF and conversely
+        ROAMING_STATUS - Event triggered when the device switch from roaming ON to roaming OFF and conversely
 
-        ROAMING_ON - Device status event triggered when the UE switch from roaming OFF to roaming on
+        ROAMING_ON - Event triggered when the device switch from roaming OFF to roaming ON
 
-        ROAMING_OFF: Device status event triggered when the UE switch from roaming ON to roaming OFF
+        ROAMING_OFF: Event triggered when the device switch from roaming ON to roaming OFF
 
-        ROAMING_CHANGE_COUNTRY: Device status event triggered when the UE in roaming change country code|
+        ROAMING_CHANGE_COUNTRY: Event triggered when the device in roaming change country code
       enum:
         - ROAMING_STATUS
         - ROAMING_ON
         - ROAMING_OFF
         - ROAMING_CHANGE_COUNTRY
 
-    SubscriptionInfo:
+    EventSubscriptionInfo:
       description: Represents a device status subscription.
       allOf:
-        - $ref: '#/components/schemas/CreateSubscription'
+        - $ref: '#/components/schemas/CreateEventSubscription'
         - type: object
           properties:
-            subscriptionId:
-              $ref: '#/components/schemas/SubscriptionId'
+            eventSubscriptionId:
+              $ref: '#/components/schemas/EventSubscriptionId'
             startsAt:
               type: string
               format: date-time
@@ -538,21 +545,32 @@ components:
           required:
             - subscriptionId
             - type
-    SubscriptionId:
+
+    EventSubscriptionAsync:
+      description: Response for a device status operation managed asynchronously (Creation or Deletion)
+      type: object
+      properties:
+          eventSubscriptionId:
+              $ref: '#/components/schemas/EventSubscriptionId'
+
+    
+    EventSubscriptionId:
       type: string
-      description: The subscription identifier.
+      description: The event subscription identifier.
+    
     EventTime:
       format: date-time
       type: string
       description: The time when the event was notified.
+    
     Notification:
       description: The notification callback.
       type: object
       required:
         - event
       properties:
-        subscriptionId:
-          $ref: '#/components/schemas/SubscriptionId'
+        eventSubscriptionId:
+          $ref: '#/components/schemas/EventSubscriptionId'
         event:
           $ref: '#/components/schemas/Event'
 
@@ -579,6 +597,7 @@ components:
           ROAMING_CHANGE_COUNTRY : '#/components/schemas/EventChangeCountry'
           ROAMING_OFF: '#/components/schemas/EventRoamingOff'
           ROAMING_ON: '#/components/schemas/EventRoamingOn'
+          SUBSCRIPTION_ENDS : '#/components/schemas/EventSubscriptionEnds'
 
     EventRoamingStatus:
       description:  event structure for roaming status change
@@ -628,6 +647,15 @@ components:
             eventDetail:
               $ref: '#/components/schemas/RoamingChangeCountry'
 
+    EventSubscriptionEnds:
+      description:  event structure for event subscription ends
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          properties:
+            eventDetail:
+              $ref: '#/components/schemas/SubscriptionEnds'
+
     RoamingStatus:
       description: Event detail structure for ROAMING_STATUS event
       type : object
@@ -666,6 +694,15 @@ components:
           $ref: '#/components/schemas/CountryCode'
         countryName:
           $ref: '#/components/schemas/CountryName'
+
+    SubscriptionEnds:
+      description: Event detail structure for SUBSCRIPTION_ENDS event
+      type : object
+      required:
+        - device
+      properties:
+        device:
+          $ref: '#/components/schemas/Device'
 
   responses:
     Generic400:
@@ -778,3 +815,12 @@ components:
               phoneNumber: 123456789
             countryCode: 214
             countryName: SP
+    SUBSCRIPTION_ENDS:
+      value:
+        subscriptionId: 123655
+        event:
+          eventType: SUBSCRIPTION_ENDS
+          eventTime: 2023-01-17T13:18:23.682Z
+          eventDetail:
+            device:
+              phoneNumber: 123456789
