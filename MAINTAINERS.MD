@@ -4,7 +4,7 @@
 | Orange | Sylvain Morel |
 | Orange| Ludovic Robert|
 | Telefonica | Jesus Pena |
-| Telefonica | Mona Mokhber |
+| Telefonica | Fernando Prado |
 | Vodafone | Eric Murray |
 | Vodafone| Sachin Kumar |
 | Ericsson | Joachim Dahlgren |
