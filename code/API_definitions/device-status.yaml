@@ -543,7 +543,7 @@ components:
               format: date-time
               description: date time when subscription will expire or expired
           required:
-            - subscriptionId
+            - eventSubscriptionId
             - type
 
     EventSubscriptionAsync:
@@ -776,7 +776,7 @@ components:
   examples:
     ROAMING_STATUS:
       value:
-        subscriptionId: 123654
+        eventSubscriptionId: 123654
         event:
           eventType: ROAMING_STATUS
           eventTime: 2023-01-17T13:18:23.682Z
@@ -788,7 +788,7 @@ components:
             countryName: FR
     ROAMING_OFF:
       value:
-        subscriptionId: 123655
+        eventSubscriptionId: 123655
         event:
           eventType: ROAMING_OFF
           eventTime: 2023-01-17T13:18:23.682Z
@@ -797,7 +797,7 @@ components:
               phoneNumber: 123456789
     ROAMING_ON:
       value:
-        subscriptionId: 123655
+        eventSubscriptionId: 123655
         event:
           eventType: ROAMING_ON
           eventTime: 2023-01-17T13:18:23.682Z
@@ -806,7 +806,7 @@ components:
               phoneNumber: 123456789
     ROAMING_CHANGE_COUNTRY:
       value:
-        subscriptionId: 123655
+        eventSubscriptionId: 123655
         event:
           eventType: ROAMING_CHANGE_COUNTRY
           eventTime: 2023-01-17T13:18:23.682Z
@@ -817,7 +817,7 @@ components:
             countryName: SP
     SUBSCRIPTION_ENDS:
       value:
-        subscriptionId: 123655
+        eventSubscriptionId: 123655
         event:
           eventType: SUBSCRIPTION_ENDS
           eventTime: 2023-01-17T13:18:23.682Z
