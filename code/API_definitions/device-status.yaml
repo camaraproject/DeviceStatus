@@ -700,9 +700,13 @@ components:
       type : object
       required:
         - device
+        - terminationReason
       properties:
         device:
           $ref: '#/components/schemas/Device'
+        terminationReason:
+          type: string
+          enum: ["SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED"]
 
   responses:
     Generic400:
@@ -824,3 +828,4 @@ components:
           eventDetail:
             device:
               phoneNumber: 123456789
+            terminationReason: SUBSCRIPTION_EXPIRED
