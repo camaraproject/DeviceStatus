@@ -1,7 +1,66 @@
 openapi: 3.0.3
 info:
   title: Device Status
-  description: Service Enabling Network Function API for monitoring device status. This API allows to query device roaming status and subscribe to event related to device roaming status.
+  description: |
+    This API provides the customer with the ability to query device roaming status and subscribe to event related to device roaming status.
+
+    # Introduction
+
+    API consumer is able to verify whether a certain user device is in roaming situation (or not). This capability is provided in 2 ways:
+      - via direct request with the roaming situation in the response.
+      - via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation change.
+
+    The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information is send back in the response.
+
+    Device status verification could be useful in scenario such as (not exhaustive):
+      - For regulatory reasons, where a customer may need to be within a certain jurisdiction, or out with others, in order for transactions to be authorized
+      - For security / fraud reasons, to establish that a customer is located where they claim to be
+      - For service delivery reasons, to ensure that the customer has access to particular service, and will not incur roaming charges in accessing them
+
+
+    # Relevant terms and definitions
+
+    * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
+      At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
+
+    * **Roaming** : Roaming status. `true`, if device is in roaming situation - `false` else.
+
+    * **Country** : Country code and name - visited country information, provided if the device is in roaming situation.
+
+
+    # API Functionality    
+
+    The API exposes following capabilities:
+
+    ## Device roaming situation
+
+    The endpoint `POST /roaming` allows to get roaming status and country information (if device in roaming situation) synchronously.
+
+    ## Device status event subscription
+
+    Theses endpoints allow to manage event subscription on roaming device status event. The CAMARA subscription model is detailed in the CAMARA API design guideline document.
+
+    Following `eventType` are managed for this API: 
+      - ROAMING_STATUS - Event triggered when the device switch from roaming ON to roaming OFF and conversely
+
+      - ROAMING_ON - Event triggered when the device switch from roaming OFF to roaming ON
+
+      - ROAMING_OFF: Event triggered when the device switch from roaming ON to roaming OFF
+
+      - ROAMING_CHANGE_COUNTRY: Event triggered when the device in roaming change country code
+
+    ## Notification callback
+
+    This endpoint describes the event notification received on subscription listener side when the event occurred. As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
+
+    **WARNING**: This endpoint must be exposed on the listener side as `POST /notifications`
+      will be posted by the device status resource server to the url provided by notification 
+      listener.
+
+    ## Further info and support
+
+    (FAQs will be added in a later version of the documentation)
+
   termsOfService: http://swagger.io/terms/
   contact:
     email: project-email@sample.com
