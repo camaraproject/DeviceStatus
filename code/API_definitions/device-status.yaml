@@ -42,7 +42,7 @@ info:
 
     ## Device roaming status
 
-    The endpoint `POST /roaming` allows the APi consumer to synchronously (i.e. immediately) get roaming status and country information (if the device is roaming).
+    The endpoint `POST /roaming` allows the API consumer to synchronously (i.e. immediately) get roaming status and country information (if the device is roaming). The response will include confirmation of the device identifier(s) used by the API implementation to determine the roaming status, but the response will never include additional identifiers that were not originally provided by the API consumer.
 
     ## Device status event subscription
 
