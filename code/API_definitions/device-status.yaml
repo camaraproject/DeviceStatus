@@ -55,7 +55,7 @@ info:
 
       - `ROAMING_OFF` - This event is only triggered when the device changes from roaming ON to roaming OFF
 
-      - `ROAMING_CHANGE_COUNTRY` - This event is triggered whenever the mobile country code (MCC) of the network to which the device is connected changes. Changing netorks within a given country does not trigger this event.
+      - `ROAMING_CHANGE_COUNTRY` - This event is triggered whenever the mobile country code (MCC) of the network to which the device is connected changes. Changing networks within a given country does not trigger this event.
 
     ## Notification callback
 
