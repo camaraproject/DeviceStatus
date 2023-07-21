@@ -46,7 +46,7 @@ info:
 
     ## Device status event subscription
 
-    This endpoint allows the API consumer to create and delete event subscriptions for specific roaming device status events. The CAMARA subscription model is detailed in the [CAMARA API Design Guidelines](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md).
+    This endpoint allows the API consumer to create and delete event subscriptions for specific roaming device status events. The CAMARA subscription model is detailed in the [CAMARA API Design Guidelines](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md#121-subscription).
 
     Following `eventType` options are defined for this API: 
       - `ROAMING_STATUS` - This event is triggered when the device roaming status changes from roaming ON (`true`) to roaming OFF (`false`) or vice-versa
@@ -59,7 +59,7 @@ info:
 
     ## Notification callback
 
-    This endpoint describes the event notification that will be received by the subscription listener (API consumer) side when a subscribed event has occurred. A detailed description of the event notification mechanism is provided in the [CAMARA API Design Guidelines](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md).
+    This endpoint describes the event notification that will be received by the subscription listener (API consumer) side when a subscribed event has occurred. A detailed description of the event notification mechanism is provided in the [CAMARA API Design Guidelines](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md#122-event-notification).
 
     **WARNING**: This endpoint must be implemented on the listener (API consumer) side, as a `POST /notifications` request will be made by the device status resource server to the url provided by notification listener.
 
