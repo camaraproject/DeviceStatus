@@ -114,12 +114,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ConnectivityStatusResponse'
               examples:
-                Connected:
+                Connected-With-DATA-SMS:
                   value:
-                    connected: true
-                Disconnected:
+                    connectivityStatus: CONNECTED_DATA_SMS
+                Connected-With-SMS:
                   value:
-                    connected: false
+                    connectivityStatus: CONNECTED_SMS
+                Connected-With-DATA:
+                  value:
+                    connectivityStatus: CONNECTED_DATA
+                Not-Connected:
+                  value:
+                    connectivityStatus: NOT_CONNECTED
         400:
           $ref: "#/components/responses/Generic400"
         401:
