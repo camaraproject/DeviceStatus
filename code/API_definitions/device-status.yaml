@@ -470,9 +470,9 @@ components:
     ConnectivityStatusResponse:
       type: object
       required:
-        - connected
+        - connectivityStatus
       properties:
-        connected:
+        connectivityStatus:
           $ref: '#/components/schemas/ConnectivityStatus'
 
     ConnectivityStatus:
