@@ -72,7 +72,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.5.0-wip
+  version: 0.6.0-wip
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -85,12 +85,94 @@ servers:
         description: API root
 
 tags:
+  - name: Device connectivity status
+    description: Operations to get the current connectivity status of a device
   - name: Device roaming status
     description: Operation to get device roaming status and country information (if roaming) synchronously
   - name: Device status subscription
     description: Operation to manage event subscription on device status event (roaming, connectivity)
 
 paths:
+  /connectivity:
+    post:
+      tags:
+        - Device connectivity status
+      summary: 'Get the current connectivity status information'
+      description: Get the current connectivity status information
+      operationId: getConnectivityStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestConnectivityStatus'
+        required: true
+      responses:
+        200:
+          description: Contains information about current connectivity status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectivityStatusResponse'
+              examples:
+                Connected:
+                  value:
+                    connected: true
+                Disconnected:
+                  value:
+                    connected: false
+        400:
+          $ref: "#/components/responses/Generic400"
+        401:
+          $ref: "#/components/responses/Generic401"
+        403:
+          $ref: "#/components/responses/Generic403"
+        404:
+          $ref: "#/components/responses/Generic404"
+        500:
+          $ref: "#/components/responses/Generic500"
+        503:
+          $ref: "#/components/responses/Generic503"
+  /notifications:
+    post:
+      tags:
+        - Notification Callback
+      summary: "Notification endpoint to notify listener that a subscribed event occurred"
+      description: Notification endpoint to notify listener that a subscribed event occurred. This endpoint must be exposed on the listener side.
+      operationId: postNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Notification"
+            examples:
+              ROAMING_STATUS:
+                $ref: '#/components/examples/ROAMING_STATUS'
+              ROAMING_CHANGE_COUNTRY:
+                $ref: '#/components/examples/ROAMING_CHANGE_COUNTRY'
+              ROAMING_ON:
+                $ref: '#/components/examples/ROAMING_ON'
+              ROAMING_OFF:
+                $ref: '#/components/examples/ROAMING_OFF'
+              SUBSCRIPTION_ENDS:
+                $ref: '#/components/examples/SUBSCRIPTION_ENDS'
+      responses:
+        204:
+          description: No Content
+        400:
+          $ref: "#/components/responses/Generic400"
+        401:
+          $ref: "#/components/responses/Generic401"
+        403:
+          $ref: "#/components/responses/Generic403"
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorInfo"
+        503:
+          $ref: "#/components/responses/Generic503"
   /roaming:
     post:
       tags:
@@ -385,6 +467,29 @@ components:
       description: Roaming status. True, if it is roaming
       type: boolean
 
+    ConnectivityStatusResponse:
+      type: object
+      required:
+        - connected
+      properties:
+        connected:
+          $ref: '#/components/schemas/ConnectivityStatus'
+
+    ConnectivityStatus:
+      description: |
+        CONNECTED_DATA: The device is connected to the network for Data usage only
+
+        CONNECTED_DATA_SMS: The device is connected to the network for Data & SMS usage only
+
+        CONNECTED_SMS: The device is connected to the network for SMS usage only
+
+        NOT_CONNECTED: The device is not connected
+      enum:
+        - CONNECTED_DATA
+        - CONNECTED_DATA_SMS
+        - CONNECTED_SMS
+        - NOT_CONNECTED
+
     Device:
       description: |
         End-user equipment able to connect to a mobile network. Examples of devices include smartphones or IoT sensors/actuators. 
@@ -478,6 +583,14 @@ components:
       properties:
         device:
           $ref: "#/components/schemas/Device"
+      required:
+        - device
+
+    RequestConnectivityStatus:
+      type: object
+      properties:
+        device:
+          $ref: '#/components/schemas/Device'
       required:
         - device
 
