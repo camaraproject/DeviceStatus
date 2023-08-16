@@ -114,9 +114,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ConnectivityStatusResponse'
               examples:
-                Connected-With-DATA-SMS:
-                  value:
-                    connectivityStatus: CONNECTED_DATA_SMS
                 Connected-With-SMS:
                   value:
                     connectivityStatus: CONNECTED_SMS
@@ -483,16 +480,13 @@ components:
 
     ConnectivityStatus:
       description: |
-        CONNECTED_DATA: The device is connected to the network for Data usage only
+        CONNECTED_DATA: The device is connected to the network for Data usage
 
-        CONNECTED_DATA_SMS: The device is connected to the network for Data & SMS usage only
-
-        CONNECTED_SMS: The device is connected to the network for SMS usage only
+        CONNECTED_SMS: The device is connected to the network for SMS usage
 
         NOT_CONNECTED: The device is not connected
       enum:
         - CONNECTED_DATA
-        - CONNECTED_DATA_SMS
         - CONNECTED_SMS
         - NOT_CONNECTED
 
