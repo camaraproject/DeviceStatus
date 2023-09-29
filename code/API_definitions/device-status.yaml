@@ -44,15 +44,15 @@ info:
     It is mandatory in the subscription to provide the event `type` subscribed are several are managed in this API.
 
     Following event ``type`` are managed for this API: 
-      - roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
+      - ``org.camaraproject.device-status.v0.roaming-status`` - Event triggered when the device switch from roaming ON to roaming OFF and conversely
 
-      - roaming-on - Event triggered when the device switch from roaming OFF to roaming ON
+      - ``org.camaraproject.device-status.v0.roaming-on`` - Event triggered when the device switch from roaming OFF to roaming ON
 
-      - roaming-off: Event triggered when the device switch from roaming ON to roaming OFF
+      - ``org.camaraproject.device-status.v0.roaming-off``: Event triggered when the device switch from roaming ON to roaming OFF
 
-      - roaming-change-country: Event triggered when the device in roaming change country code
+      - ``org.camaraproject.device-status.v0.roaming-change-country``: Event triggered when the device in roaming change country code
 
-    Note: Additionnally to these `type`, notification are send also when the subscription ends. 
+    Note: Additionnally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
     This notification did not requires dedicated subscription. 
     It is used when the subscription expire time (required by the requester) has been reached or if the API server has to stop sending notification prematurely. 
 
@@ -683,11 +683,11 @@ components:
       discriminator:
         propertyName: 'type'
         mapping:
-            EventRoamingStatus: '#/components/schemas/EventRoamingStatus'
-            EventRoamingChangeCountry : '#/components/schemas/EventRoamingChangeCountry'
-            EventRoamingOff: '#/components/schemas/EventRoamingOff'
-            EventRoamingOn: '#/components/schemas/EventRoamingOn'
-            EventSubscriptionEnds : '#/components/schemas/EventSubscriptionEnds'
+            org.camaraproject.device-status.v0.roaming-status: '#/components/schemas/EventRoamingStatus'
+            org.camaraproject.device-status.v0.roaming-change-country : '#/components/schemas/EventRoamingChangeCountry'
+            org.camaraproject.device-status.v0.roaming-off: '#/components/schemas/EventRoamingOff'
+            org.camaraproject.device-status.v0.roaming-on: '#/components/schemas/EventRoamingOn'
+            org.camaraproject.device-status.v0.subscription-ends: '#/components/schemas/EventSubscriptionEnds'
 
     Source:
       type: string
