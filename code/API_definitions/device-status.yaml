@@ -87,7 +87,7 @@ security:
       - device-status:roaming:read
       - device-status:roaming-event-subscriptions:create
 servers:
-  - url: '{apiRoot}/{basePath}'
+  - url: "{apiRoot}/{basePath}"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -106,17 +106,17 @@ paths:
     post:
       tags:
         - Device roaming status
-      summary: 'Get the current roaming status and the country information'
+      summary: "Get the current roaming status and the country information"
       description: Get the current roaming status and the country information
       operationId: getRoamingStatus
       security:
-        - threeLegged: 
-          - device-status:roaming:read
+        - threeLegged:
+            - device-status:roaming:read
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestRoamingStatus'
+              $ref: "#/components/schemas/RequestRoamingStatus"
         required: true
       responses:
         200:
@@ -124,7 +124,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoamingStatusResponse'
+                $ref: "#/components/schemas/RoamingStatusResponse"
               examples:
                 No-Country-Code:
                   value:
@@ -140,7 +140,7 @@ paths:
                   value:
                     roaming: true
                     countryCode: 340
-                    countryName: [ "BL","GF","GP","MF","MQ" ]
+                    countryName: ["BL", "GF", "GP", "MF", "MQ"]
         400:
           $ref: "#/components/responses/Generic400"
         401:
@@ -157,17 +157,17 @@ paths:
     post:
       tags:
         - Device status subscription
-      summary: 'Create a device status event subscription for a device'
+      summary: "Create a device status event subscription for a device"
       description: Create a device status event subscription for a device
-      operationId: createDevicStatusSubscription
+      operationId: createDeviceStatusSubscription
       security:
         - threeLegged:
-          - device-status:roaming-subscriptions:create
+            - device-status:roaming-subscriptions:create
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateSubscription'
+              $ref: "#/components/schemas/CreateSubscription"
         required: true
       callbacks:
         notifications:
@@ -188,15 +188,15 @@ paths:
                       $ref: "#/components/schemas/CloudEvent"
                     examples:
                       ROAMING_STATUS:
-                        $ref: '#/components/examples/ROAMING_STATUS'
+                        $ref: "#/components/examples/ROAMING_STATUS"
                       ROAMING_CHANGE_COUNTRY:
-                        $ref: '#/components/examples/ROAMING_CHANGE_COUNTRY'
+                        $ref: "#/components/examples/ROAMING_CHANGE_COUNTRY"
                       ROAMING_ON:
-                        $ref: '#/components/examples/ROAMING_ON'
+                        $ref: "#/components/examples/ROAMING_ON"
                       ROAMING_OFF:
-                        $ref: '#/components/examples/ROAMING_OFF'
+                        $ref: "#/components/examples/ROAMING_OFF"
                       SUBSCRIPTION_ENDS:
-                        $ref: '#/components/examples/SUBSCRIPTION_ENDS'
+                        $ref: "#/components/examples/SUBSCRIPTION_ENDS"
               responses:
                 "204":
                   description: Successful notification
@@ -211,9 +211,8 @@ paths:
                 "503":
                   $ref: "#/components/responses/Generic503"
               security:
-                - { }
-                - notificationsBearerAuth: [ ]
-
+                - {}
+                - notificationsBearerAuth: []
 
       responses:
         201:
@@ -221,29 +220,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionInfo'
-        202 :
+                $ref: "#/components/schemas/SubscriptionInfo"
+        202:
           description: Request accepted to be processed. It applies for async creation process.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionAsync'
+                $ref: "#/components/schemas/SubscriptionAsync"
         400:
-          $ref: '#/components/responses/Generic400'
+          $ref: "#/components/responses/Generic400"
         401:
-          $ref: '#/components/responses/Generic401'
+          $ref: "#/components/responses/Generic401"
         403:
-          $ref: '#/components/responses/Generic403'
+          $ref: "#/components/responses/Generic403"
         409:
-          $ref: '#/components/responses/Generic409'
+          $ref: "#/components/responses/Generic409"
         500:
-          $ref: '#/components/responses/Generic500'
+          $ref: "#/components/responses/Generic500"
         503:
-          $ref: '#/components/responses/Generic503'
+          $ref: "#/components/responses/Generic503"
     get:
       tags:
         - Device status subscription
-      summary: 'Retrieve a list of device status event subscription'
+      summary: "Retrieve a list of device status event subscription"
       description: Retrieve a list of device status event subscription(s)
       operationId: retrieveSubscriptionList
       responses:
@@ -254,22 +253,22 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SubscriptionInfo'
+                  $ref: "#/components/schemas/SubscriptionInfo"
         400:
-          $ref: '#/components/responses/Generic400'
+          $ref: "#/components/responses/Generic400"
         401:
-          $ref: '#/components/responses/Generic401'
+          $ref: "#/components/responses/Generic401"
         403:
-          $ref: '#/components/responses/Generic403'
+          $ref: "#/components/responses/Generic403"
         500:
-          $ref: '#/components/responses/Generic500'
+          $ref: "#/components/responses/Generic500"
         503:
-          $ref: '#/components/responses/Generic503'
+          $ref: "#/components/responses/Generic503"
   /subscriptions/{subscriptionId}:
     get:
       tags:
         - Device status subscription
-      summary: 'Retrieve a device status event subscription for a device'
+      summary: "Retrieve a device status event subscription for a device"
       operationId: retrieveSubscription
       description: retrieve event subscription information for a given subscription.
       parameters:
@@ -285,7 +284,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionInfo'
+                $ref: "#/components/schemas/SubscriptionInfo"
         400:
           description: Invalid input
           content:
@@ -304,7 +303,7 @@ paths:
                   value:
                     code: INVALID_INPUT
                     status: 400
-                    message: "Expected property is missing: eventSubscriptionId"
+                    message: "Expected property is missing: subscriptionId"
         401:
           $ref: "#/components/responses/Generic401"
         403:
@@ -322,7 +321,7 @@ paths:
     delete:
       tags:
         - Device status subscription
-      summary: 'Delete a device status event subscription for a device'
+      summary: "Delete a device status event subscription for a device"
       operationId: deleteSubscription
       description: delete a  given event subscription.
       parameters:
@@ -335,12 +334,12 @@ paths:
       responses:
         204:
           description: event subscription deleted
-        202 :
+        202:
           description: Request accepted to be processed. It applies for async deletion process.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionAsync'
+                $ref: "#/components/schemas/SubscriptionAsync"
         400:
           description: Invalid input
           content:
@@ -359,7 +358,7 @@ paths:
                   value:
                     code: INVALID_INPUT
                     status: 400
-                    message: "Expected property is missing: eventSubscriptionId"
+                    message: "Expected property is missing: subscriptionId"
         401:
           $ref: "#/components/responses/Generic401"
         403:
@@ -380,7 +379,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: '{tokenUrl}'
+          tokenUrl: "{tokenUrl}"
           scopes: {}
     #    BasicAuth:
     #      type: http
@@ -406,11 +405,11 @@ components:
         - roaming
       properties:
         roaming:
-          $ref: '#/components/schemas/ActiveRoaming'
+          $ref: "#/components/schemas/ActiveRoaming"
         countryCode:
-          $ref: '#/components/schemas/CountryCode'
+          $ref: "#/components/schemas/CountryCode"
         countryName:
-          $ref: '#/components/schemas/CountryName'
+          $ref: "#/components/schemas/CountryName"
 
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
@@ -441,24 +440,24 @@ components:
       minProperties: 1
     NetworkAccessIdentifier:
       type: string
-      example: '123456789@domain.com'
+      example: "123456789@domain.com"
       description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
 
     PhoneNumber:
       type: string
       pattern: '^\+?[0-9]{5,15}$'
-      example: '123456789'
+      example: "123456789"
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, optionally prefixed with '+'.
 
     DeviceIpv4Addr:
       type: object
       description: |
         The device should be identified by either the public (observed) IP address and port as seen by the application server, or the private (local) and any public (observed) IP addresses in use by the device (this information can be obtained by various means, for example from some DNS servers).
-        
+
         If the allocated and observed IP addresses are the same (i.e. NAT is not in use) then  the same address should be specified for both publicAddress and privateAddress.
-        
+
         If NAT64 is in use, the device should be identified by its publicAddress and publicPort, or separately by its allocated IPv6 address (field ipv6Address of the Device object)
-        
+
         In all cases, publicAddress must be specified, along with at least one of either privateAddress or publicPort, dependent upon which is known. In general, mobile devices cannot be identified by their public IPv4 address alone.
       properties:
         publicAddress:
@@ -470,11 +469,7 @@ components:
       anyOf:
         - required: [publicAddress, privateAddress]
         - required: [publicAddress, publicPort]
-      example:
-        {
-          "publicAddress": "84.125.93.10",
-          "publicPort" : 59765
-        }
+      example: { "publicAddress": "84.125.93.10", "publicPort": 59765 }
 
     SingleIpv4Addr:
       description: A single IPv4 address with no subnet mask
@@ -496,7 +491,7 @@ components:
       allOf:
         - pattern: '^((:|(0?|([1-9a-f][0-9a-f]{0,3}))):)((0?|([1-9a-f][0-9a-f]{0,3})):){0,6}(:|(0?|([1-9a-f][0-9a-f]{0,3})))(\/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))?$'
         - pattern: '^((([^:]+:){7}([^:]+))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?))(\/.+)?$'
-      example: '2001:db8:85a3:8d3:1319:8a2e:370:7344'
+      example: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
 
     CountryCode:
       description: The Mobile country code (MCC) as an geographic region identifier for the country and the dependent areas.
@@ -507,12 +502,12 @@ components:
       type: array
       items:
         type: string
-    
+
     RequestRoamingStatus:
       type: object
       properties:
         device:
-          $ref: '#/components/schemas/Device'
+          $ref: "#/components/schemas/Device"
       required:
         - device
 
@@ -539,7 +534,7 @@ components:
         message:
           type: string
           description: Detailed error description
-        
+
     CreateSubscription:
       description: The request for creating a Device Status event subscription
       type: object
@@ -547,14 +542,14 @@ components:
         - webhook
       properties:
         subscriptionDetail:
-          $ref: '#/components/schemas/SubscriptionDetail'
+          $ref: "#/components/schemas/SubscriptionDetail"
         subscriptionExpireTime:
           type: string
           format: date-time
           example: 2023-01-17T13:18:23.682Z
           description: The subscription expiration time in date-time format.
         webhook:
-          $ref: '#/components/schemas/Webhook'
+          $ref: "#/components/schemas/Webhook"
 
     Webhook:
       description: Webhook information for event channel
@@ -569,7 +564,7 @@ components:
         notificationAuthToken:
           type: string
           example: "c8974e592c2fa383d4a3960714"
-          description: | 
+          description: |
             OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken
 
     SubscriptionDetail:
@@ -579,9 +574,9 @@ components:
         - type
       properties:
         device:
-          $ref: '#/components/schemas/Device'
+          $ref: "#/components/schemas/Device"
         type:
-          $ref: '#/components/schemas/RoamingEventType'
+          $ref: "#/components/schemas/RoamingEventType"
 
     RoamingEventType:
       type: string
@@ -621,11 +616,11 @@ components:
     SubscriptionInfo:
       description: Represents a device status subscription.
       allOf:
-        - $ref: '#/components/schemas/CreateSubscription'
+        - $ref: "#/components/schemas/CreateSubscription"
         - type: object
           properties:
             subscriptionId:
-              $ref: '#/components/schemas/SubscriptionId'
+              $ref: "#/components/schemas/SubscriptionId"
             startsAt:
               type: string
               format: date-time
@@ -635,15 +630,15 @@ components:
               format: date-time
               description: date time when subscription will expire or expired
           required:
-            - eventSubscriptionId
+            - subscriptionId
             - type
 
     SubscriptionAsync:
       description: Response for a device status operation managed asynchronously (Creation or Deletion)
       type: object
       properties:
-          subscriptionId:
-              $ref: '#/components/schemas/SubscriptionId'
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
 
     SubscriptionId:
       type: string
@@ -657,15 +652,16 @@ components:
         - source
         - specversion
         - type
+        - time
       properties:
         id:
           type: string
           description: identifier of this event, that must be unique in the source context.
         source:
-          $ref: '#/components/schemas/Source'
+          $ref: "#/components/schemas/Source"
         type:
           type: string
-          description: 'type of event as defined in each CAMARA API'
+          description: "type of event as defined in each CAMARA API"
           example: org.camaraproject.device-status.v0.roaming-status
         specversion:
           type: string
@@ -681,13 +677,13 @@ components:
         time:
           $ref: "#/components/schemas/DateTime"
       discriminator:
-        propertyName: 'type'
+        propertyName: "type"
         mapping:
-            org.camaraproject.device-status.v0.roaming-status: '#/components/schemas/EventRoamingStatus'
-            org.camaraproject.device-status.v0.roaming-change-country : '#/components/schemas/EventRoamingChangeCountry'
-            org.camaraproject.device-status.v0.roaming-off: '#/components/schemas/EventRoamingOff'
-            org.camaraproject.device-status.v0.roaming-on: '#/components/schemas/EventRoamingOn'
-            org.camaraproject.device-status.v0.subscription-ends: '#/components/schemas/EventSubscriptionEnds'
+          org.camaraproject.device-status.v0.roaming-status: "#/components/schemas/EventRoamingStatus"
+          org.camaraproject.device-status.v0.roaming-change-country: "#/components/schemas/EventRoamingChangeCountry"
+          org.camaraproject.device-status.v0.roaming-off: "#/components/schemas/EventRoamingOff"
+          org.camaraproject.device-status.v0.roaming-on: "#/components/schemas/EventRoamingOn"
+          org.camaraproject.device-status.v0.subscription-ends: "#/components/schemas/EventSubscriptionEnds"
 
     Source:
       type: string
@@ -706,104 +702,110 @@ components:
       type: string
       format: date-time
       description: Timestamp of when the occurrence happened. Must adhere to RFC 3339.
-      example: '2018-04-05T17:31:00Z'
+      example: "2018-04-05T17:31:00Z"
 
     EventRoamingStatus:
-      description:  event structure for roaming status change
+      description: event structure for roaming status change
       allOf:
-        - $ref: '#/components/schemas/CloudEvent'
+        - $ref: "#/components/schemas/CloudEvent"
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/RoamingStatus'
+              $ref: "#/components/schemas/RoamingStatus"
 
     EventRoamingOn:
-      description:  event structure for roaming on and roaming off change
+      description: event structure for roaming on and roaming off change
       allOf:
-        - $ref: '#/components/schemas/CloudEvent'
+        - $ref: "#/components/schemas/CloudEvent"
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/RoamingChange'
+              $ref: "#/components/schemas/RoamingChange"
 
     EventRoamingOff:
-      description:  event structure for roaming on and roaming off change
+      description: event structure for roaming on and roaming off change
       allOf:
-        - $ref: '#/components/schemas/CloudEvent'
+        - $ref: "#/components/schemas/CloudEvent"
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/RoamingChange'
+              $ref: "#/components/schemas/RoamingChange"
 
     EventRoamingChangeCountry:
-      description:  event structure for roaming change country
+      description: event structure for roaming change country
       allOf:
-        - $ref: '#/components/schemas/CloudEvent'
+        - $ref: "#/components/schemas/CloudEvent"
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/RoamingChangeCountry'
+              $ref: "#/components/schemas/RoamingChangeCountry"
 
     EventSubscriptionEnds:
-      description:  event structure for event subscription ends
+      description: event structure for event subscription ends
       allOf:
-        - $ref: '#/components/schemas/CloudEvent'
+        - $ref: "#/components/schemas/CloudEvent"
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/SubscriptionEnds'
+              $ref: "#/components/schemas/SubscriptionEnds"
 
     RoamingStatus:
       description: Event detail structure for ROAMING_STATUS event
-      type : object
+      type: object
       required:
         - device
         - roaming
       properties:
         device:
-          $ref: '#/components/schemas/Device'
+          $ref: "#/components/schemas/Device"
         roaming:
           type: boolean
-          description:  Roaming status. True, if it is roaming.
+          description: Roaming status. True, if it is roaming.
         countryCode:
-          $ref: '#/components/schemas/CountryCode'
+          $ref: "#/components/schemas/CountryCode"
         countryName:
-          $ref: '#/components/schemas/CountryName'
+          $ref: "#/components/schemas/CountryName"
 
     RoamingChange:
       description: Event detail structure for ROAMING_ON & ROAMING_OFF event
-      type : object
+      type: object
       required:
         - device
       properties:
         device:
-          $ref: '#/components/schemas/Device'
+          $ref: "#/components/schemas/Device"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
 
     RoamingChangeCountry:
       description: Event detail structure for ROAMING_CHANGE_COUNTRY event
-      type : object
+      type: object
       required:
         - device
       properties:
         device:
-          $ref: '#/components/schemas/Device'
+          $ref: "#/components/schemas/Device"
         countryCode:
-          $ref: '#/components/schemas/CountryCode'
+          $ref: "#/components/schemas/CountryCode"
         countryName:
-          $ref: '#/components/schemas/CountryName'
+          $ref: "#/components/schemas/CountryName"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
 
     SubscriptionEnds:
       description: Event detail structure for SUBSCRIPTION_ENDS event
-      type : object
+      type: object
       required:
         - device
         - terminationReason
       properties:
         device:
-          $ref: '#/components/schemas/Device'
+          $ref: "#/components/schemas/Device"
         terminationReason:
           type: string
           enum: ["SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED"]
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
 
   responses:
     Generic400:
@@ -876,18 +878,19 @@ components:
             message: "Service unavailable"
   examples:
     ROAMING_STATUS:
-      value: 
+      value:
         id: 123654
         source: supertelco.notificationSendServer12
         type: org.camaraproject.device-status.v0.roaming-status
         specversion: "1.0"
         datacontenttype: application/json
-        data: 
+        data:
           device:
-              phoneNumber: 123456789
+            phoneNumber: 123456789
           roaming: true
           countryCode: 208
           countryName: FR
+          subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-17T13:18:23.682Z
 
     ROAMING_OFF:
@@ -897,9 +900,10 @@ components:
         type: org.camaraproject.device-status.v0.roaming-off
         specversion: "1.0"
         datacontenttype: application/json
-        data: 
+        data:
           device:
-              phoneNumber: 123456788
+            phoneNumber: 123456788
+          subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-18T13:18:23.682Z
 
     ROAMING_ON:
@@ -909,9 +913,10 @@ components:
         type: org.camaraproject.device-status.v0.roaming-on
         specversion: "1.0"
         datacontenttype: application/json
-        data: 
+        data:
           device:
-              phoneNumber: 123456787
+            phoneNumber: 123456787
+          subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
     ROAMING_CHANGE_COUNTRY:
@@ -921,10 +926,11 @@ components:
         type: org.camaraproject.device-status.v0.roaming-change-country
         specversion: "1.0"
         datacontenttype: application/json
-        data: 
+        data:
           device:
-              phoneNumber: 123456789
-              countryCode: 214
+            phoneNumber: 123456789
+            countryCode: 214
+          subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
     SUBSCRIPTION_ENDS:
@@ -934,8 +940,9 @@ components:
         type: org.camaraproject.device-status.v0.subscription-ends
         specversion: "1.0"
         datacontenttype: application/json
-        data: 
+        data:
           device:
-              phoneNumber: 123456789
-              terminationReason: SUBSCRIPTION_EXPIRED
+            phoneNumber: 123456789
+            terminationReason: SUBSCRIPTION_EXPIRED
+          subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
