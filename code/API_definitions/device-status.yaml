@@ -8,7 +8,7 @@ info:
 
     API consumer is able to verify whether a certain user device is in roaming situation (or not). This capability is provided in 2 ways:
       - via direct request with the roaming situation in the response.
-      - via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation change.
+      - via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
     The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information is send back in the response.
 
@@ -38,7 +38,7 @@ info:
 
     ## Device status subscription
 
-    Theses endpoints allow to manage event subscription on roaming device status event. 
+    These endpoints allow to manage event subscription on roaming device status event. 
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification.
 
     It is mandatory in the subscription to provide the event `type` subscribed are several are managed in this API.
@@ -53,7 +53,7 @@ info:
       - ``org.camaraproject.device-status.v0.roaming-change-country``: Event triggered when the device in roaming change country code
 
     Note: Additionnally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
-    This notification did not requires dedicated subscription. 
+    This notification does not require dedicated subscription. 
     It is used when the subscription expire time (required by the requester) has been reached or if the API server has to stop sending notification prematurely. 
 
     ### Notification callback
@@ -187,15 +187,15 @@ paths:
                     schema:
                       $ref: "#/components/schemas/CloudEvent"
                     examples:
-                      ROAMING_STATUS:
+                      roaming-status:
                         $ref: "#/components/examples/ROAMING_STATUS"
-                      ROAMING_CHANGE_COUNTRY:
+                      roaming-change-country:
                         $ref: "#/components/examples/ROAMING_CHANGE_COUNTRY"
-                      ROAMING_ON:
+                      roaming-on:
                         $ref: "#/components/examples/ROAMING_ON"
-                      ROAMING_OFF:
+                      roaming-off:
                         $ref: "#/components/examples/ROAMING_OFF"
-                      SUBSCRIPTION_ENDS:
+                      subscription-ends:
                         $ref: "#/components/examples/SUBSCRIPTION_ENDS"
               responses:
                 "204":
@@ -440,13 +440,13 @@ components:
       minProperties: 1
     NetworkAccessIdentifier:
       type: string
-      example: "123456789@domain.com"
+      example: 123456789@domain.com
       description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
 
     PhoneNumber:
       type: string
       pattern: '^\+?[0-9]{5,15}$'
-      example: "123456789"
+      example: 123456789
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, optionally prefixed with '+'.
 
     DeviceIpv4Addr:
@@ -475,7 +475,7 @@ components:
       description: A single IPv4 address with no subnet mask
       type: string
       pattern: '^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$'
-      example: "84.125.93.10"
+      example: 84.125.93.10
 
     Ipv6Address:
       description: |
@@ -491,7 +491,7 @@ components:
       allOf:
         - pattern: '^((:|(0?|([1-9a-f][0-9a-f]{0,3}))):)((0?|([1-9a-f][0-9a-f]{0,3})):){0,6}(:|(0?|([1-9a-f][0-9a-f]{0,3})))(\/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))?$'
         - pattern: '^((([^:]+:){7}([^:]+))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?))(\/.+)?$'
-      example: "2001:db8:85a3:8d3:1319:8a2e:370:7344"
+      example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
 
     CountryCode:
       description: The Mobile country code (MCC) as an geographic region identifier for the country and the dependent areas.
@@ -540,6 +540,7 @@ components:
       type: object
       required:
         - webhook
+        - subscriptionDetail
       properties:
         subscriptionDetail:
           $ref: "#/components/schemas/SubscriptionDetail"
@@ -559,11 +560,11 @@ components:
       properties:
         notificationUrl:
           type: string
-          example: "https://application-server.com"
+          example: https://application-server.com
           description: https callback address where the event notification must be POST-ed
         notificationAuthToken:
           type: string
-          example: "c8974e592c2fa383d4a3960714"
+          example: c8974e592c2fa383d4a3960714
           description: |
             OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken
 
@@ -576,9 +577,9 @@ components:
         device:
           $ref: "#/components/schemas/Device"
         type:
-          $ref: "#/components/schemas/RoamingEventType"
+          $ref: "#/components/schemas/SubscriptionEventType"
 
-    RoamingEventType:
+    SubscriptionEventType:
       type: string
       description: |
         roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
@@ -657,6 +658,7 @@ components:
         id:
           type: string
           description: identifier of this event, that must be unique in the source context.
+          example: sd5e-uy52-88t4-za66
         source:
           $ref: "#/components/schemas/Source"
         type:
@@ -714,7 +716,7 @@ components:
               $ref: "#/components/schemas/RoamingStatus"
 
     EventRoamingOn:
-      description: event structure for roaming on and roaming off change
+      description: event structure for roaming on change
       allOf:
         - $ref: "#/components/schemas/CloudEvent"
         - type: object
@@ -723,7 +725,7 @@ components:
               $ref: "#/components/schemas/RoamingChange"
 
     EventRoamingOff:
-      description: event structure for roaming on and roaming off change
+      description: event structure for roaming off change
       allOf:
         - $ref: "#/components/schemas/CloudEvent"
         - type: object
@@ -750,7 +752,7 @@ components:
               $ref: "#/components/schemas/SubscriptionEnds"
 
     RoamingStatus:
-      description: Event detail structure for ROAMING_STATUS event
+      description: Event detail structure for org.camaraproject.device-status.v0.roaming-status event
       type: object
       required:
         - device
@@ -767,7 +769,7 @@ components:
           $ref: "#/components/schemas/CountryName"
 
     RoamingChange:
-      description: Event detail structure for ROAMING_ON & ROAMING_OFF event
+      description: Event detail structure for org.camaraproject.device-status.v0.roaming-on & org.camaraproject.device-status.v0.roaming-off events
       type: object
       required:
         - device
@@ -778,7 +780,7 @@ components:
           $ref: "#/components/schemas/SubscriptionId"
 
     RoamingChangeCountry:
-      description: Event detail structure for ROAMING_CHANGE_COUNTRY event
+      description: Event detail structure for org.camaraproject.device-status.v0.roaming-on event
       type: object
       required:
         - device
@@ -793,7 +795,7 @@ components:
           $ref: "#/components/schemas/SubscriptionId"
 
     SubscriptionEnds:
-      description: Event detail structure for SUBSCRIPTION_ENDS event
+      description: Event detail structure for org.camaraproject.device-status.v0.subscription-ends event
       type: object
       required:
         - device
