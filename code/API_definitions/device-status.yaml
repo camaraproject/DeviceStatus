@@ -78,23 +78,14 @@ info:
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
-security:
-  #  - {}
-  - oAuth2ClientCredentials: []
-  #  - BasicAuth: []
-  #  - apiKey: []
-  - threeLegged:
-      - device-status:roaming:read
-      - device-status:roaming-event-subscriptions:create
+
 servers:
-  - url: "{apiRoot}/{basePath}"
+  - url: "{apiRoot}/device-status/v0"
     variables:
       apiRoot:
         default: http://localhost:9091
         description: API root
-      basePath:
-        default: /device-status/v0
-        description: Base path for the device status API
+
 tags:
   - name: Device roaming status
     description: Operation to get device roaming status and country information (if roaming) synchronously
@@ -110,7 +101,7 @@ paths:
       description: Get the current roaming status and the country information
       operationId: getRoamingStatus
       security:
-        - threeLegged:
+        - openId:
             - device-status:roaming:read
       requestBody:
         content:
@@ -126,7 +117,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/RoamingStatusResponse"
               examples:
-                No-Country-Code:
+                No-Country-Name:
                   value:
                     roaming: true
                     countryCode: 901
@@ -161,7 +152,7 @@ paths:
       description: Create a device status event subscription for a device
       operationId: createDeviceStatusSubscription
       security:
-        - threeLegged:
+        - openId:
             - device-status:roaming-subscriptions:create
       requestBody:
         content:
@@ -245,6 +236,9 @@ paths:
       summary: "Retrieve a list of device status event subscription"
       description: Retrieve a list of device status event subscription(s)
       operationId: retrieveSubscriptionList
+      security:
+        - openId:
+            - device-status:roaming-subscriptions:read
       responses:
         200:
           description: List of event subscription details
@@ -271,6 +265,9 @@ paths:
       summary: "Retrieve a device status event subscription for a device"
       operationId: retrieveSubscription
       description: retrieve event subscription information for a given subscription.
+      security:
+        - openId:
+            - device-status:roaming-subscriptions:read
       parameters:
         - name: subscriptionId
           in: path
@@ -324,6 +321,9 @@ paths:
       summary: "Delete a device status event subscription for a device"
       operationId: deleteSubscription
       description: delete a  given event subscription.
+      security:
+        - openId:
+            - device-status:roaming-subscriptions:delete
       parameters:
         - name: subscriptionId
           in: path
@@ -375,29 +375,9 @@ paths:
           $ref: "#/components/responses/Generic503"
 components:
   securitySchemes:
-    oAuth2ClientCredentials:
-      type: oauth2
-      flows:
-        clientCredentials:
-          tokenUrl: "{tokenUrl}"
-          scopes: {}
-    #    BasicAuth:
-    #      type: http
-    #      scheme: basic
-    #    apiKey:
-    #      type: apiKey
-    #      description: API key to authorize requests
-    #      name: apikey
-    #      in: query
-    threeLegged:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: "{authorizationUrl}"
-          tokenUrl: "{tokenUrl}"
-          scopes:
-            device-status:roaming:read: Read device roaming status
-            device-status:roaming-subscriptions:create: create device status subscription for roaming information
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
   schemas:
     RoamingStatusResponse:
       type: object
@@ -847,6 +827,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
+            status: 404
             code: NOT_FOUND
             message: "The specified resource is not found"
     Generic409:
@@ -856,6 +837,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
+            status: 409
             code: CONFLICT
             message: "The specified resource is in a conflict"
     Generic500:
