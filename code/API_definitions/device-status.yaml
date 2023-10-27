@@ -282,6 +282,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
+        202:
+          description: Subscription not yet available. It applies for subscription async creation process.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionAsync"
         400:
           description: Invalid input
           content:
