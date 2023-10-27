@@ -308,11 +308,7 @@ paths:
         404:
           $ref: "#/components/responses/Generic404"
         500:
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
+          $ref: "#/components/responses/Generic500"
         503:
           $ref: "#/components/responses/Generic503"
     delete:
@@ -366,11 +362,7 @@ paths:
         404:
           $ref: "#/components/responses/Generic404"
         500:
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
+          $ref: "#/components/responses/Generic500"
         503:
           $ref: "#/components/responses/Generic503"
 components:
