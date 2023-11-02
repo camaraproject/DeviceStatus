@@ -153,7 +153,7 @@ paths:
       operationId: createDeviceStatusSubscription
       security:
         - openId:
-            - device-status:roaming-subscriptions:create
+            - device-status:subscriptions:create
       requestBody:
         content:
           application/json:
@@ -238,7 +238,7 @@ paths:
       operationId: retrieveSubscriptionList
       security:
         - openId:
-            - device-status:roaming-subscriptions:read
+            - device-status:subscriptions:read
       responses:
         200:
           description: List of event subscription details
@@ -267,7 +267,7 @@ paths:
       description: retrieve event subscription information for a given subscription.
       security:
         - openId:
-            - device-status:roaming-subscriptions:read
+            - device-status:subscriptions:read
       parameters:
         - name: subscriptionId
           in: path
@@ -282,12 +282,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
-        202:
-          description: Subscription not yet available. It applies for subscription async creation process.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SubscriptionAsync"
         400:
           description: Invalid input
           content:
@@ -325,7 +319,7 @@ paths:
       description: delete a  given event subscription.
       security:
         - openId:
-            - device-status:roaming-subscriptions:delete
+            - device-status:subscriptions:delete
       parameters:
         - name: subscriptionId
           in: path
