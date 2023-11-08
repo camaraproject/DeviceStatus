@@ -662,13 +662,7 @@ components:
       format: uri-reference
       minLength: 1
       description: "Identifies the context in which an event happened in the specific Provider Implementation."
-      example:
-        - https://github.com/cloudevents
-        - mailto:cncf-wg-serverless@lists.cncf.io
-        - urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
-        - cloudevents/spec/pull/123
-        - /sensors/tn-1234567/alerts
-        - 1-555-123-4567
+      example: https://notificationSendServer12.supertelco.com
 
     DateTime:
       type: string
