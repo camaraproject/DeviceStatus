@@ -898,7 +898,7 @@ components:
     ROAMING_CHANGE_COUNTRY:
       value:
         id: 123657
-        source: supertelco.notificationSendServer12
+        source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.roaming-change-country
         specversion: "1.0"
         datacontenttype: application/json
