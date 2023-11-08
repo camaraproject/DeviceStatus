@@ -885,7 +885,7 @@ components:
     ROAMING_ON:
       value:
         id: 123656
-        source: supertelco.notificationSendServer12
+        source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.roaming-on
         specversion: "1.0"
         datacontenttype: application/json
