@@ -9,14 +9,14 @@ info:
 
     # Introduction
     
-    ## Roaming verification
+    ## Roaming Status
     API consumer is able to verify whether a certain user device is in roaming situation (or not). This capability is provided in 2 ways:
       - via direct request with the roaming situation in the response.
       - via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
     The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information is send back in the response.
 
-    ## Connectivity verification
+    ## Connectivity Status
     
     API consumer is able to verify whether a certain user device is connected to the network via data- or sms-usage. This capability is provided in 2 ways:
       - via direct request with the connectivity situation in the response.
