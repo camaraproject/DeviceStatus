@@ -58,7 +58,7 @@ info:
     ## Device status subscription
 
     These endpoints allow to manage event subscription on roaming device status event. 
-    The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows Cloudevents specification.
+    The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows CloudEvents specification.
 
     It is mandatory in the subscription to provide the event `type` subscribed are several are managed in this API.
 
@@ -77,7 +77,7 @@ info:
     
       - ``org.camaraproject.device-status.v0.connectivity-disconnected``: Event triggered when the device is not connected.
 
-    Note: Additionnally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
+    Note: Additionally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
     This notification does not require dedicated subscription. 
     It is used when the subscription expire time (required by the requester) has been reached or if the API server has to stop sending notification prematurely. 
 
