@@ -2,16 +2,27 @@ openapi: 3.0.3
 info:
   title: Device Status
   description: |
-    This API provides the customer with the ability to query device roaming status and subscribe to event related to device roaming status.
+    This API provides the customer with the ability to query device: 
+      - Roaming Status
+      - Connectivity Status
+    Moreover, this API extends the functionality by allowing users customers to subscribe to events associated with these status queries.
 
     # Introduction
-
+    
+    ## Roaming verification
     API consumer is able to verify whether a certain user device is in roaming situation (or not). This capability is provided in 2 ways:
       - via direct request with the roaming situation in the response.
       - via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
     The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information is send back in the response.
 
+    ## Connectivity verification
+    
+    API consumer is able to verify whether a certain user device is connected to the network via data- or sms-usage. This capability is provided in 2 ways:
+      - via direct request with the connectivity situation in the response.
+      - via a subscription  request - in this case the connectivity situation is not in the response but event notification is sent back to the event subscriber when connectivity situation has changed.
+
+    ## Possible Use-Cases
     Device status verification could be useful in scenario such as (not exhaustive):
       - For regulatory reasons, where a customer may need to be within a certain jurisdiction, or out with others, in order for transactions to be authorized
       - For security / fraud reasons, to establish that a customer is located where they claim to be
@@ -23,10 +34,14 @@ info:
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
 
-    * **Roaming** : Roaming status. `true`, if device is in roaming situation - `false` else.
+    * **Roaming** : Roaming status - `true`, if device is in roaming situation - `false` else.
 
     * **Country** : Country code and name - visited country information, provided if the device is in roaming situation.
-
+    
+    * **Connectivity** : Connectivity status.
+      - 'CONNECTED_SMS', if device is connected to the network via SMS usage 
+      - 'CONNECTED_DATA', if device is connected to the network via data usage' 
+      - 'NOT_CONNECTED', if device is not connected to the network'
 
     # API Functionality    
 
@@ -35,6 +50,10 @@ info:
     ## Device roaming situation
 
     The endpoint `POST /roaming` allows to get roaming status and country information (if device in roaming situation) synchronously.
+    
+    ## Device connectivity situation
+
+    The endpoint `POST /connectivity` allows to get current connectivity status information synchronously.
 
     ## Device status subscription
 
@@ -51,6 +70,12 @@ info:
       - ``org.camaraproject.device-status.v0.roaming-off``: Event triggered when the device switch from roaming ON to roaming OFF
 
       - ``org.camaraproject.device-status.v0.roaming-change-country``: Event triggered when the device in roaming change country code
+    
+      - ``org.camaraproject.device-status.v0.connectivity-data``: Event triggered when the device is connected to the network for Data usage.
+    
+      - ``org.camaraproject.device-status.v0.connectivity-sms``: Event triggered when the device is connected to the network for SMS usage
+    
+      - ``org.camaraproject.device-status.v0.connectivity-disconnected``: Event triggered when the device is not connected.
 
     Note: Additionnally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
     This notification does not require dedicated subscription. 
@@ -97,14 +122,17 @@ paths:
     post:
       tags:
         - Device connectivity status
-      summary: 'Get the current connectivity status information'
+      summary: "Get the current connectivity status information"
       description: Get the current connectivity status information
       operationId: getConnectivityStatus
+      security:
+        - openId:
+            - device-status:connectivity:read
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestConnectivityStatus'
+              $ref: "#/components/schemas/RequestConnectivityStatus"
         required: true
       responses:
         200:
@@ -112,7 +140,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConnectivityStatusResponse'
+                $ref: "#/components/schemas/ConnectivityStatusResponse"
               examples:
                 Connected-With-SMS:
                   value:
@@ -133,47 +161,6 @@ paths:
           $ref: "#/components/responses/Generic404"
         500:
           $ref: "#/components/responses/Generic500"
-        503:
-          $ref: "#/components/responses/Generic503"
-  /notifications:
-    post:
-      tags:
-        - Notification Callback
-      summary: "Notification endpoint to notify listener that a subscribed event occurred"
-      description: Notification endpoint to notify listener that a subscribed event occurred. This endpoint must be exposed on the listener side.
-      operationId: postNotification
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Notification"
-            examples:
-              ROAMING_STATUS:
-                $ref: '#/components/examples/ROAMING_STATUS'
-              ROAMING_CHANGE_COUNTRY:
-                $ref: '#/components/examples/ROAMING_CHANGE_COUNTRY'
-              ROAMING_ON:
-                $ref: '#/components/examples/ROAMING_ON'
-              ROAMING_OFF:
-                $ref: '#/components/examples/ROAMING_OFF'
-              SUBSCRIPTION_ENDS:
-                $ref: '#/components/examples/SUBSCRIPTION_ENDS'
-      responses:
-        204:
-          description: No Content
-        400:
-          $ref: "#/components/responses/Generic400"
-        401:
-          $ref: "#/components/responses/Generic401"
-        403:
-          $ref: "#/components/responses/Generic403"
-        500:
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
         503:
           $ref: "#/components/responses/Generic503"
   /roaming:
@@ -204,17 +191,17 @@ paths:
                   value:
                     roaming: true
                     countryCode: 901
-                    countryName: []
+                    countryName: [ ]
                 Single-Country-Code:
                   value:
                     roaming: true
                     countryCode: 262
-                    countryName: ["DE"]
+                    countryName: [ "DE" ]
                 Multiple-Country-Codes:
                   value:
                     roaming: true
                     countryCode: 340
-                    countryName: ["BL", "GF", "GP", "MF", "MQ"]
+                    countryName: [ "BL", "GF", "GP", "MF", "MQ" ]
         400:
           $ref: "#/components/responses/Generic400"
         401:
@@ -269,6 +256,12 @@ paths:
                         $ref: "#/components/examples/ROAMING_ON"
                       roaming-off:
                         $ref: "#/components/examples/ROAMING_OFF"
+                      connectivity-data:
+                        $ref: "#/components/examples/CONNECTIVITY_DATA"
+                      connectivity-sms:
+                        $ref: "#/components/examples/CONNECTIVITY_SMS"
+                      connectivity-disconnected:
+                        $ref: "#/components/examples/CONNECTIVITY_DISCONNECTED"
                       subscription-ends:
                         $ref: "#/components/examples/SUBSCRIPTION_ENDS"
               responses:
@@ -285,8 +278,8 @@ paths:
                 "503":
                   $ref: "#/components/responses/Generic503"
               security:
-                - {}
-                - notificationsBearerAuth: []
+                - { }
+                - notificationsBearerAuth: [ ]
 
       responses:
         201:
@@ -476,7 +469,7 @@ components:
         - connectivityStatus
       properties:
         connectivityStatus:
-          $ref: '#/components/schemas/ConnectivityStatus'
+          $ref: "#/components/schemas/ConnectivityStatus"
 
     ConnectivityStatus:
       description: |
@@ -542,8 +535,8 @@ components:
         publicPort:
           $ref: "#/components/schemas/Port"
       anyOf:
-        - required: [publicAddress, privateAddress]
-        - required: [publicAddress, publicPort]
+        - required: [ publicAddress, privateAddress ]
+        - required: [ publicAddress, publicPort ]
       example: { "publicAddress": "84.125.93.10", "publicPort": 59765 }
 
     SingleIpv4Addr:
@@ -590,7 +583,7 @@ components:
       type: object
       properties:
         device:
-          $ref: '#/components/schemas/Device'
+          $ref: "#/components/schemas/Device"
       required:
         - device
 
@@ -669,33 +662,23 @@ components:
 
         roaming-on - Event triggered when the device switch from roaming OFF to roaming ON
 
-        roaming-off: Event triggered when the device switch from roaming ON to roaming OFF
+        roaming-off - Event triggered when the device switch from roaming ON to roaming OFF
 
-        roaming-change-country: Event triggered when the device in roaming change country code
+        roaming-change-country - Event triggered when the device in roaming change country code
+        
+        connectivity-data - Event triggered when the device is connected to the network for Data usage.
+        
+        connectivity-sms - Event triggered when the device is connected to the network for SMS usage
+        
+        connectivity-disconnected - Event triggered when the device is not connected.
       enum:
         - org.camaraproject.device-status.v0.roaming-status
         - org.camaraproject.device-status.v0.roaming-on
         - org.camaraproject.device-status.v0.roaming-off
         - org.camaraproject.device-status.v0.roaming-change-country
-
-    RoamingNotificationEventType:
-      type: string
-      description: |
-        roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
-
-        roaming-on - Event triggered when the device switch from roaming OFF to roaming ON
-
-        roaming-off: Event triggered when the device switch from roaming ON to roaming OFF
-
-        roaming-change-country: Event triggered when the device in roaming change country code
-
-        subscription-ends: Event triggered when the subscription ends
-      enum:
-        - org.camaraproject.device-status.v0.roaming-status
-        - org.camaraproject.device-status.v0.roaming-on
-        - org.camaraproject.device-status.v0.roaming-off
-        - org.camaraproject.device-status.v0.roaming-change-country
-        - org.camaraproject.device-status.v0.subscription-ends
+        - org.camaraproject.device-status.v0.connectivity-data
+        - org.camaraproject.device-status.v0.connectivity-sms
+        - org.camaraproject.device-status.v0.connectivity-disconnected
 
     SubscriptionInfo:
       description: Represents a device status subscription.
@@ -745,9 +728,7 @@ components:
         source:
           $ref: "#/components/schemas/Source"
         type:
-          type: string
-          description: "type of event as defined in each CAMARA API"
-          example: org.camaraproject.device-status.v0.roaming-status
+          $ref: "#/components/schemas/SubscriptionEventType"
         specversion:
           type: string
           description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
@@ -768,6 +749,9 @@ components:
           org.camaraproject.device-status.v0.roaming-change-country: "#/components/schemas/EventRoamingChangeCountry"
           org.camaraproject.device-status.v0.roaming-off: "#/components/schemas/EventRoamingOff"
           org.camaraproject.device-status.v0.roaming-on: "#/components/schemas/EventRoamingOn"
+          org.camaraproject.device-status.v0.connectivity-data: "#/components/schemas/EventConnectivityData"
+          org.camaraproject.device-status.v0.connectivity-sms: "#/components/schemas/EventConnectivitySms"
+          org.camaraproject.device-status.v0.connectivity-disconnected: "#/components/schemas/EventConnectivityDisconnected"
           org.camaraproject.device-status.v0.subscription-ends: "#/components/schemas/EventSubscriptionEnds"
 
     Source:
@@ -799,7 +783,7 @@ components:
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/RoamingChange"
+              $ref: "#/components/schemas/BasicDeviceEventData"
 
     EventRoamingOff:
       description: event structure for roaming off change
@@ -808,7 +792,7 @@ components:
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/RoamingChange"
+              $ref: "#/components/schemas/BasicDeviceEventData"
 
     EventRoamingChangeCountry:
       description: event structure for roaming change country
@@ -819,6 +803,33 @@ components:
             data:
               $ref: "#/components/schemas/RoamingChangeCountry"
 
+    EventConnectivityData:
+      description: event structure for connectivity data usage
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/BasicDeviceEventData"
+
+    EventConnectivitySms:
+      description: event structure for connectivity SMS usage
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/BasicDeviceEventData"
+
+    EventConnectivityDisconnected:
+      description: event structure for disconnection
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/BasicDeviceEventData"
+
     EventSubscriptionEnds:
       description: event structure for event subscription ends
       allOf:
@@ -827,6 +838,17 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/SubscriptionEnds"
+
+    BasicDeviceEventData:
+      description: Event detail structure for basic device events
+      type: object
+      required:
+        - device
+      properties:
+        device:
+          $ref: "#/components/schemas/Device"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
 
     RoamingStatus:
       description: Event detail structure for org.camaraproject.device-status.v0.roaming-status event
@@ -844,17 +866,6 @@ components:
           $ref: "#/components/schemas/CountryCode"
         countryName:
           $ref: "#/components/schemas/CountryName"
-
-    RoamingChange:
-      description: Event detail structure for org.camaraproject.device-status.v0.roaming-on & org.camaraproject.device-status.v0.roaming-off events
-      type: object
-      required:
-        - device
-      properties:
-        device:
-          $ref: "#/components/schemas/Device"
-        subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
 
     RoamingChangeCountry:
       description: Event detail structure for org.camaraproject.device-status.v0.roaming-on event
@@ -882,7 +893,7 @@ components:
           $ref: "#/components/schemas/Device"
         terminationReason:
           type: string
-          enum: ["SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED"]
+          enum: [ "SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED" ]
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
 
@@ -1014,6 +1025,45 @@ components:
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
+    CONNECTIVITY_DATA:
+      value:
+        id: 123656
+        source: https://notificationSendServer12.supertelco.com
+        type: org.camaraproject.device-status.v0.connectivity-data
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          device:
+            phoneNumber: 123456787
+          subscriptionId: qs15-h556-rt89-1298
+        time: 2023-01-19T13:18:23.682Z
+
+    CONNECTIVITY_SMS:
+      value:
+        id: 123656
+        source: https://notificationSendServer12.supertelco.com
+        type: org.camaraproject.device-status.v0.connectivity-sms
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          device:
+            phoneNumber: 123456787
+          subscriptionId: qs15-h556-rt89-1298
+        time: 2023-01-19T13:18:23.682Z
+
+    CONNECTIVITY_DISCONNECTED:
+      value:
+        id: 123656
+        source: https://notificationSendServer12.supertelco.com
+        type: org.camaraproject.device-status.v0.connectivity-disconnected
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          device:
+            phoneNumber: 123456787
+          subscriptionId: qs15-h556-rt89-1298
+        time: 2023-01-19T13:18:23.682Z
+
     SUBSCRIPTION_ENDS:
       value:
         id: 123658
@@ -1024,6 +1074,6 @@ components:
         data:
           device:
             phoneNumber: 123456789
-            terminationReason: SUBSCRIPTION_EXPIRED
+          terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
