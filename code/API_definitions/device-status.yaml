@@ -5,6 +5,8 @@ info:
     This API provides the customer with the ability to query device: 
       - Roaming Status
       - Connectivity Status
+      
+    
     Moreover, this API extends the functionality by allowing users customers to subscribe to events associated with these status queries.
 
     # Introduction
@@ -39,9 +41,9 @@ info:
     * **Country** : Country code and name - visited country information, provided if the device is in roaming situation.
     
     * **Connectivity** : Connectivity status.
-      - 'CONNECTED_SMS', if device is connected to the network via SMS usage 
-      - 'CONNECTED_DATA', if device is connected to the network via data usage' 
-      - 'NOT_CONNECTED', if device is not connected to the network'
+      - `CONNECTED_SMS`, if device is connected to the network via SMS usage 
+      - `CONNECTED_DATA`, if device is connected to the network via data usage' 
+      - `NOT_CONNECTED`, if device is not connected to the network'
 
     # API Functionality    
 
@@ -478,6 +480,7 @@ components:
         CONNECTED_SMS: The device is connected to the network for SMS usage
 
         NOT_CONNECTED: The device is not connected
+      type : string
       enum:
         - CONNECTED_DATA
         - CONNECTED_SMS
@@ -653,7 +656,7 @@ components:
         device:
           $ref: "#/components/schemas/Device"
         type:
-          $ref: "#/components/schemas/SubscriptionEventType"
+          $ref: "#/components/schemas/SubscriptionCreationEventType"
 
     SubscriptionEventType:
       type: string
@@ -671,6 +674,46 @@ components:
         connectivity-sms - Event triggered when the device is connected to the network for SMS usage
         
         connectivity-disconnected - Event triggered when the device is not connected.
+        
+        subscription-ends - Event triggered when the subscription is terminated
+      enum:
+        - org.camaraproject.device-status.v0.roaming-status
+        - org.camaraproject.device-status.v0.roaming-on
+        - org.camaraproject.device-status.v0.roaming-off
+        - org.camaraproject.device-status.v0.roaming-change-country
+        - org.camaraproject.device-status.v0.connectivity-data
+        - org.camaraproject.device-status.v0.connectivity-sms
+        - org.camaraproject.device-status.v0.connectivity-disconnected
+        - org.camaraproject.device-status.v0.subscription-ends
+
+    SubscriptionCreationDetail:
+      description: The detail of the requested event subscription
+      type: object
+      required:
+        - type
+      properties:
+        device:
+          $ref: "#/components/schemas/Device"
+        type:
+          $ref: "#/components/schemas/SubscriptionCreationEventType"
+
+    SubscriptionCreationEventType:
+      type: string
+      description: |
+        roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
+
+        roaming-on - Event triggered when the device switch from roaming OFF to roaming ON
+
+        roaming-off - Event triggered when the device switch from roaming ON to roaming OFF
+
+        roaming-change-country - Event triggered when the device in roaming change country code
+        
+        connectivity-data - Event triggered when the device is connected to the network for Data usage.
+        
+        connectivity-sms - Event triggered when the device is connected to the network for SMS usage
+        
+        connectivity-disconnected - Event triggered when the device is not connected.
+        
       enum:
         - org.camaraproject.device-status.v0.roaming-status
         - org.camaraproject.device-status.v0.roaming-on
