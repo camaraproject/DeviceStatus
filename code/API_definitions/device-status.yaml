@@ -686,17 +686,6 @@ components:
         - org.camaraproject.device-status.v0.connectivity-disconnected
         - org.camaraproject.device-status.v0.subscription-ends
 
-    SubscriptionCreationDetail:
-      description: The detail of the requested event subscription
-      type: object
-      required:
-        - type
-      properties:
-        device:
-          $ref: "#/components/schemas/Device"
-        type:
-          $ref: "#/components/schemas/SubscriptionCreationEventType"
-
     SubscriptionCreationEventType:
       type: string
       description: |
