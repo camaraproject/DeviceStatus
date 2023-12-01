@@ -1,6 +1,7 @@
 | Org                    | Name                                                |
 | -----------------------| ----------------------------------------------------|
 | Deutsche Telekom AG | Noel Wirzius |
+| Deutsche Telekom AG | Akos Hunyadi |
 | Orange | Sylvain Morel |
 | Orange| Ludovic Robert|
 | Telefonica | Jesus Pena |
