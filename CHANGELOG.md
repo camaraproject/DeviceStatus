@@ -12,6 +12,7 @@
   - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.0-rc/code/API_definitions/device-status.yaml)
 
 ## Please note:
+- **This release will contain significant changes compared to v0.4.1, and it is not backward compatible**
 - **This is only the pre-release, it should be considered as a draft of the upcoming release v0.5.0**
   - The pre-release is meant for implementors, but it is not recommended to use the API with customers in productive environments.
 
