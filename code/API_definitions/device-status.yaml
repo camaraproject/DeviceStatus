@@ -652,6 +652,7 @@ components:
       type: object
       required:
         - type
+        - device
       properties:
         device:
           $ref: "#/components/schemas/Device"
@@ -752,6 +753,7 @@ components:
         - specversion
         - type
         - time
+        - data
       properties:
         id:
           type: string
