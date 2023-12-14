@@ -5,12 +5,12 @@ info:
     This API provides the customer with the ability to query device:
       - Roaming Status
       - Connectivity Status
-    
-    
+
+
     Moreover, this API extends the functionality by allowing users customers to subscribe to events associated with these status queries.
 
     # Introduction
-    
+
     ## Roaming Status
     API consumer is able to verify whether a certain user device is in roaming situation (or not). This capability is provided in 2 ways:
       - via direct request with the roaming situation in the response.
@@ -19,7 +19,7 @@ info:
     The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information is send back in the response.
 
     ## Connectivity Status
-    
+
     API consumer is able to verify whether a certain user device is connected to the network via data- or sms-usage. This capability is provided in 2 ways:
       - via direct request with the connectivity situation in the response.
       - via a subscription  request - in this case the connectivity situation is not in the response but event notification is sent back to the event subscriber when connectivity situation has changed.
@@ -52,7 +52,7 @@ info:
     ## Device roaming situation
 
     The endpoint `POST /roaming` allows to get roaming status and country information (if device in roaming situation) synchronously.
-    
+
     ## Device connectivity situation
 
     The endpoint `POST /connectivity` allows to get current connectivity status information synchronously.
@@ -72,7 +72,7 @@ info:
       - ``org.camaraproject.device-status.v0.roaming-off``: Event triggered when the device switch from roaming ON to roaming OFF
 
       - ``org.camaraproject.device-status.v0.roaming-change-country``: Event triggered when the device in roaming change country code
-  
+
       - ``org.camaraproject.device-status.v0.connectivity-data``: Event triggered when the device is connected to the network for Data usage.
 
       - ``org.camaraproject.device-status.v0.connectivity-sms``: Event triggered when the device is connected to the network for SMS usage
@@ -666,7 +666,7 @@ components:
         connectivity-data - Event triggered when the device is connected to the network for Data usage.
 
         connectivity-sms - Event triggered when the device is connected to the network for SMS usage
-  
+
         connectivity-disconnected - Event triggered when the device is not connected.
 
         subscription-ends - Event triggered when the subscription is terminated
