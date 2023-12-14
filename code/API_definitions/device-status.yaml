@@ -328,7 +328,7 @@ paths:
                   $ref: "#/components/schemas/SubscriptionInfo"
         "400":
           $ref: "#/components/responses/Generic400"
-        "401"
+        "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
@@ -360,7 +360,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
-       "400":
+        "400":
           description: Invalid input
           content:
             application/json:
