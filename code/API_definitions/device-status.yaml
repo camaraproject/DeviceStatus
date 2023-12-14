@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Device Status
   description: |
-    This API provides the customer with the ability to query device: 
+    This API provides the customer with the ability to query device:
       - Roaming Status
       - Connectivity Status
       
@@ -137,7 +137,7 @@ paths:
               $ref: "#/components/schemas/RequestConnectivityStatus"
         required: true
       responses:
-        200:
+        "200":
           description: Contains information about current connectivity status
           content:
             application/json:
@@ -153,17 +153,17 @@ paths:
                 Not-Connected:
                   value:
                     connectivityStatus: NOT_CONNECTED
-        400:
+        "400":
           $ref: "#/components/responses/Generic400"
-        401:
+        "401":
           $ref: "#/components/responses/Generic401"
-        403:
+        "403":
           $ref: "#/components/responses/Generic403"
-        404:
+        "404":
           $ref: "#/components/responses/Generic404"
-        500:
+        "500":
           $ref: "#/components/responses/Generic500"
-        503:
+        "503":
           $ref: "#/components/responses/Generic503"
   /roaming:
     post:
