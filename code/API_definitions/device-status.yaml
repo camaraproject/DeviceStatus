@@ -2,15 +2,15 @@ openapi: 3.0.3
 info:
   title: Device Status
   description: |
-    This API provides the customer with the ability to query device: 
+    This API provides the customer with the ability to query device:
       - Roaming Status
       - Connectivity Status
-      
-    
+
+
     Moreover, this API extends the functionality by allowing users customers to subscribe to events associated with these status queries.
 
     # Introduction
-    
+
     ## Roaming Status
     API consumer is able to verify whether a certain user device is in roaming situation (or not). This capability is provided in 2 ways:
       - via direct request with the roaming situation in the response.
@@ -19,7 +19,7 @@ info:
     The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information is send back in the response.
 
     ## Connectivity Status
-    
+
     API consumer is able to verify whether a certain user device is connected to the network via data- or sms-usage. This capability is provided in 2 ways:
       - via direct request with the connectivity situation in the response.
       - via a subscription  request - in this case the connectivity situation is not in the response but event notification is sent back to the event subscriber when connectivity situation has changed.
@@ -39,32 +39,32 @@ info:
     * **Roaming** : Roaming status - `true`, if device is in roaming situation - `false` else.
 
     * **Country** : Country code and name - visited country information, provided if the device is in roaming situation.
-    
-    * **Connectivity** : Connectivity status.
-      - `CONNECTED_SMS`, if device is connected to the network via SMS usage 
-      - `CONNECTED_DATA`, if device is connected to the network via data usage' 
-      - `NOT_CONNECTED`, if device is not connected to the network'
 
-    # API Functionality    
+    * **Connectivity** : Connectivity status.
+      - `CONNECTED_SMS`, if device is connected to the network via SMS usage
+      - `CONNECTED_DATA`, if device is connected to the network via data usage
+      - `NOT_CONNECTED`, if device is not connected to the network
+
+    # API Functionality
 
     The API exposes following capabilities:
 
     ## Device roaming situation
 
     The endpoint `POST /roaming` allows to get roaming status and country information (if device in roaming situation) synchronously.
-    
+
     ## Device connectivity situation
 
     The endpoint `POST /connectivity` allows to get current connectivity status information synchronously.
 
     ## Device status subscription
 
-    These endpoints allow to manage event subscription on roaming device status event. 
+    These endpoints allow to manage event subscription on roaming device status event.
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows CloudEvents specification.
 
     It is mandatory in the subscription to provide the event `type` subscribed are several are managed in this API.
 
-    Following event ``type`` are managed for this API: 
+    Following event ``type`` are managed for this API:
       - ``org.camaraproject.device-status.v0.roaming-status`` - Event triggered when the device switch from roaming ON to roaming OFF and conversely
 
       - ``org.camaraproject.device-status.v0.roaming-on`` - Event triggered when the device switch from roaming OFF to roaming ON
@@ -72,16 +72,16 @@ info:
       - ``org.camaraproject.device-status.v0.roaming-off``: Event triggered when the device switch from roaming ON to roaming OFF
 
       - ``org.camaraproject.device-status.v0.roaming-change-country``: Event triggered when the device in roaming change country code
-    
+
       - ``org.camaraproject.device-status.v0.connectivity-data``: Event triggered when the device is connected to the network for Data usage.
-    
+
       - ``org.camaraproject.device-status.v0.connectivity-sms``: Event triggered when the device is connected to the network for SMS usage
-    
+
       - ``org.camaraproject.device-status.v0.connectivity-disconnected``: Event triggered when the device is not connected.
 
-    Note: Additionally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends. 
-    This notification does not require dedicated subscription. 
-    It is used when the subscription expire time (required by the requester) has been reached or if the API server has to stop sending notification prematurely. 
+    Note: Additionally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends.
+    This notification does not require dedicated subscription.
+    It is used when the subscription expire time (required by the requester) has been reached or if the API server has to stop sending notification prematurely.
 
     ### Notifications callback
 
@@ -99,7 +99,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.5.0-rc
+  version: 0.5.0-wip
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -137,7 +137,7 @@ paths:
               $ref: "#/components/schemas/RequestConnectivityStatus"
         required: true
       responses:
-        200:
+        "200":
           description: Contains information about current connectivity status
           content:
             application/json:
@@ -153,17 +153,17 @@ paths:
                 Not-Connected:
                   value:
                     connectivityStatus: NOT_CONNECTED
-        400:
+        "400":
           $ref: "#/components/responses/Generic400"
-        401:
+        "401":
           $ref: "#/components/responses/Generic401"
-        403:
+        "403":
           $ref: "#/components/responses/Generic403"
-        404:
+        "404":
           $ref: "#/components/responses/Generic404"
-        500:
+        "500":
           $ref: "#/components/responses/Generic500"
-        503:
+        "503":
           $ref: "#/components/responses/Generic503"
   /roaming:
     post:
@@ -182,7 +182,7 @@ paths:
               $ref: "#/components/schemas/RequestRoamingStatus"
         required: true
       responses:
-        200:
+        "200":
           description: Contains information about current roaming status
           content:
             application/json:
@@ -204,17 +204,17 @@ paths:
                     roaming: true
                     countryCode: 340
                     countryName: ["BL", "GF", "GP", "MF", "MQ"]
-        400:
+        "400":
           $ref: "#/components/responses/Generic400"
-        401:
+        "401":
           $ref: "#/components/responses/Generic401"
-        403:
+        "403":
           $ref: "#/components/responses/Generic403"
-        404:
+        "404":
           $ref: "#/components/responses/Generic404"
-        500:
+        "500":
           $ref: "#/components/responses/Generic500"
-        503:
+        "503":
           $ref: "#/components/responses/Generic503"
   /subscriptions:
     post:
@@ -284,29 +284,29 @@ paths:
                 - notificationsBearerAuth: []
 
       responses:
-        201:
+        "201":
           description: Created
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
-        202:
+        "202":
           description: Request accepted to be processed. It applies for async creation process.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
-        400:
+        "400":
           $ref: "#/components/responses/Generic400"
-        401:
+        "401":
           $ref: "#/components/responses/Generic401"
-        403:
+        "403":
           $ref: "#/components/responses/Generic403"
-        409:
+        "409":
           $ref: "#/components/responses/Generic409"
-        500:
+        "500":
           $ref: "#/components/responses/Generic500"
-        503:
+        "503":
           $ref: "#/components/responses/Generic503"
     get:
       tags:
@@ -318,7 +318,7 @@ paths:
         - openId:
             - device-status:subscriptions:read
       responses:
-        200:
+        "200":
           description: List of event subscription details
           content:
             application/json:
@@ -326,15 +326,15 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SubscriptionInfo"
-        400:
+        "400":
           $ref: "#/components/responses/Generic400"
-        401:
+        "401":
           $ref: "#/components/responses/Generic401"
-        403:
+        "403":
           $ref: "#/components/responses/Generic403"
-        500:
+        "500":
           $ref: "#/components/responses/Generic500"
-        503:
+        "503":
           $ref: "#/components/responses/Generic503"
   /subscriptions/{subscriptionId}:
     get:
@@ -354,13 +354,13 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
-        400:
+        "400":
           description: Invalid input
           content:
             application/json:
@@ -379,15 +379,15 @@ paths:
                     code: INVALID_INPUT
                     status: 400
                     message: "Expected property is missing: subscriptionId"
-        401:
+        "401":
           $ref: "#/components/responses/Generic401"
-        403:
+        "403":
           $ref: "#/components/responses/Generic403"
-        404:
+        "404":
           $ref: "#/components/responses/Generic404"
-        500:
+        "500":
           $ref: "#/components/responses/Generic500"
-        503:
+        "503":
           $ref: "#/components/responses/Generic503"
     delete:
       tags:
@@ -406,15 +406,15 @@ paths:
           schema:
             type: string
       responses:
-        204:
+        "204":
           description: event subscription deleted
-        202:
+        "202":
           description: Request accepted to be processed. It applies for async deletion process.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
-        400:
+        "400":
           description: Invalid input
           content:
             application/json:
@@ -433,15 +433,15 @@ paths:
                     code: INVALID_INPUT
                     status: 400
                     message: "Expected property is missing: subscriptionId"
-        401:
+        "401":
           $ref: "#/components/responses/Generic401"
-        403:
+        "403":
           $ref: "#/components/responses/Generic403"
-        404:
+        "404":
           $ref: "#/components/responses/Generic404"
-        500:
+        "500":
           $ref: "#/components/responses/Generic500"
-        503:
+        "503":
           $ref: "#/components/responses/Generic503"
 components:
   securitySchemes:
@@ -480,7 +480,7 @@ components:
         CONNECTED_SMS: The device is connected to the network for SMS usage
 
         NOT_CONNECTED: The device is not connected
-      type : string
+      type: string
       enum:
         - CONNECTED_DATA
         - CONNECTED_SMS
@@ -662,13 +662,13 @@ components:
         roaming-off - Event triggered when the device switch from roaming ON to roaming OFF
 
         roaming-change-country - Event triggered when the device in roaming change country code
-        
+
         connectivity-data - Event triggered when the device is connected to the network for Data usage.
-        
+
         connectivity-sms - Event triggered when the device is connected to the network for SMS usage
-        
+
         connectivity-disconnected - Event triggered when the device is not connected.
-        
+
         subscription-ends - Event triggered when the subscription is terminated
       enum:
         - org.camaraproject.device-status.v0.roaming-status
@@ -690,13 +690,13 @@ components:
         roaming-off - Event triggered when the device switch from roaming ON to roaming OFF
 
         roaming-change-country - Event triggered when the device in roaming change country code
-        
+
         connectivity-data - Event triggered when the device is connected to the network for Data usage.
-        
+
         connectivity-sms - Event triggered when the device is connected to the network for SMS usage
-        
+
         connectivity-disconnected - Event triggered when the device is not connected.
-        
+
       enum:
         - org.camaraproject.device-status.v0.roaming-status
         - org.camaraproject.device-status.v0.roaming-on
@@ -759,7 +759,7 @@ components:
         specversion:
           type: string
           description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
-          example: 1.0
+          example: "1.0"
         datacontenttype:
           type: string
           description: 'media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs'
@@ -920,7 +920,7 @@ components:
           $ref: "#/components/schemas/Device"
         terminationReason:
           type: string
-          enum: [ "SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED" ]
+          enum: ["SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED"]
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
 
@@ -998,7 +998,7 @@ components:
   examples:
     ROAMING_STATUS:
       value:
-        id: 123654
+        id: "123654"
         source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.roaming-status
         specversion: "1.0"
@@ -1014,7 +1014,7 @@ components:
 
     ROAMING_OFF:
       value:
-        id: 123655
+        id: "123655"
         source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.roaming-off
         specversion: "1.0"
@@ -1027,7 +1027,7 @@ components:
 
     ROAMING_ON:
       value:
-        id: 123656
+        id: "123656"
         source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.roaming-on
         specversion: "1.0"
@@ -1040,7 +1040,7 @@ components:
 
     ROAMING_CHANGE_COUNTRY:
       value:
-        id: 123657
+        id: "123657"
         source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.roaming-change-country
         specversion: "1.0"
@@ -1054,7 +1054,7 @@ components:
 
     CONNECTIVITY_DATA:
       value:
-        id: 123656
+        id: "123656"
         source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.connectivity-data
         specversion: "1.0"
@@ -1067,7 +1067,7 @@ components:
 
     CONNECTIVITY_SMS:
       value:
-        id: 123656
+        id: "123656"
         source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.connectivity-sms
         specversion: "1.0"
@@ -1080,7 +1080,7 @@ components:
 
     CONNECTIVITY_DISCONNECTED:
       value:
-        id: 123656
+        id: "123656"
         source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.connectivity-disconnected
         specversion: "1.0"
@@ -1093,7 +1093,7 @@ components:
 
     SUBSCRIPTION_ENDS:
       value:
-        id: 123658
+        id: "123658"
         source: https://notificationSendServer12.supertelco.com
         type: org.camaraproject.device-status.v0.subscription-ends
         specversion: "1.0"
