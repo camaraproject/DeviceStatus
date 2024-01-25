@@ -25,19 +25,11 @@ Repository to describe, develop, document and test the DeviceStatus API family
 ## Status and released versions
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
-* **The Release Candidate for v0.5.0 of the Device Status is available. The upcoming release will contain the 3rd alpha version of the DeviceStatus API**<br>Until the release there are bug fixes to be expected. The release candidate is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
-* The release candidate for v0.5.0 is available in the [release-0.5.0-rc branch](https://github.com/camaraproject/DeviceStatus/tree/release-0.5.0-rc)
+* The latest available and released version 0.5.0 of the API is available within the [release-0.5.0 branch](https://github.com/camaraproject/DeviceStatus/tree/release-0.5.0)
   - API definition with inline documentation:
-    - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.5.0-rc/code/API_definitions/device-status.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.0-rc/code/API_definitions/device-status.yaml&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.0-rc/code/API_definitions/device-status.yaml)
-  - For changes between v0.5.0-rc and v0.4.1 see the [CHANGELOG.md](https://github.com/camaraproject/DeviceStatus/blob/release-0.5.0-rc/CHANGELOG.md)
-
-* The latest available and released version 0.4.1 of the API is available within the [release-0.4.1 branch](https://github.com/camaraproject/DeviceStatus/tree/release-0.4.1)
-  - API definition with inline documentation:
-    - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.4.1/code/API_definitions/device-status.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.4.1/code/API_definitions/device-status.yaml&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.4.1/code/API_definitions/device-status.yaml) 
+    - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.5.0/code/API_definitions/device-status.yaml)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.0/code/API_definitions/device-status.yaml&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.0/code/API_definitions/device-status.yaml) 
 
 ## Contributorship and mailing list
 * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-dst>.
