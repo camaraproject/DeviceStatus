@@ -99,7 +99,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.5.0
+  version: 0.6.0-wip
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
@@ -1048,7 +1048,8 @@ components:
         data:
           device:
             phoneNumber: 123456789
-            countryCode: 214
+          countryCode: 214
+          countryName: ["ES"]
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
