@@ -127,6 +127,8 @@ paths:
       summary: "Get the current connectivity status information"
       description: Get the current connectivity status information
       operationId: getConnectivityStatus
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
             - device-status:connectivity:read
@@ -139,6 +141,9 @@ paths:
       responses:
         "200":
           description: Contains information about current connectivity status
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -172,6 +177,8 @@ paths:
       summary: "Get the current roaming status and the country information"
       description: Get the current roaming status and the country information
       operationId: getRoamingStatus
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
             - device-status:roaming:read
@@ -184,6 +191,9 @@ paths:
       responses:
         "200":
           description: Contains information about current roaming status
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -223,6 +233,8 @@ paths:
       summary: "Create a device status event subscription for a device"
       description: Create a device status event subscription for a device
       operationId: createDeviceStatusSubscription
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
             - device-status:subscriptions:create
@@ -243,6 +255,8 @@ paths:
                 Important: this endpoint is to be implemented by the API consumer.
                 The Device status server will call this endpoint whenever any device status related event occurs.
               operationId: postNotification
+              parameters:
+                - $ref: '#/components/parameters/x-correlator'
               requestBody:
                 required: true
                 content:
@@ -269,6 +283,9 @@ paths:
               responses:
                 "204":
                   description: Successful notification
+                  headers:
+                    x-correlator:
+                      $ref: '#/components/headers/x-correlator'
                 "400":
                   $ref: "#/components/responses/Generic400"
                 "401":
@@ -286,12 +303,18 @@ paths:
       responses:
         "201":
           description: Created
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
         "202":
           description: Request accepted to be processed. It applies for async creation process.
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -314,12 +337,17 @@ paths:
       summary: "Retrieve a list of device status event subscription"
       description: Retrieve a list of device status event subscription(s)
       operationId: retrieveSubscriptionList
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
             - device-status:subscriptions:read
       responses:
         "200":
           description: List of event subscription details
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
@@ -347,38 +375,20 @@ paths:
         - openId:
             - device-status:subscriptions:read
       parameters:
-        - name: subscriptionId
-          in: path
-          description: Subscription identifier that was obtained from the create subscription operation
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: '#/components/parameters/x-correlator'
       responses:
         "200":
           description: OK
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
         "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
-              examples:
-                Generic400:
-                  summary: Schema validation failed
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Schema validation failed at  ..."
-                subscriptionIdRequired:
-                  summary: eventSubscription id is required
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Expected property is missing: subscriptionId"
+          $ref: '#/components/responses/SubscriptionIdRequired'
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -399,40 +409,25 @@ paths:
         - openId:
             - device-status:subscriptions:delete
       parameters:
-        - name: subscriptionId
-          in: path
-          description: Subscription identifier that was obtained from the create event subscription operation
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/SubscriptionId"
+        - $ref: '#/components/parameters/x-correlator'
       responses:
         "204":
           description: event subscription deleted
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
         "202":
           description: Request accepted to be processed. It applies for async deletion process.
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
         "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
-              examples:
-                Generic400:
-                  summary: Schema validation failed
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Schema validation failed at  ..."
-                subscriptionIdRequired:
-                  summary: eventSubscription id is required
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Expected property is missing: subscriptionId"
+          $ref: '#/components/responses/SubscriptionIdRequired'
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -448,6 +443,25 @@ components:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  parameters:
+    SubscriptionId:
+      name: subscriptionId
+      in: path
+      description: Subscription identifier that was obtained from the create event subscription operation
+      required: true
+      schema:
+        $ref: '#/components/schemas/SubscriptionId'
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        type: string
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        type: string
   schemas:
     RoamingStatusResponse:
       type: object
@@ -927,6 +941,9 @@ components:
   responses:
     Generic400:
       description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -937,6 +954,9 @@ components:
             message: "Client specified an invalid argument, request body or query param"
     Generic401:
       description: Authentication problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -947,6 +967,9 @@ components:
             message: "Request not authenticated due to missing, invalid, or expired credentials"
     Generic403:
       description: Client does not have sufficient permission
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -957,6 +980,9 @@ components:
             message: "Client does not have sufficient permissions to perform this action"
     Generic404:
       description: Resource Not Found
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -967,6 +993,9 @@ components:
             message: "The specified resource is not found"
     Generic409:
       description: Conflict
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -977,6 +1006,9 @@ components:
             message: "The specified resource is in a conflict"
     Generic500:
       description: Server error
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -987,6 +1019,9 @@ components:
             message: "Server error"
     Generic503:
       description: Service unavailable. Typically the server is down.
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -995,6 +1030,28 @@ components:
             status: 503
             code: "UNAVAILABLE"
             message: "Service unavailable"
+    SubscriptionIdRequired:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            Generic400:
+              summary: Schema validation failed
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Client specified an invalid argument, request body or query param"
+            subscriptionIdRequired:
+              summary: subscription id is required
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Expected property is missing: subscriptionId"
   examples:
     ROAMING_STATUS:
       value:
