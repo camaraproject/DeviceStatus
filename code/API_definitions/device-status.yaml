@@ -51,11 +51,11 @@ info:
 
     ## Device roaming situation
 
-    The endpoint `POST /roaming` allows to get roaming status and country information (if device in roaming situation) synchronously.
+    The endpoint `POST /retrieve-roaming-status` allows to get roaming status and country information (if device in roaming situation) synchronously.
 
     ## Device connectivity situation
 
-    The endpoint `POST /connectivity` allows to get current connectivity status information synchronously.
+    The endpoint `POST /retrieve-connectivity-status` allows to get current connectivity status information synchronously.
 
     ## Device status subscription
 
