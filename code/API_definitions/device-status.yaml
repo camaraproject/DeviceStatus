@@ -81,7 +81,7 @@ info:
 
     Note: Additionally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends.
     This notification does not require dedicated subscription.
-    It is used when the subscription expire time (required by the requester) has been reached or if the API server has to stop sending notification prematurely.
+    It is used when the subscription expire time (optionally set by the requester) has been reached or if the API server has to stop sending notification prematurely.
 
     ### Notifications callback
 
@@ -99,7 +99,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.6.0-wip
+  version: 0.5.1-wip
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
