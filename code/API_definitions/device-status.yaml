@@ -1050,7 +1050,8 @@ components:
         data:
           device:
             phoneNumber: 123456789
-            countryCode: 214
+          countryCode: 214
+          countryName: ["ES"]
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
