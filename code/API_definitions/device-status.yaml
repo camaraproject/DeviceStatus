@@ -388,7 +388,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
         "400":
-          $ref: '#/components/responses/SubscriptionIdRequired'
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorInfo"
+              examples:
+                Generic400:
+                  summary: Schema validation failed
+                  value:
+                    code: INVALID_INPUT
+                    status: 400
+                    message: "Schema validation failed at  ..."
+                subscriptionIdRequired:
+                  summary: eventSubscription id is required
+                  value:
+                    code: INVALID_INPUT
+                    status: 400
+                    message: "Expected property is missing: subscriptionId"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -427,7 +444,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
         "400":
-          $ref: '#/components/responses/SubscriptionIdRequired'
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorInfo"
+              examples:
+                Generic400:
+                  summary: Schema validation failed
+                  value:
+                    code: INVALID_INPUT
+                    status: 400
+                    message: "Schema validation failed at  ..."
+                subscriptionIdRequired:
+                  summary: eventSubscription id is required
+                  value:
+                    code: INVALID_INPUT
+                    status: 400
+                    message: "Expected property is missing: subscriptionId"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -1030,28 +1064,6 @@ components:
             status: 503
             code: "UNAVAILABLE"
             message: "Service unavailable"
-    SubscriptionIdRequired:
-      description: Problem with the client request
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            Generic400:
-              summary: Schema validation failed
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Client specified an invalid argument, request body or query param"
-            subscriptionIdRequired:
-              summary: subscription id is required
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Expected property is missing: subscriptionId"
   examples:
     ROAMING_STATUS:
       value:
