@@ -16,7 +16,7 @@ info:
       - via direct request with the roaming situation in the response.
       - via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
-    The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information is send back in the response.
+    The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information could be returned in the response.
 
     ## Connectivity Status
 
