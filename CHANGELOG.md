@@ -7,20 +7,20 @@
 - [v0.2.0](#v020)
 
 # v0.5.1
-**This is the third alpha version of the CAMARA DeviceStatus API**
+**This is a bugfix release for the third alpha version of the CAMARA DeviceStatus API**
 - API definition **with inline documentation**:
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.5.1/code/API_definitions/device-status.yaml)
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.1/code/API_definitions/device-status.yaml&nocors)
   - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.1/code/API_definitions/device-status.yaml)
 
 ## Please note:
-- **This release contains significant changes compared to v0.4.1, and it is not backward compatible**
 - This is an alpha version, it should be considered as a draft.
 - There are bug fixes to be expected and incompatible changes in upcoming versions.
 - The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
 
 ### Main Changes
-* NA
+* Minor bugfixes
+* Changes in the inline documentation
 
 ### Added
 * NA
