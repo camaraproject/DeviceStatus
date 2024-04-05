@@ -32,12 +32,14 @@
 ### Fixed
 * fix: move "countryCode" out of "device" in ROAMING_CHANGE_COUNTRY-example by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/106
 * fix: add missing "subscriptionId" in "RoamingStatus"-data for CloudEvent by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/109
+* fix: change INVALID_INPUT for INVALID_ARGUMENT according to guidelines by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/129
 
 ### Removed
 * NA
   
 ## New Contributors
 * @trehman-gsma made their first contribution in https://github.com/camaraproject/DeviceStatus/pull/127
+* @fernandopradocabrillo made their first contribution in https://github.com/camaraproject/DeviceStatus/pull/129
 
 **Full Changelog**: https://github.com/camaraproject/DeviceStatus/compare/v0.5.0...v0.5.1
 
