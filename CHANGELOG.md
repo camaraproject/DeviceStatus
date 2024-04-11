@@ -1,9 +1,48 @@
 # Changelog DeviceStatus
 ## Table of Contents
+- [v0.5.1](#v051)
 - [v0.5.0](#v050)
 - [v0.5.0-rc](#v050-rc)
 - [v0.4.1](#v041)
 - [v0.2.0](#v020)
+
+# v0.5.1
+**This is a bugfix release for the third alpha version of the CAMARA DeviceStatus API**
+- API definition **with inline documentation**:
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.5.1/code/API_definitions/device-status.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.1/code/API_definitions/device-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.1/code/API_definitions/device-status.yaml)
+
+## Please note:
+- This is an alpha version, it should be considered as a draft.
+- There are bug fixes to be expected and incompatible changes in upcoming versions.
+- The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
+
+### Main Changes
+* Minor bugfixes
+* Changes in the inline documentation
+
+### Added
+* NA
+
+### Changed
+* Change description that subscriptionExpireTime is optional by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/120
+* Updated in-line documentation for Roaming to clarify that country information can optionally be returned in the response. by @trehman-gsma in https://github.com/camaraproject/DeviceStatus/pull/127
+
+### Fixed
+* fix: move "countryCode" out of "device" in ROAMING_CHANGE_COUNTRY-example by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/106
+* fix: add missing "subscriptionId" in "RoamingStatus"-data for CloudEvent by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/109
+* fix: change INVALID_INPUT for INVALID_ARGUMENT according to guidelines by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/129
+
+### Removed
+* NA
+  
+## New Contributors
+* @trehman-gsma made their first contribution in https://github.com/camaraproject/DeviceStatus/pull/127
+* @fernandopradocabrillo made their first contribution in https://github.com/camaraproject/DeviceStatus/pull/129
+
+**Full Changelog**: https://github.com/camaraproject/DeviceStatus/compare/v0.5.0...v0.5.1
+
 
 # v0.5.0
 **This is the third alpha version of the CAMARA DeviceStatus API**

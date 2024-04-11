@@ -16,7 +16,7 @@ info:
       - via direct request with the roaming situation in the response.
       - via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
-    The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information is send back in the response.
+    The verification of the roaming situation depends on the network's ability. Additionally to the roaming status, when the device is in roaming situation, visited country information could be returned in the response.
 
     ## Connectivity Status
 
@@ -81,7 +81,7 @@ info:
 
     Note: Additionally to these list, ``org.camaraproject.device-status.v0.subscription-ends`` notification `type` is sent when the subscription ends.
     This notification does not require dedicated subscription.
-    It is used when the subscription expire time (required by the requester) has been reached or if the API server has to stop sending notification prematurely.
+    It is used when the subscription expire time (optionally set by the requester) has been reached or if the API server has to stop sending notification prematurely.
 
     ### Notifications callback
 
@@ -388,24 +388,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SubscriptionInfo"
         "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
-              examples:
-                Generic400:
-                  summary: Schema validation failed
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Schema validation failed at  ..."
-                subscriptionIdRequired:
-                  summary: eventSubscription id is required
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Expected property is missing: subscriptionId"
+          $ref: "#/components/responses/Generic400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -444,24 +427,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
         "400":
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorInfo"
-              examples:
-                Generic400:
-                  summary: Schema validation failed
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Schema validation failed at  ..."
-                subscriptionIdRequired:
-                  summary: eventSubscription id is required
-                  value:
-                    code: INVALID_INPUT
-                    status: 400
-                    message: "Expected property is missing: subscriptionId"
+          $ref: "#/components/responses/Generic400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
@@ -941,6 +907,8 @@ components:
           $ref: "#/components/schemas/CountryCode"
         countryName:
           $ref: "#/components/schemas/CountryName"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
 
     RoamingChangeCountry:
       description: Event detail structure for org.camaraproject.device-status.v0.roaming-on event
@@ -1064,6 +1032,7 @@ components:
             status: 503
             code: "UNAVAILABLE"
             message: "Service unavailable"
+
   examples:
     ROAMING_STATUS:
       value:
