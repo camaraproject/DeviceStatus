@@ -352,6 +352,7 @@ paths:
             application/json:
               schema:
                 type: array
+                minItems: 0
                 items:
                   $ref: "#/components/schemas/SubscriptionInfo"
         "400":
@@ -370,7 +371,7 @@ paths:
         - Device status subscription
       summary: "Retrieve a device status event subscription for a device"
       operationId: retrieveSubscription
-      description: retrieve event subscription information for a given subscription.
+      description: Retrieve a given subscription by ID
       security:
         - openId:
             - device-status:subscriptions:read
@@ -404,7 +405,7 @@ paths:
         - Device status subscription
       summary: "Delete a device status event subscription for a device"
       operationId: deleteSubscription
-      description: delete a  given event subscription.
+      description: Delete a given subscription by ID
       security:
         - openId:
             - device-status:subscriptions:delete
@@ -634,7 +635,9 @@ components:
           type: string
           format: date-time
           example: 2023-01-17T13:18:23.682Z
-          description: The subscription expiration time in date-time format.
+          description: The date time when the status-tracking has to be terminated.
+            It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+            Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z
         webhook:
           $ref: "#/components/schemas/Webhook"
 
@@ -645,14 +648,19 @@ components:
         - notificationUrl
       properties:
         notificationUrl:
-          type: string
-          example: https://application-server.com
-          description: https callback address where the event notification must be POST-ed
+          $ref: "#/components/schemas/NotificationUrl"
         notificationAuthToken:
-          type: string
-          example: c8974e592c2fa383d4a3960714
-          description: |
-            OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken
+          $ref: "#/components/schemas/NotificationAuthToken"
+
+    NotificationUrl:
+      type: string
+      example: "https://application-server.com"
+      description: https callback address where the event notification must be POST-ed
+
+    NotificationAuthToken:
+      type: string
+      example: "c8974e592c2fa383d4a3960714"
+      description: "OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken"
 
     SubscriptionDetail:
       description: The detail of the requested event subscription
@@ -731,11 +739,15 @@ components:
             startsAt:
               type: string
               format: date-time
-              description: date time when subscription started
+              description: The date time when the subscription started.
+                It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+                Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
             expiresAt:
               type: string
               format: date-time
-              description: date time when subscription will expire or expired
+              description: The date time when the subscription will expire or expired.
+                It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+                Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
           required:
             - subscriptionId
             - type
@@ -749,7 +761,8 @@ components:
 
     SubscriptionId:
       type: string
-      description: The event subscription identifier.
+      format: uuid
+      description: Identifier of the event subscription - This attribute must not be present in the POST request as it is provided by API server
       example: qs15-h556-rt89-1298
 
     CloudEvent:
@@ -782,7 +795,7 @@ components:
           type: object
           description: Event details payload described in each CAMARA API and referenced by its type
         time:
-          $ref: "#/components/schemas/DateTime"
+          $ref: "#/components/schemas/EventTime"
       discriminator:
         propertyName: "type"
         mapping:
@@ -799,13 +812,28 @@ components:
       type: string
       format: uri-reference
       minLength: 1
-      description: "Identifies the context in which an event happened in the specific Provider Implementation."
-      example: https://notificationSendServer12.supertelco.com
+      description: |
+        Identifies the context in which an event happened, as a non-empty `URI-reference` like:
+        - URI with a DNS authority:
+          * https://github.com/cloudevents
+          * mailto:cncf-wg-serverless@lists.cncf.io
+        - Universally-unique URN with a UUID:
+          * urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66
+        - Application-specific identifier:
+          * /cloudevents/spec/pull/123
+          * 1-555-123-4567
+      example: "https://notificationSendServer12.supertelco.com"
 
-    DateTime:
+    EventTime:
       type: string
       format: date-time
-      description: Timestamp of when the occurrence happened. Must adhere to RFC 3339.
+      description: |
+        Timestamp of when the occurrence happened. 
+        If the time of the occurrence cannot be determined then this attribute MAY be set to some other time (such as the current time) by the CloudEvents producer, 
+        however all producers for the same source MUST be consistent in this respect. In other words, 
+        either they all use the actual time of the occurrence or they all use the same algorithm to determine the value used. 
+        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. 
+        Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
       example: "2018-04-05T17:31:00Z"
 
     EventRoamingStatus:
@@ -931,14 +959,22 @@ components:
       required:
         - device
         - terminationReason
+        - subscriptionId
       properties:
         device:
           $ref: "#/components/schemas/Device"
         terminationReason:
-          type: string
-          enum: ["SUBSCRIPTION_EXPIRED", "NETWORK_TERMINATED"]
+          $ref: "#/components/schemas/TerminationReason"
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
+    TerminationReason:
+      type: string
+      description: |
+        NETWORK_TERMINATED - API server stopped sending notification
+        SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+      enum:
+        - NETWORK_TERMINATED
+        - SUBSCRIPTION_EXPIRED
 
   responses:
     Generic400:
