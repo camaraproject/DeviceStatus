@@ -664,9 +664,9 @@ components:
         device:
           $ref: "#/components/schemas/Device"
         type:
-          $ref: "#/components/schemas/SubscriptionCreationEventType"
+          $ref: "#/components/schemas/SubscriptionEventType"
 
-    SubscriptionEventType:
+    NotificationEventType:
       type: string
       description: |
         roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
@@ -694,7 +694,7 @@ components:
         - org.camaraproject.device-status.v0.connectivity-disconnected
         - org.camaraproject.device-status.v0.subscription-ends
 
-    SubscriptionCreationEventType:
+    SubscriptionEventType:
       type: string
       description: |
         roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
@@ -769,7 +769,7 @@ components:
         source:
           $ref: "#/components/schemas/Source"
         type:
-          $ref: "#/components/schemas/SubscriptionEventType"
+          $ref: "#/components/schemas/NotificationEventType"
         specversion:
           type: string
           description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
