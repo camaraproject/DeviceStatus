@@ -51,11 +51,11 @@ info:
 
     ## Device roaming situation
 
-    The endpoint `POST /roaming` allows to get roaming status and country information (if device in roaming situation) synchronously.
+    The endpoint `POST /retrieve-roaming-status` allows to get roaming status and country information (if device in roaming situation) synchronously.
 
     ## Device connectivity situation
 
-    The endpoint `POST /connectivity` allows to get current connectivity status information synchronously.
+    The endpoint `POST /retrieve-connectivity-status` allows to get current connectivity status information synchronously.
 
     ## Device status subscription
 
@@ -120,7 +120,7 @@ tags:
     description: Operation to manage event subscription on device status event (roaming, connectivity)
 
 paths:
-  /connectivity:
+  /retrieve-connectivity-status:
     post:
       tags:
         - Device connectivity status
@@ -131,7 +131,7 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - device-status:connectivity:read
+            - device-status:retrieve-connectivity-status:read
       requestBody:
         content:
           application/json:
@@ -170,7 +170,7 @@ paths:
           $ref: "#/components/responses/Generic500"
         "503":
           $ref: "#/components/responses/Generic503"
-  /roaming:
+  /retrieve-roaming-status:
     post:
       tags:
         - Device roaming status
@@ -181,7 +181,7 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - device-status:roaming:read
+            - device-status:retrieve-roaming-status:read
       requestBody:
         content:
           application/json:
