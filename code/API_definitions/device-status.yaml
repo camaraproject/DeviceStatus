@@ -45,6 +45,8 @@ info:
       - `CONNECTED_DATA`, if device is connected to the network via data usage
       - `NOT_CONNECTED`, if device is not connected to the network
 
+    * **lastChecked** : Indicate when the information provided was last confirmed to be correct.
+    
     # API Functionality
 
     The API exposes following capabilities:
@@ -151,12 +153,15 @@ paths:
               examples:
                 Connected-With-SMS:
                   value:
+                    lastChecked: "2024-02-20T10:41:38.657Z"
                     connectivityStatus: CONNECTED_SMS
                 Connected-With-DATA:
                   value:
+                    lastChecked: "2024-02-20T10:41:38.657Z"
                     connectivityStatus: CONNECTED_DATA
                 Not-Connected:
                   value:
+                    lastChecked: "2024-02-20T10:41:38.657Z"
                     connectivityStatus: NOT_CONNECTED
         "400":
           $ref: "#/components/responses/Generic400"
@@ -201,16 +206,19 @@ paths:
               examples:
                 No-Country-Name:
                   value:
+                    lastChecked: "2024-02-20T10:41:38.657Z"
                     roaming: true
                     countryCode: 901
                     countryName: []
                 Single-Country-Code:
                   value:
+                    lastChecked: "2024-02-20T10:41:38.657Z"
                     roaming: true
                     countryCode: 262
                     countryName: ["DE"]
                 Multiple-Country-Codes:
                   value:
+                    lastChecked: "2024-02-20T10:41:38.657Z"
                     roaming: true
                     countryCode: 340
                     countryName: ["BL", "GF", "GP", "MF", "MQ"]
@@ -466,8 +474,11 @@ components:
     RoamingStatusResponse:
       type: object
       required:
+        - lastChecked
         - roaming
       properties:
+        lastChecked:
+          $ref: "#/components/schemas/LastChecked"
         roaming:
           $ref: "#/components/schemas/ActiveRoaming"
         countryCode:
@@ -475,6 +486,12 @@ components:
         countryName:
           $ref: "#/components/schemas/CountryName"
 
+    LastChecked:
+      description: Last time that the associated device roaming status/connectivity was checked and, if necessary, updated
+      type: string
+      format: date-time
+      example: "2024-02-20T10:41:38.657Z"
+      
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
       type: boolean
@@ -482,8 +499,11 @@ components:
     ConnectivityStatusResponse:
       type: object
       required:
+        - lastChecked
         - connectivityStatus
       properties:
+        lastChecked:
+          $ref: "#/components/schemas/LastChecked"
         connectivityStatus:
           $ref: "#/components/schemas/ConnectivityStatus"
 
