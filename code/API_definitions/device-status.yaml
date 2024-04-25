@@ -46,7 +46,6 @@ info:
       - `NOT_CONNECTED`, if device is not connected to the network
 
     * **lastChecked** : Indicate when the information provided was last confirmed to be correct.
-    
     # API Functionality
 
     The API exposes following capabilities:
