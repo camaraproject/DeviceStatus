@@ -490,7 +490,7 @@ components:
       type: string
       format: date-time
       example: "2024-02-20T10:41:38.657Z"
-    
+ 
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
       type: boolean
