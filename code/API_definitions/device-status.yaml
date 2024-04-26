@@ -781,7 +781,7 @@ components:
       type: string
       format: uuid
       description: Identifier of the event subscription - This attribute must not be present in the POST request as it is provided by API server
-      example: qs15-h556-rt89-1298
+      example: 550e8400-e29b-41d4-a716-446655440000
 
     CloudEvent:
       description: The notification callback
