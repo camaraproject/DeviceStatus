@@ -46,7 +46,7 @@ info:
       - `NOT_CONNECTED`, if device is not connected to the network
       
     * **LastStatusTime** : This property specifies the time when the status was last checked. Its inclusion in the response indicates that the information may not be current, while its absence suggests that the status information is fresh.
-   
+
     # API Functionality
 
     The API exposes following capabilities:
@@ -491,7 +491,7 @@ components:
       type: string
       format: date-time
       example: "2024-02-20T10:41:38.657Z"
-      
+
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
       type: boolean
@@ -846,11 +846,11 @@ components:
       type: string
       format: date-time
       description: |
-        Timestamp of when the occurrence happened. 
-        If the time of the occurrence cannot be determined then this attribute MAY be set to some other time (such as the current time) by the CloudEvents producer, 
-        however all producers for the same source MUST be consistent in this respect. In other words, 
-        either they all use the actual time of the occurrence or they all use the same algorithm to determine the value used. 
-        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone. 
+        Timestamp of when the occurrence happened.
+        If the time of the occurrence cannot be determined then this attribute MAY be set to some other time (such as the current time) by the CloudEvents producer,
+        however all producers for the same source MUST be consistent in this respect. In other words,
+        either they all use the actual time of the occurrence or they all use the same algorithm to determine the value used.
+        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
         Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
       example: "2018-04-05T17:31:00Z"
 
