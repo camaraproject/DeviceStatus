@@ -44,7 +44,9 @@ info:
       - `CONNECTED_SMS`, if device is connected to the network via SMS usage
       - `CONNECTED_DATA`, if device is connected to the network via data usage
       - `NOT_CONNECTED`, if device is not connected to the network
-
+      
+    * **LastStatusTime** : This property specifies the time when the status was last checked. Its inclusion in the response indicates that the information may not be current, while its absence suggests that the status information is fresh.
+   
     # API Functionality
 
     The API exposes following capabilities:
@@ -151,12 +153,15 @@ paths:
               examples:
                 Connected-With-SMS:
                   value:
+                    lastStatusTime: "2024-02-20T10:41:38.657Z"
                     connectivityStatus: CONNECTED_SMS
                 Connected-With-DATA:
                   value:
+                    lastStatusTime: "2024-02-20T10:41:38.657Z"
                     connectivityStatus: CONNECTED_DATA
                 Not-Connected:
                   value:
+                    lastStatusTime: "2024-02-20T10:41:38.657Z"
                     connectivityStatus: NOT_CONNECTED
         "400":
           $ref: "#/components/responses/Generic400"
@@ -201,16 +206,19 @@ paths:
               examples:
                 No-Country-Name:
                   value:
+                    lastStatusTime: "2024-02-20T10:41:38.657Z"
                     roaming: true
                     countryCode: 901
                     countryName: []
                 Single-Country-Code:
                   value:
+                    lastStatusTime: "2024-02-20T10:41:38.657Z"
                     roaming: true
                     countryCode: 262
                     countryName: ["DE"]
                 Multiple-Country-Codes:
                   value:
+                    lastStatusTime: "2024-02-20T10:41:38.657Z"
                     roaming: true
                     countryCode: 340
                     countryName: ["BL", "GF", "GP", "MF", "MQ"]
@@ -469,6 +477,8 @@ components:
       required:
         - roaming
       properties:
+        lastStatusTime:
+          $ref: "#/components/schemas/LastStatusTime"
         roaming:
           $ref: "#/components/schemas/ActiveRoaming"
         countryCode:
@@ -476,6 +486,12 @@ components:
         countryName:
           $ref: "#/components/schemas/CountryName"
 
+    LastStatusTime:
+      description: Last time that the associated device roaming status/connectivity was checked and, if necessary, updated
+      type: string
+      format: date-time
+      example: "2024-02-20T10:41:38.657Z"
+      
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
       type: boolean
@@ -485,6 +501,8 @@ components:
       required:
         - connectivityStatus
       properties:
+        lastStatusTime:
+          $ref: "#/components/schemas/LastStatusTime"
         connectivityStatus:
           $ref: "#/components/schemas/ConnectivityStatus"
 
