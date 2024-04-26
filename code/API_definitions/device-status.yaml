@@ -526,10 +526,10 @@ components:
       minProperties: 1
 
     PhoneNumber:
-      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, optionally prefixed with '+'.
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
-      pattern: '^\+?[0-9]{5,15}$'
-      example: "123456789"
+      pattern: '^\+[1-9][0-9]{4,14}$'
+      example: "+123456789"
 
     NetworkAccessIdentifier:
       description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
@@ -1079,7 +1079,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: 123456789
+            phoneNumber: +123456789
           roaming: true
           countryCode: 208
           countryName: FR
@@ -1095,7 +1095,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: 123456788
+            phoneNumber: +123456788
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-18T13:18:23.682Z
 
@@ -1108,7 +1108,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: 123456787
+            phoneNumber: +123456787
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
@@ -1121,7 +1121,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: 123456789
+            phoneNumber: +123456789
           countryCode: 214
           countryName: ["ES"]
           subscriptionId: qs15-h556-rt89-1298
@@ -1136,7 +1136,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: 123456787
+            phoneNumber: +123456787
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
@@ -1149,7 +1149,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: 123456787
+            phoneNumber: +123456787
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
@@ -1162,7 +1162,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: 123456787
+            phoneNumber: +123456787
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
@@ -1175,7 +1175,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: 123456789
+            phoneNumber: +123456789
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
