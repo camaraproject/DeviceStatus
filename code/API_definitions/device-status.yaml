@@ -45,7 +45,7 @@ info:
       - `CONNECTED_DATA`, if device is connected to the network via data usage
       - `NOT_CONNECTED`, if device is not connected to the network
 
-    * **LastStatusTime** : This property specifies the time when the status was last checked. Its inclusion in the response indicates that the information may not be current, while its absence suggests that the status information is fresh.
+    * **LastStatusTime** : This property specifies the time when the status was last updated. Its presence in the response indicates the freshness of the information, while its absence implies the information may be outdated or its freshness is uncertain.
 
     # API Functionality
 
@@ -487,7 +487,7 @@ components:
           $ref: "#/components/schemas/CountryName"
 
     LastStatusTime:
-      description: Last time that the associated device roaming status/connectivity was checked and, if necessary, updated
+      description: Last time that the associated device roaming status/connectivity was updated
       type: string
       format: date-time
       example: "2024-02-20T10:41:38.657Z"
