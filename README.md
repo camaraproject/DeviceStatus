@@ -37,7 +37,8 @@ Repository to describe, develop, document and test the DeviceStatus API family
 * Meetings
   * Bi-weekly on Wednesday, 11:00 CET/CEST (08:00 UTC, 09:00 UTC during European DST)
   * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/94783050047?password=c43ff9fd-4c79-468a-9d98-45222dd6343d)
-* Maling List
-  * Subscribe <sp-dst+subscribe@lists.camaraproject.org>
-  * <https://lists.camaraproject.org/g/sp-dst>
+  * Access [meeting minutes](https://wiki.camaraproject.org/x/5oAuAQ) 
+* Mailing List
+  * Subscribe / Unsubscribe to the mailing list of this Sub Project https://lists.camaraproject.org/g/sp-dst.
+  * A message to the community of this Sub Project can be sent using <sp-dst@lists.camaraproject.org>.
   
