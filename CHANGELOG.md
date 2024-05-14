@@ -40,7 +40,7 @@
 ## New Contributors
 * NA
 
-**Full Changelog**: https://github.com/camaraproject/DeviceStatus/compare/v0.5.0...r0.6
+**Full Changelog**: https://github.com/camaraproject/DeviceStatus/compare/v0.5.1...r0.6
 
 
 # v0.5.1
