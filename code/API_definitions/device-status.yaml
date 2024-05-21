@@ -107,7 +107,7 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/device-status/v0"
+  - url: "{apiRoot}/device-status/v0.6alpha1"
     variables:
       apiRoot:
         default: http://localhost:9091
