@@ -11,7 +11,6 @@
 ## Please note:
 - This release contains an alpha version of the API, it should be considered as a draft.
 - There are bug fixes to be expected and incompatible changes in upcoming versions.
-- The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
 
 ## Device Status - v0.6.0-alpha.1
 - API definition **with inline documentation**: 
