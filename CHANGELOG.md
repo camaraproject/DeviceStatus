@@ -9,7 +9,7 @@
 
 # r0.6  
 ## Please note:
-- This is an alpha version, it should be considered as a draft.
+- This release contains an alpha version of the API, it should be considered as a draft.
 - There are bug fixes to be expected and incompatible changes in upcoming versions.
 - The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
 
