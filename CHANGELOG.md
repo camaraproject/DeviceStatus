@@ -1,20 +1,56 @@
 # Changelog DeviceStatus
 ## Table of Contents
+- [r0.6](#r06)
 - [v0.5.1](#v051)
 - [v0.5.0](#v050)
 - [v0.5.0-rc](#v050-rc)
 - [v0.4.1](#v041)
 - [v0.2.0](#v020)
 
+# r0.6  
+## Please note:
+- This release contains an alpha version of the API, it should be considered as a draft.
+- There are bug fixes to be expected and incompatible changes in upcoming versions.
+
+## Device Status - v0.6.0-alpha.1
+- API definition **with inline documentation**: 
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.6/code/API_definitions/device-status.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.6/code/API_definitions/device-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.6/code/API_definitions/device-status.yaml)
+### Main Changes
+* Endpoints renamed 
+* New response parameter lastStatusTime
+
+### Added
+* Addition of "lastStatusTime" Field by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/146
+* include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
+
+### Changed
+* Change endpoint names to comply with guideline by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/131
+* renaming "EventType"-components to be more clear & update component descriptions by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/141
+* Make '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/144
+
+### Fixed
+* NA
+
+### Removed
+* NA
+  
+## New Contributors
+* NA
+
+**Full Changelog**: https://github.com/camaraproject/DeviceStatus/compare/v0.5.1...r0.6
+
+
 # v0.5.1
-**This is a bugfix release for the third alpha version of the CAMARA DeviceStatus API**
+**This is a bugfix release for the third initial version of the CAMARA DeviceStatus API**
 - API definition **with inline documentation**:
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.5.1/code/API_definitions/device-status.yaml)
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.1/code/API_definitions/device-status.yaml&nocors)
   - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.1/code/API_definitions/device-status.yaml)
 
 ## Please note:
-- This is an alpha version, it should be considered as a draft.
+- This is an initial version, it should be considered as a draft.
 - There are bug fixes to be expected and incompatible changes in upcoming versions.
 - The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
 
@@ -45,7 +81,7 @@
 
 
 # v0.5.0
-**This is the third alpha version of the CAMARA DeviceStatus API**
+**This is the third initial version of the CAMARA DeviceStatus API**
 - API definition **with inline documentation**:
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.5.0/code/API_definitions/device-status.yaml)
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.0/code/API_definitions/device-status.yaml&nocors)
@@ -53,7 +89,7 @@
 
 ## Please note:
 - **This release contains significant changes compared to v0.4.1, and it is not backward compatible**
-- This is an alpha version, it should be considered as a draft.
+- This is an initial version, it should be considered as a draft.
 - There are bug fixes to be expected and incompatible changes in upcoming versions.
 - The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments.
 
@@ -91,7 +127,7 @@
 
 
 # v0.5.0-rc
-**This is the release candidate of v0.5.0 - containing the upcoming 3rd alpha version of the DeviceStatus API**
+**This is the release candidate of v0.5.0 - containing the upcoming 3rd initial version of the DeviceStatus API**
 - API definition **with inline documentation**:
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.5.0-rc/code/API_definitions/device-status.yaml)
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.5.0-rc/code/API_definitions/device-status.yaml&nocors)
