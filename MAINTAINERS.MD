@@ -1,13 +1,13 @@
-| Org                    | Name                                                |
-| -----------------------| ----------------------------------------------------|
-| Deutsche Telekom AG | Noel Wirzius |
-| Deutsche Telekom AG | Akos Hunyadi |
-| Orange | Sylvain Morel |
-| Orange| Ludovic Robert|
-| Telefonica | Jesus Pena |
-| Telefonica | Fernando Prado |
-| Vodafone | Eric Murray |
-| Vodafone| Sachin Kumar |
-| Ericsson | Joachim Dahlgren |
-| Verizon/5GFF | Mahesh Chapalamadugu |
-| Verizon/5GFF | Syed Rehman |
+| Org                    | Name                    | GitHub Username            |
+| -----------------------| ------------------------|----------------------------|
+| Deutsche Telekom AG | Noel Wirzius | NoelWirzius |
+| Deutsche Telekom AG | Akos Hunyadi | akoshunyadi |
+| Orange | Sylvain Morel | SylMOREL |
+| Orange| Ludovic Robert| bigludo7 |
+| Telefonica | Jesus Pena | jpengar |
+| Telefonica | Fernando Prado | fernandopradocabrillo |
+| Vodafone | Eric Murray | eric-murray |
+| Vodafone| Sachin Kumar | sachinvodafone |
+| Ericsson | Joachim Dahlgren | JoachimDahlgren |
+| Verizon/5GFF | Mahesh Chapalamadugu | maheshc01 |
+| Verizon/5GFF | Syed Rehman | SyeddR |
