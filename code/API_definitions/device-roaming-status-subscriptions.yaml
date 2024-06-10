@@ -2,12 +2,12 @@ openapi: 3.0.3
 info:
   title: Device Roaming Status Subscriptions
   description: |
-    This API provides the customer with the ability to subscribe to Reachability status events.
+    This API provides the customer with the ability to subscribe to Roaming status events.
 
     # Introduction
 
     ## Roaming Status
-    API consumer is able to be notified whether the roaming status of a certain user device has changed. 
+    API consumer is able to be notified whether the roaming status of a certain user device has changed.
     This capability is provided via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
 
