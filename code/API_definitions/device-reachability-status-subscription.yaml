@@ -25,7 +25,7 @@ info:
     These endpoints allow to manage event subscription on reachability device status event.
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows CloudEvents specification.
 
-    It is mandatory in the subscription to provide the event `type` subscribed are several are managed in this API.
+    When subscribing, it is mandatory to provide the event `type` you are subscribing to, as multiple subscription-types are managed by this API.
 
     Following event ``type`` are managed for this API:
       - ``org.camaraproject.reachability-status-subscriptions.v0.reachability-data``: Event triggered when the device is connected to the network for Data usage.

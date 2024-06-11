@@ -25,7 +25,7 @@ info:
     These endpoints allow to manage event subscription on roaming device status event.
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows CloudEvents specification.
 
-    It is mandatory in the subscription to provide the event `type` subscribed are several are managed in this API.
+    When subscribing, it is mandatory to provide the event `type` you are subscribing to, as multiple subscription-types are managed by this API.
 
     Following event ``type`` are managed for this API:
       - ``org.camaraproject.roaming-status-subscriptions.v0.roaming-status`` - Event triggered when the device switch from roaming ON to roaming OFF and conversely
@@ -42,7 +42,7 @@ info:
 
     ### Notifications callback
 
-    The  `notifications` callback describes the format of event notifications and expected responses to the messages sent when the event occurs. As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
+    The `notifications` callback describes the format of event notifications and expected responses to the messages sent when the event occurs. As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
 
     **WARNING**: This callback endpoint must be exposed and reachable on the listener side under `notificationUrl` defined in the `webhook` attribute.
 
@@ -77,8 +77,8 @@ paths:
     post:
       tags:
         - Device roaming status subscription
-      summary: "Create a device roaming status event subscription for a device"
-      description: Create a device roaming status event subscription for a device
+      summary: "Create a roaming status event subscription for a device"
+      description: Create a roaming status event subscription for a device
       operationId: createDeviceRoamingStatusSubscription
       parameters:
         - $ref: '#/components/parameters/x-correlator'
@@ -210,7 +210,7 @@ paths:
     get:
       tags:
         - Device roaming status subscription
-      summary: "Retrieve a device roaming status event subscription for a device"
+      summary: "Retrieve a roaming status event subscription for a device"
       operationId: retrieveSubscription
       description: Retrieve a given subscription by ID
       security:
@@ -244,7 +244,7 @@ paths:
     delete:
       tags:
         - Device roaming status subscription
-      summary: "Delete a device roaming status event subscription for a device"
+      summary: "Delete a roaming status event subscription for a device"
       operationId: deleteSubscription
       description: Delete a given subscription by ID
       security:
