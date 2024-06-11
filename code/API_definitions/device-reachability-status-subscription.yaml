@@ -74,7 +74,7 @@ paths:
   /subscriptions:
     post:
       tags:
-        - device reachability status subscription
+        - Device reachability status subscription
       summary: "Create a device reachability status event subscription for a device"
       description: Create a device reachability status event subscription for a device
       operationId: createDeviceReachabilityStatusSubscription
@@ -164,7 +164,7 @@ paths:
           $ref: "#/components/responses/Generic503"
     get:
       tags:
-        - device reachability status subscription
+        - Device reachability status subscription
       summary: "Retrieve a list of device reachability status event subscription"
       description: Retrieve a list of device reachability status event subscription(s)
       operationId: retrieveSubscriptionList
@@ -199,7 +199,7 @@ paths:
   /subscriptions/{subscriptionId}:
     get:
       tags:
-        - device reachability status subscription
+        - Device reachability status subscription
       summary: "Retrieve a device reachability status event subscription for a device"
       operationId: retrieveSubscription
       description: Retrieve a given subscription by ID
@@ -233,7 +233,7 @@ paths:
           $ref: "#/components/responses/Generic503"
     delete:
       tags:
-        - device reachability status subscription
+        - Device reachability status subscription
       summary: "Delete a device reachability status event subscription for a device"
       operationId: deleteSubscription
       description: Delete a given subscription by ID
@@ -295,12 +295,6 @@ components:
       schema:
         type: string
   schemas:
-
-    LastStatusTime:
-      description: Last time that the associated device reachability status/reachability was updated
-      type: string
-      format: date-time
-      example: "2024-02-20T10:41:38.657Z"
 
     Device:
       description: |
@@ -379,16 +373,6 @@ components:
       type: string
       format: ipv6
       example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
-
-    CountryCode:
-      description: The Mobile country code (MCC) as an geographic region identifier for the country and the dependent areas.
-      type: integer
-
-    CountryName:
-      description: The ISO 3166 ALPHA-2 country-codes of mapped to mobile country code(MCC). If there is mapping of one MCC to multiple countries, then we have list of countries. If there is no mapping of MCC to any country, then an empty array [] shall be returned..
-      type: array
-      items:
-        type: string
 
     ErrorInfo:
       type: object
