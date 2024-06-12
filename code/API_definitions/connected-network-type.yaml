@@ -90,10 +90,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConnectedNetworkTypeResponse"
               examples:
-                Connected-to-4G:
+                Connected-to-4GLTE:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
-                    connectedNetworkType: 4G
+                    connectedNetworkType: 4GLTE
                 Connected-To-5GNSA:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
