@@ -173,8 +173,8 @@ components:
         - 5GSA
         - NON3GPP4G
         - NON3GPP5G
-        - NOT-CONNECTED
-        
+        - NOT_CONNECTED
+
     Device:
       description: |
         End-user equipment able to connect to a mobile network. Examples of devices include smartphones or IoT sensors/actuators.
