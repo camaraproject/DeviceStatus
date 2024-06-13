@@ -2,8 +2,7 @@ openapi: 3.0.3
 info:
   title: Device Reachability Status Retrieval
   description: |
-    This API provides the customer with the ability to query device:
-      - Reachability status
+    This API provides the customer with the ability to query device reachability status (Data or SMS)
 
     # Introduction
 
@@ -29,7 +28,7 @@ info:
 
     ## Device Reachability situation
 
-    The endpoint `POST /retrieve-reachability-status` allows to get current connectivity status information synchronously.
+    The endpoint `POST /retrieve` allows to get current reachability status information synchronously for a device.
 
 
     ## Further info and support
@@ -54,15 +53,15 @@ servers:
         default: http://localhost:9091
         description: API root
 tags:
-  - name: Device reachability status
-    description: Operations to get the current reachability status of a device
+  - name: Reachability status retrieval
+    description: Retrieve the reachability status of a device
 paths:
-  /retrieve-reachability-status:
+  /retrieve:
     post:
       tags:
-        - Device reachability status
+        - Reachability status retrieval
       summary: "Get the current reachability status information"
-      description: Get the current reachability status information
+      description: Get the current reachability status information for a device.
       operationId: getReachabilityStatus
       parameters:
         - $ref: '#/components/parameters/x-correlator'
@@ -239,8 +238,6 @@ components:
       properties:
         device:
           $ref: "#/components/schemas/Device"
-      required:
-        - device
 
     ErrorInfo:
       type: object
@@ -321,11 +318,6 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           examples:
-            NotFound:
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: "The specified resource is not found"
             DeviceIdentifierNotFound:
               value:
                 status: 404
@@ -369,6 +361,11 @@ components:
                 status: 422
                 code: DEVICE_NOT_APPLICABLE
                 message: Service not applicable to the device
+            NetworkIssueToRetrieveReacabilityStatus:
+              value:
+                status: 422
+                code: DEVICE_REACHABILITY_STATUS.UNABLE_TO_PROVIDE_REACHABILITY_STATUS
+                message: Network issue - Unable to provide reachability status
     Generic500:
       description: Server error
       headers:
