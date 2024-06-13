@@ -1,9 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Device Roaming Status Retrieval
+  title: Device Roaming Status
   description: |
-    This API provides the customer with the ability to query device:
-      - Roaming Status
+    This API provides the customer with the ability to query device roaming Status
 
     # Introduction
 
@@ -36,7 +35,7 @@ info:
 
     ## Device roaming situation
 
-    The endpoint `POST /retrieve-roaming-status` allows to get roaming status and country information (if device in roaming situation) synchronously.
+    The endpoint `POST /retrieve` allows to get roaming status and country information (if device in roaming situation) synchronously.
 
     ## Further info and support
 
@@ -54,22 +53,22 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/roaming-retrieval/v0"
+  - url: "{apiRoot}/device-roaming-status/v0"
     variables:
       apiRoot:
         default: http://localhost:9091
         description: API root
 
 tags:
-  - name: Device roaming status
+  - name: Roaming status retrieval
     description: Operation to get device roaming status and country information (if roaming) synchronously
 
 
 paths:
-  /retrieve-roaming-status:
+  /retrieve:
     post:
       tags:
-        - Device roaming status
+        - Roaming status retrieval
       summary: "Get the current roaming status and the country information"
       description: Get the current roaming status and the country information
       operationId: getRoamingStatus
@@ -77,7 +76,7 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - roaming-retrieval:read
+            - device-roaming-status:read
       requestBody:
         content:
           application/json:
@@ -393,6 +392,11 @@ components:
                 status: 422
                 code: DEVICE_NOT_APPLICABLE
                 message: Service not applicable to the device
+            NetworkIssueToRetrieveRoamingStatus:
+              value:
+                status: 422
+                code: DEVICE_ROAMING_STATUS.UNABLE_TO_PROVIDE_ROAMING_STATUS
+                message: Network issue - Unable to provide roaming status
     Generic500:
       description: Server error
       headers:
