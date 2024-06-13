@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Device Reachability Status Retrieval
+  title: Device Reachability Status
   description: |
     This API provides the customer with the ability to query device reachability status (Data or SMS)
 
@@ -47,7 +47,7 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/reachability-retrieval/v0"
+  - url: "{apiRoot}/device-reachability-status/v0"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -67,7 +67,7 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - reachability-retrieval:read
+            - device-reachability-status:read
       requestBody:
         content:
           application/json:
@@ -361,7 +361,7 @@ components:
                 status: 422
                 code: DEVICE_NOT_APPLICABLE
                 message: Service not applicable to the device
-            NetworkIssueToRetrieveReacabilityStatus:
+            NetworkIssueToRetrieveReachabilityStatus:
               value:
                 status: 422
                 code: DEVICE_REACHABILITY_STATUS.UNABLE_TO_PROVIDE_REACHABILITY_STATUS
