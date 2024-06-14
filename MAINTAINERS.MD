@@ -1,6 +1,5 @@
 | Org                 | Name                 | GitHub Username       |
 |---------------------|----------------------|-----------------------|
-| Deutsche Telekom AG | Noel Wirzius         | NoelWirzius           |
 | Deutsche Telekom AG | Akos Hunyadi         | akoshunyadi           |
 | Deutsche Telekom AG | Maximilian Laue      | maxl2287              |
 | Orange              | Sylvain Morel        | SylMOREL              |
