@@ -16,6 +16,8 @@ info:
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
 
     * **Connected Network Type**: Network Type is intended to provide insight to connected network's capabilities from standards perspective. Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
+       - `2G`: if device is connected to the 2G network
+       - `3G`: if device is connected to the 3G network
        - `4GLTE`: if device is connected to the 4G network
        - `5GNSA`: if device's is connected to the 4G network but using 5G New Radio (NR) capability
        - `5GSA`: if device is connected to the 5G network
@@ -32,7 +34,7 @@ info:
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows CloudEvents specification.
 
     **Supported Event Types:**
-      - `org.camaraproject.connected-network-type.v0.network-type-changed`: This event is triggered when the connected network type of the device changes.
+      - `org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed`: This event is triggered when the connected network type of the device changes.
       
     **Notification Callbacks:**
 
@@ -105,8 +107,8 @@ paths:
                     schema:
                       $ref: "#/components/schemas/CloudEvent"
                     examples:
-                      subscription-ends:
-                        $ref: "#/components/examples/SUBSCRIPTION_ENDS"
+                      network-type-changed:
+                        $ref: "#/components/examples/NETWORK_TYPE_CHANGED"
               responses:
                 "204":
                   description: Successful notification
@@ -437,6 +439,18 @@ components:
       example: "c8974e592c2fa383d4a3960714"
       description: "OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken"
 
+    ConnectedNetworkType:
+      type: string
+      description: Network Type is intended to provide insight to connected network's capabilities from standards perspective. Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
+      enum:
+        - 2G
+        - 3G
+        - 4GLTE
+        - 5GNSA
+        - 5GSA
+        - NON3GPP4G
+        - NON3GPP5G
+    
     SubscriptionDetail:
       description: The detail of the requested event subscription
       type: object
@@ -454,7 +468,7 @@ components:
       description: |
         network-type-changed - Event triggered when the connected network type of the device changes.
       enum:
-        - org.camaraproject.connected-network-type.v0.network-type-changed
+        - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
 
     SubscriptionEventType:
       type: string
@@ -462,7 +476,7 @@ components:
         network-type-changed - Event triggered when the connected network type of the device changes.
 
       enum:
-        - org.camaraproject.connected-network-type.v0.network-type-changed
+        - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
 
     SubscriptionInfo:
       description: Represents a connected network type of the device subscription.
@@ -535,7 +549,7 @@ components:
       discriminator:
         propertyName: "type"
         mapping:
-          org.camaraproject.connected-network-type.v0.network-type-changed: "#/components/schemas/EventNetworkTypeChange"
+          org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed: "#/components/schemas/EventNetworkTypeChange"
 
     Source:
       type: string
@@ -573,16 +587,20 @@ components:
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/BasicDeviceEventData"
+              $ref: "#/components/schemas/EventNetworkTypeChangeData"
 
-    BasicDeviceEventData:
-      description: Event detail structure for basic device events
+    EventNetworkTypeChangeData:
+      description: Event detail structure for network type changed data events
       type: object
       required:
         - device
+        - ConnectedNetworkType
+        - SubscriptionId
       properties:
         device:
           $ref: "#/components/schemas/Device"
+        connectedNetworkType:
+          $ref: "#/components/schemas/ConnectedNetworkType"
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
 
@@ -685,11 +703,12 @@ components:
       value:
         id: "123658"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.connected-network-type.v0.network-type-changed
+        type: org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
         specversion: "1.0"
         datacontenttype: application/json
         data:
           device:
             phoneNumber: +123456789
+          ConnectedNetworkType: 5GNSA
           subscriptionId: qs15-h556-rt89-1298
         time: 2024-03-22T05:40:23.682Z
