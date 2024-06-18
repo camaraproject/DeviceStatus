@@ -37,9 +37,6 @@ info:
     Following event ``type`` are managed for this API:
       - ``org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed``: This event is triggered when the connected network type of the device changes.
 
-      - ``org.camaraproject.geofencing-subscriptions.v0.area-left``     - Event triggered when the device leaves the given area
-
-
 
 
     ### Notification callback
@@ -48,7 +45,7 @@ info:
     As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
 
     _**WARNING**: This callback endpoint must be exposed on the consumer side as `POST /{$request.body#/sink}`.
-      Developers may provide a callback URL on which notifications regarding geofencing can be received from the service provider.
+      Developers may provide a callback URL on which notifications regarding connected network type can be received from the service provider.
       If an event occurs the application will send events to the provided webhook - 'sink'._
 
     # Further info and support
