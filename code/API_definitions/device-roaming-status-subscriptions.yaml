@@ -38,7 +38,7 @@ info:
 
     Note: Additionally to these list, ``org.camaraproject.roaming-status-subscriptions.v0.subscription-ends`` notification `type` is sent when the subscription ends.
     This notification does not require dedicated subscription.
-    
+
     It is used when:
       - the subscription expire time (optionally set by the requester) has been reached
       - the maximum number of subscription events (optionally set by the requester) has been reached
@@ -46,7 +46,7 @@ info:
       - the API server has to stop sending notification prematurely
 
     ### Notifications callback
-    
+
     This endpoint describes the event notification received on subscription listener side when the event occurred.
     As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
 
