@@ -25,7 +25,7 @@ info:
     These endpoints allow to manage event subscription on reachability device status event.
     The CAMARA subscription model is detailed in the CAMARA API design guideline document and follows CloudEvents specification.
 
-    When subscribing, it is mandatory to provide the event `type` you are subscribing to, as multiple subscription-types are managed by this API.
+    When subscribing, it is mandatory to provide the event `types` you are subscribing to, as multiple subscription-types are managed by this API.
 
     Following event ``types`` are managed for this API:
       - ``org.camaraproject.reachability-status-subscriptions.v0.reachability-data``: Event triggered when the device is connected to the network for Data usage.
@@ -50,7 +50,7 @@ info:
 
     _**WARNING**: This callback endpoint must be exposed on the consumer side as `POST /{$request.body#/sink}`.
       Developers may provide a callback URL on which notifications regarding reachability-status can be received from the service provider.
-      If an event occurs the application will send events to the provided webhook - 'sink'._
+      If an event occurs the application will send events to the provided webhook - `sink`._
 
     ## Further info and support
 
@@ -117,6 +117,12 @@ paths:
                     schema:
                       $ref: "#/components/schemas/CloudEvent"
                     examples:
+                      connectivity-data:
+                        $ref: "#/components/examples/CONNECTIVITY_DATA"
+                      connectivity-sms:
+                        $ref: "#/components/examples/CONNECTIVITY_SMS"
+                      connectivity-disconnected:
+                        $ref: "#/components/examples/CONNECTIVITY_DISCONNECTED"
                       subscription-ends:
                         $ref: "#/components/examples/SUBSCRIPTION_ENDS"
               responses:
@@ -1210,6 +1216,45 @@ components:
                 code: INVALID_ARGUMENT
                 message: "Expected property is missing: subscriptionId"
   examples:
+    CONNECTIVITY_DATA:
+      value:
+        id: "123656"
+        source: https://notificationSendServer12.supertelco.com
+        type: org.camaraproject.device-status.v0.connectivity-data
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          device:
+            phoneNumber: +123456787
+          subscriptionId: qs15-h556-rt89-1298
+        time: 2023-01-19T13:18:23.682Z
+
+    CONNECTIVITY_SMS:
+      value:
+        id: "123656"
+        source: https://notificationSendServer12.supertelco.com
+        type: org.camaraproject.device-status.v0.connectivity-sms
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          device:
+            phoneNumber: +123456787
+          subscriptionId: qs15-h556-rt89-1298
+        time: 2023-01-19T13:18:23.682Z
+
+    CONNECTIVITY_DISCONNECTED:
+      value:
+        id: "123656"
+        source: https://notificationSendServer12.supertelco.com
+        type: org.camaraproject.device-status.v0.connectivity-disconnected
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          device:
+            phoneNumber: +123456787
+          subscriptionId: qs15-h556-rt89-1298
+        time: 2023-01-19T13:18:23.682Z
+
     SUBSCRIPTION_ENDS:
       value:
         id: "123658"
