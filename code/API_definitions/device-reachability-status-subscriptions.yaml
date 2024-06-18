@@ -1220,7 +1220,7 @@ components:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.device-status.v0.connectivity-data
+        type: org.camaraproject.reachability-status-subscriptions.v0.reachability-data
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -1233,7 +1233,7 @@ components:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.device-status.v0.connectivity-sms
+        type: org.camaraproject.reachability-status-subscriptions.v0.reachability-sms
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -1246,7 +1246,7 @@ components:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.device-status.v0.connectivity-disconnected
+        type: org.camaraproject.reachability-status-subscriptions.v0.reachability-disconnected
         specversion: "1.0"
         datacontenttype: application/json
         data:
