@@ -1,9 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Device Reachability Status Retrieval
+  title: Device Reachability Status
   description: |
-    This API provides the customer with the ability to query device:
-      - Reachability status
+    This API provides the customer with the ability to query device reachability status.
 
     # Introduction
 
@@ -11,7 +10,7 @@ info:
 
     API consumer is able to verify whether a certain user device is reachable from the network via data- or sms-usage.
 
-    # Relevant terms and definitions
+    ## Relevant terms and definitions
 
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
@@ -23,14 +22,21 @@ info:
 
     * **LastStatusTime** : This property specifies the time when the status was last updated. Its presence in the response indicates the freshness of the information, while its absence implies the information may be outdated or its freshness is uncertain.
 
-    # API Functionality
+    ## API Functionality
 
     The API exposes following capabilities:
 
-    ## Device Reachability situation
+    ### Device Reachability situation
 
-    The endpoint `POST /retrieve-reachability-status` allows to get current connectivity status information synchronously.
+    The endpoint `POST /retrieve` allows to get current connectivity status information synchronously.
 
+    ## Authorization and authentication
+
+    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
     ## Further info and support
 
@@ -48,7 +54,7 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/reachability-retrieval/v0"
+  - url: "{apiRoot}/device-reachability-status/v0"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -57,7 +63,7 @@ tags:
   - name: Device reachability status
     description: Operations to get the current reachability status of a device
 paths:
-  /retrieve-reachability-status:
+  /retrieve:
     post:
       tags:
         - Device reachability status
@@ -68,7 +74,7 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - reachability-retrieval:read
+            - device-reachability-status:read
       requestBody:
         content:
           application/json:
@@ -321,11 +327,6 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           examples:
-            NotFound:
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: "The specified resource is not found"
             DeviceIdentifierNotFound:
               value:
                 status: 404
@@ -369,6 +370,11 @@ components:
                 status: 422
                 code: DEVICE_NOT_APPLICABLE
                 message: Service not applicable to the device
+            NetworkIssueToRetrieveReacabilityStatus:
+              value:
+                status: 422
+                code: DEVICE_REACHABILITY_STATUS.UNABLE_TO_PROVIDE_REACHABILITY_STATUS
+                message: Network issue - Unable to provide reachability status
     Generic500:
       description: Server error
       headers:
