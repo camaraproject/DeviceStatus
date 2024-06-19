@@ -18,7 +18,7 @@ info:
       - For service delivery reasons, to ensure that the customer has access to particular service, and will not incur roaming charges in accessing them
 
 
-    # Relevant terms and definitions
+    ## Relevant terms and definitions
 
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
@@ -29,13 +29,22 @@ info:
 
     * **LastStatusTime** : This property specifies the time when the status was last updated. Its presence in the response indicates the freshness of the information, while its absence implies the information may be outdated or its freshness is uncertain.
 
-    # API Functionality
+    ## API Functionality
 
     The API exposes following capabilities:
 
     ## Device roaming situation
 
     The endpoint `POST /retrieve` allows to get roaming status and country information (if device in roaming situation) synchronously.
+
+    ## Authorization and authentication
+
+    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
+
 
     ## Further info and support
 
@@ -62,8 +71,6 @@ servers:
 tags:
   - name: Roaming status retrieval
     description: Operation to get device roaming status and country information (if roaming) synchronously
-
-
 paths:
   /retrieve:
     post:
@@ -313,7 +320,7 @@ components:
       description: |
         Client does not have sufficient permission.
         In addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:
-          - Phone number cannot be deducted from access token context.(`{"code": "INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
+          - Phone number cannot be deducted from access token context.(`{"code": "NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
         X-Correlator:
           description: Correlation id for the different services
