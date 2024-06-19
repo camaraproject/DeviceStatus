@@ -10,7 +10,6 @@ info:
     API consumer is able to be notified whether the reachability status of a certain user device has changed to either data- or sms-usage.
     This capability is provided via a subscription  request - in this case the reachability situation is part of the event notification, which is sent back to the event subscriber when reachability situation has changed.
 
-
     # Relevant terms and definitions
 
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
@@ -51,6 +50,22 @@ info:
     _**WARNING**: This callback endpoint must be exposed on the consumer side as `POST /{$request.body#/sink}`.
       Developers may provide a callback URL on which notifications regarding reachability-status can be received from the service provider.
       If an event occurs the application will send events to the provided webhook - `sink`._
+
+    ### Authorization and authentication
+  
+    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
+
+    ### Authorization and authentication
+
+    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
     ## Further info and support
 

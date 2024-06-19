@@ -10,7 +10,6 @@ info:
     API consumer is able to be notified whether the roaming status of a certain user device has changed.
     This capability is provided via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
-
     # Relevant terms and definitions
 
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
