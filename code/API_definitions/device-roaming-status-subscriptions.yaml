@@ -717,9 +717,11 @@ components:
       description: |
         NETWORK_TERMINATED - API server stopped sending notification
         SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+        SUBSCRIPTION_DELETED - Subscription was deleted by the requester
       enum:
         - NETWORK_TERMINATED
         - SUBSCRIPTION_EXPIRED
+        - SUBSCRIPTION_DELETED
 
   responses:
     Generic400:
