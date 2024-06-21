@@ -27,13 +27,13 @@ info:
     When subscribing, it is mandatory to provide the event `types` you are subscribing to, as multiple subscription-types are managed by this API.
 
     Following event ``types`` are managed for this API:
-      - ``org.camaraproject.reachability-status-subscriptions.v0.reachability-data``: Event triggered when the device is connected to the network for Data usage.
+      - ``org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data``: Event triggered when the device is connected to the network for Data usage.
 
-      - ``org.camaraproject.reachability-status-subscriptions.v0.reachability-sms``: Event triggered when the device is connected to the network for SMS usage
+      - ``org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms``: Event triggered when the device is connected to the network for SMS usage
 
-      - ``org.camaraproject.reachability-status-subscriptions.v0.reachability-disconnected``: Event triggered when the device is not connected.
+      - ``org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected``: Event triggered when the device is not connected.
 
-    Note: Additionally to these list, ``org.camaraproject.reachability-status-subscriptions.v0.subscription-ends`` notification `type` is sent when the subscription ends.
+    Note: Additionally to these list, ``org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends`` notification `type` is sent when the subscription ends.
     This notification does not require dedicated subscription.
 
     It is used when:
@@ -83,7 +83,7 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/reachability-status-subscriptions/v0"
+  - url: "{apiRoot}/device-reachability-status-subscriptions/v0"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -105,9 +105,9 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - device-reachability-status-subscriptions:org.camaraproject.reachability-status-subscriptions.v0.reachability-data:create
-            - device-reachability-status-subscriptions:org.camaraproject.reachability-status-subscriptions.v0.reachability-sms:create
-            - device-reachability-status-subscriptions:org.camaraproject.reachability-status-subscriptions.v0.reachability-disconnected:create
+            - device-reachability-status-subscriptions:org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data:create
+            - device-reachability-status-subscriptions:org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms:create
+            - device-reachability-status-subscriptions:org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected:create
       requestBody:
         content:
           application/json:
@@ -681,10 +681,10 @@ components:
 
         subscription-ends - Event triggered when the subscription is terminated
       enum:
-        - org.camaraproject.reachability-status-subscriptions.v0.reachability-data
-        - org.camaraproject.reachability-status-subscriptions.v0.reachability-sms
-        - org.camaraproject.reachability-status-subscriptions.v0.reachability-disconnected
-        - org.camaraproject.reachability-status-subscriptions.v0.subscription-ends
+        - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data
+        - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms
+        - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected
+        - org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends
 
     SubscriptionEventType:
       type: string
@@ -696,9 +696,9 @@ components:
         reachability-disconnected - Event triggered when the device is not connected.
 
       enum:
-        - org.camaraproject.reachability-status-subscriptions.v0.reachability-data
-        - org.camaraproject.reachability-status-subscriptions.v0.reachability-sms
-        - org.camaraproject.reachability-status-subscriptions.v0.reachability-disconnected
+        - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data
+        - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms
+        - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected
 
     SubscriptionAsync:
       description: Response for a device reachability status operation managed asynchronously (Creation or Deletion)
@@ -749,10 +749,10 @@ components:
       discriminator:
         propertyName: "type"
         mapping:
-          org.camaraproject.reachability-status-subscriptions.v0.reachability-data: "#/components/schemas/EventReachabilityData"
-          org.camaraproject.reachability-status-subscriptions.v0.reachability-sms: "#/components/schemas/EventReachabilitySms"
-          org.camaraproject.reachability-status-subscriptions.v0.reachability-disconnected: "#/components/schemas/EventReachabilityDisconnected"
-          org.camaraproject.reachability-status-subscriptions.v0.subscription-ends: "#/components/schemas/EventSubscriptionEnds"
+          org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data: "#/components/schemas/EventReachabilityData"
+          org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms: "#/components/schemas/EventReachabilitySms"
+          org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected: "#/components/schemas/EventReachabilityDisconnected"
+          org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends: "#/components/schemas/EventSubscriptionEnds"
 
     Source:
       type: string
@@ -831,7 +831,7 @@ components:
           $ref: "#/components/schemas/SubscriptionId"
 
     SubscriptionEnds:
-      description: Event detail structure for org.camaraproject.reachability-status-subscriptions.v0.subscription-ends event
+      description: Event detail structure for org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends event
       type: object
       required:
         - device
@@ -1235,7 +1235,7 @@ components:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.reachability-status-subscriptions.v0.reachability-data
+        type: org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -1248,7 +1248,7 @@ components:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.reachability-status-subscriptions.v0.reachability-sms
+        type: org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -1261,7 +1261,7 @@ components:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.reachability-status-subscriptions.v0.reachability-disconnected
+        type: org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected
         specversion: "1.0"
         datacontenttype: application/json
         data:
@@ -1274,7 +1274,7 @@ components:
       value:
         id: "123658"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.reachability-status-subscriptions.v0.subscription-ends
+        type: org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends
         specversion: "1.0"
         datacontenttype: application/json
         data:
