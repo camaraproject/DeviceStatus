@@ -38,7 +38,11 @@ info:
 
     Note: Additionally to these list, ``org.camaraproject.roaming-status-subscriptions.v0.subscription-ends`` notification `type` is sent when the subscription ends.
     This notification does not require dedicated subscription.
-    It is used when the subscription expire time (optionally set by the requester) has been reached or if the API server has to stop sending notification prematurely.
+
+    It is used when:
+      - the subscription expire time (optionally by the requester) has been reached
+      - the subscription was deleted by the requester
+      - the API server has to stop sending notification prematurely.
 
     ### Notifications callback
 
