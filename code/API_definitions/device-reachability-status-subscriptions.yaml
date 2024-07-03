@@ -1294,7 +1294,7 @@ components:
         config:
           subscriptionDetail:
             device:
-              phoneNumber: +123456789
+              phoneNumber: "+123456789"
           subscriptionExpireTime: 2024-07-17T13:18:23.682Z
           subscriptionMaxEvents: 5
           initialEvent: true
@@ -1312,7 +1312,7 @@ components:
         config:
           subscriptionDetail:
             device:
-              phoneNumber: +123456789
+              phoneNumber: "+123456789"
           subscriptionExpireTime: 2024-07-17T13:18:23.682Z
           subscriptionMaxEvents: 5
           initialEvent: true
@@ -1330,7 +1330,7 @@ components:
         config:
           subscriptionDetail:
             device:
-              phoneNumber: +123456789
+              phoneNumber: "+123456789"
           subscriptionExpireTime: 2024-07-17T13:18:23.682Z
           subscriptionMaxEvents: 5
           initialEvent: true
