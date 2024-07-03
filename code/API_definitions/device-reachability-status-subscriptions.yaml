@@ -36,7 +36,7 @@ info:
     Note: Additionally to these list, ``org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends`` notification `type` is sent when the subscription ends.
     This notification does not require dedicated subscription.
 
-    It is used when:
+    It is used in following cases:
       - the subscription expire time (optionally set by the requester) has been reached
       - the maximum number of subscription events (optionally set by the requester) has been reached
       - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
@@ -51,25 +51,17 @@ info:
       Developers may provide a callback URL on which notifications regarding reachability-status can be received from the service provider.
       If an event occurs the application will send events to the provided webhook - `sink`._
 
-    ### Authorization and authentication
-
-    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
-
-    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
-
-    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
-
-    ### Authorization and authentication
-
-    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
-
-    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
-
-    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
-
     ## Further info and support
 
     (FAQs will be added in a later version of the documentation)
+
+    # Authorization and authentication
+
+    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
   termsOfService: https://swagger.io/terms/
   contact:
@@ -132,12 +124,12 @@ paths:
                     schema:
                       $ref: "#/components/schemas/CloudEvent"
                     examples:
-                      connectivity-data:
-                        $ref: "#/components/examples/CONNECTIVITY_DATA"
-                      connectivity-sms:
-                        $ref: "#/components/examples/CONNECTIVITY_SMS"
-                      connectivity-disconnected:
-                        $ref: "#/components/examples/CONNECTIVITY_DISCONNECTED"
+                      reachability-data:
+                        $ref: "#/components/examples/REACHABILITY_DATA"
+                      reachability-sms:
+                        $ref: "#/components/examples/REACHABILITY_SMS"
+                      reachability-disconnected:
+                        $ref: "#/components/examples/REACHABILITY_DISCONNECTED"
                       subscription-ends:
                         $ref: "#/components/examples/SUBSCRIPTION_ENDS"
               responses:
@@ -1231,7 +1223,7 @@ components:
                 code: INVALID_ARGUMENT
                 message: "Expected property is missing: subscriptionId"
   examples:
-    CONNECTIVITY_DATA:
+    REACHABILITY_DATA:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
@@ -1244,7 +1236,7 @@ components:
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
-    CONNECTIVITY_SMS:
+    REACHABILITY_SMS:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
@@ -1257,7 +1249,7 @@ components:
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
 
-    CONNECTIVITY_DISCONNECTED:
+    REACHABILITY_DISCONNECTED:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
