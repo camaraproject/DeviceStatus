@@ -250,6 +250,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Subscription"
+              examples:
+                subscription-active:
+                  $ref: "#/components/examples/SUBSCRIPTION_ACTIVE"
+                subscription-activation-requested:
+                  $ref: "#/components/examples/SUBSCRIPTION_ACTIVATION_REQUESTED"
+                subscription-deleted:
+                  $ref: "#/components/examples/SUBSCRIPTION_DELETED"
+
         "400":
           $ref: "#/components/responses/SubscriptionIdRequired"
         "401":
@@ -1275,3 +1283,57 @@ components:
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: qs15-h556-rt89-1298
         time: 2024-03-22T05:40:23.682Z
+
+    SUBSCRIPTION_ACTIVE:
+      value:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: +123456789
+          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: 2024-07-03T21:12:02.871Z
+        expiresAt: 2024-07-03T21:12:02.871Z
+        status: ACTIVE
+
+    SUBSCRIPTION_ACTIVATION_REQUESTED:
+      value:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: +123456789
+          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: 2024-07-03T21:12:02.871Z
+        expiresAt: 2024-07-03T21:12:02.871Z
+        status: ACTIVATION_REQUESTED
+
+    SUBSCRIPTION_DELETED:
+      value:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: +123456789
+          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: 2024-07-03T21:12:02.871Z
+        expiresAt: 2024-07-03T21:12:02.871Z
+        status: DELETED
