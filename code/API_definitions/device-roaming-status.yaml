@@ -269,8 +269,6 @@ components:
       properties:
         device:
           $ref: "#/components/schemas/Device"
-      required:
-        - device
 
     ErrorInfo:
       type: object
