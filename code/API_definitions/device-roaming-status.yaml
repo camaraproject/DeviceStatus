@@ -284,8 +284,6 @@ components:
       properties:
         device:
           $ref: "#/components/schemas/Device"
-      required:
-        - device
 
     ErrorInfo:
       description: The error object used for error-cases.
