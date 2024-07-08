@@ -124,9 +124,9 @@ paths:
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
-          $ref: "#/components/responses/RoamingPermissionDenied403"
+          $ref: "#/components/responses/Generic403"
         "404":
-          $ref: "#/components/responses/RoamingNotFound404"
+          $ref: "#/components/responses/Generic404"
         "405":
           $ref: "#/components/responses/Generic405"
         "406":
@@ -342,11 +342,11 @@ components:
                 status: 401
                 code: AUTHENTICATION_REQUIRED
                 message: New authentication is required.
-    RoamingPermissionDenied403:
+    Generic403:
       description: |
         Client does not have sufficient permission.
         In addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:
-          - Phone number cannot be deducted from access token context.(`{"code": "DEVICE_ROAMING_STATUS.INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
+          - Phone number cannot be deducted from access token context.(`{"code": "3INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
         X-Correlator:
           description: Correlation id for the different services
@@ -369,7 +369,7 @@ components:
                 status: 403
                 code: INVALID_TOKEN_CONTEXT
                 message: "{{field}} is not consistent with access token."
-    RoamingNotFound404:
+    Generic404:
       description: Resource Not Found
       headers:
         x-correlator:
