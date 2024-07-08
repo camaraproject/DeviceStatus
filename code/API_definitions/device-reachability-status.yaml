@@ -263,6 +263,7 @@ components:
         - device
 
     ErrorInfo:
+      description: The error object used for error-cases.
       type: object
       required:
         - status
@@ -289,7 +290,7 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
-          example:
+          examples:
             GENERIC_400_INVALID_ARGUMENT:
               description: Invalid Argument. Generic Syntax Exception
               value:
@@ -305,7 +306,7 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
-          example:
+          examples:
             GENERIC_401_UNAUTHENTICATED:
               description: Request cannot be authenticated
               value:
