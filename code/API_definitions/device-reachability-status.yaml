@@ -255,6 +255,7 @@ components:
       example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
 
     RequestReachabilityStatus:
+      description: The request to retrieve the current roaming-status for the requested device.
       type: object
       properties:
         device:
