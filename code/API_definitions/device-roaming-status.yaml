@@ -465,6 +465,11 @@ components:
                 status: 422
                 code: UNABLE_TO_PROVIDE_ROAMING_STATUS
                 message: Network issue - Unable to provide roaming status
+            GENERIC_422_UNSUPPORTED_DEVICE_IDENTIFIERS:
+              value:
+                status: 422
+                code: UNSUPPORTED_DEVICE_IDENTIFIERS
+                message: None of the provided device identifiers is supported by the implementation
 
     Generic429:
       description: Too Many Requests
