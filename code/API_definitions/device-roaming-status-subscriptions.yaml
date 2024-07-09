@@ -77,7 +77,7 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/roaming-status-subscriptions/v0"
+  - url: "{apiRoot}/device-roaming-status-subscriptions/v0"
     variables:
       apiRoot:
         default: http://localhost:9091
