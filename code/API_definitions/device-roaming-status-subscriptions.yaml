@@ -10,6 +10,7 @@ info:
     API consumer is able to be notified whether the roaming status of a certain user device has changed.
     This capability is provided via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
+
     # Relevant terms and definitions
 
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
@@ -65,9 +66,6 @@ info:
 
     It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
-  termsOfService: https://swagger.io/terms/
-  contact:
-    email: project-email@sample.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -188,8 +186,6 @@ paths:
           $ref: "#/components/responses/CreateSubscription403"
         "409":
           $ref: "#/components/responses/Generic409"
-        "415":
-          $ref: "#/components/responses/Generic415"
         "422":
           $ref: "#/components/responses/CreateSubscription422"
         "429":
