@@ -1137,19 +1137,6 @@ components:
             status: 410
             code: GONE
             message: "The specified resource is no longer available at the requested address"
-    Generic415:
-      description: Unsupported Media Type
-      headers:
-        X-Correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 415
-            code: UNSUPPORTED_MEDIA_TYPE
-            message: "The specified media type is not supported"
     CreateSubscription422:
       description: Unprocessable Entity
       headers:
