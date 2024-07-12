@@ -42,6 +42,7 @@ info:
     It is used in following cases:
       - the subscription expire time (optionally set by the requester) has been reached
       - the maximum number of subscription events (optionally set by the requester) has been reached
+      - the subscription was deleted by the requester
       - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
       - the API server has to stop sending notification prematurely
 
@@ -907,9 +908,11 @@ components:
       description: |
         NETWORK_TERMINATED - API server stopped sending notification
         SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+        SUBSCRIPTION_DELETED - Subscription was deleted by the requester
       enum:
         - NETWORK_TERMINATED
         - SUBSCRIPTION_EXPIRED
+        - SUBSCRIPTION_DELETED
 
   responses:
     CreateSubscriptionBadRequest400:
