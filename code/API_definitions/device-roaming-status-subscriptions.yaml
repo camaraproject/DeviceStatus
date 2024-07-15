@@ -510,8 +510,6 @@ components:
       properties:
         device:
           $ref: "#/components/schemas/Device"
-      required:
-        - device
 
     Subscription:
       description: Represents a event-type subscription.
