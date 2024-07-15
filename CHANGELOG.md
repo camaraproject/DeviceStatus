@@ -20,19 +20,19 @@ The below sections record the changes for each API version in each release as fo
 ## Release Notes
 
 This release contains the definition and documentation of
-* device-roaming-status v0.6.0-rc1
-* device-roaming-status-subscriptions v0.6.0-rc1
-* device-reachability-status v0.6.0-rc1
-* device-reachability-status-subscriptions v0.6.0-rc1
+* device-roaming-status v0.6.0-rc.1
+* device-roaming-status-subscriptions v0.6.0-rc.1
+* device-reachability-status v0.6.0-rc.1
+* device-reachability-status-subscriptions v0.6.0-rc.1
 
 The API definition(s) are based on
 * Commonalities v0.4.0-rc.1
 * Identity and Consent Management v0.2.0-rc.1
 
 
-## device-roaming-status v0.6.0-rc1
+## device-roaming-status v0.6.0-rc.1
 
-**device-roaming-status v0.6.0-rc1 is a ... version. ...**
+**device-roaming-status v0.6.0-rc.1 is a ... version. ...**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status.yaml&nocors)
@@ -42,14 +42,18 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
+* Separate endpoint yamls proposal for direct API by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/152
+* Switch device structure to optional by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/179
+* `device-reachability-status` & `device-roaming-status`: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/183
+* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
 ### Fixed
 
 ### Removed
 
-## device-roaming-status-subscriptions v0.6.0-rc1
+## device-roaming-status-subscriptions v0.6.0-rc.1
 
-**device-roaming-status-subscriptions v0.6.0-rc1 is a ... version. ...**
+**device-roaming-status-subscriptions v0.6.0-rc.1 is a ... version. ...**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
@@ -59,14 +63,18 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
+* split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
+* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
+* Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
+* Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
 
 ### Fixed
 
 ### Removed
 
-## device-reachability-status v0.6.0-rc1
+## device-reachability-status v0.6.0-rc.1
 
-**device-reachability-status v0.6.0-rc1 is a ... version. ...**
+**device-reachability-status v0.6.0-rc.1 is a ... version. ...**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status.yaml&nocors)
@@ -76,14 +84,18 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
+* Separate endpoint yamls proposal for direct API by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/152
+* Switch device structure to optional by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/179
+* `device-reachability-status` & `device-roaming-status`: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/183
+* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
 ### Fixed
 
 ### Removed
 
-## device-reachability-status-subscriptions v0.6.0-rc1
+## device-reachability-status-subscriptions v0.6.0-rc.1
 
-**device-reachability-status-subscriptions v0.6.0-rc1 is a ... version. ...**
+**device-reachability-status-subscriptions v0.6.0-rc.1 is a ... version. ...**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
@@ -93,6 +105,11 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
+* split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
+* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
+* Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
+* Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
+
 
 ### Fixed
 
