@@ -20,25 +20,75 @@ The below sections record the changes for each API version in each release as fo
 ## Release Notes
 
 This release contains the definition and documentation of
-* API-name1 vx.y.z
-<!--* API-name2 vx.y.z - unchanged-->
-<!--In case the repository (and hence its release) contains multiple APIs, list them all here. Also mention if an API in the repository is unchanged. Note: There shall be no "wip" API version in the repository at the time of release.-->
+* device-roaming-status v0.6.0-rc1
+* device-roaming-status-subscriptions v0.6.0-rc1
+* device-reachability-status v0.6.0-rc1
+* device-reachability-status-subscriptions v0.6.0-rc1
 
-<!--For any API version, if known, and for public API versions, include the references to the related Commonalities and ICM versions as follows:-->
 The API definition(s) are based on
 * Commonalities vx.y.z
 * Identity and Consent Management vx.y.z
 
-<!--In case the repository contains multiple APIs, for each API version that changed in this release, create additional sections by copying and filling the below template (level 2 and 3 sections), replacing the API-name and API-version-x.y.z with actual API name and version.-->
 
-## API-name1 vx.y.z
+## device-roaming-status v0.6.0-rc1
 
-**API-name1 vx.y.z is a ... version. ...**
+**device-roaming-status v0.6.0-rc1 is a ... version. ...**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/API-name1-repo/r1.1/code/API_definitions/api-name1.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/API-name1-repo/r1.1/code/API_definitions/api-name1.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/API-name1-repo/blob/r1.1/code/API_definitions/api-name1.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.7/code/API_definitions/device-roaming-status.yaml)
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## device-roaming-status-subscriptions v0.6.0-rc1
+
+**device-roaming-status-subscriptions v0.6.0-rc1 is a ... version. ...**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.7/code/API_definitions/device-roaming-status-subscriptions.yaml)
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## device-reachability-status v0.6.0-rc1
+
+**device-reachability-status v0.6.0-rc1 is a ... version. ...**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.7/code/API_definitions/device-reachability-status.yaml)
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## device-reachability-status-subscriptions v0.6.0-rc1
+
+**device-reachability-status-subscriptions v0.6.0-rc1 is a ... version. ...**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.7/code/API_definitions/device-reachability-status-subscriptions.yaml)
 
 ### Added
 
