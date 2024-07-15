@@ -506,7 +506,7 @@ components:
       properties:
         device:
           $ref: "#/components/schemas/Device"
-  
+
     Subscription:
       description: Represents a event-type subscription.
       type: object
