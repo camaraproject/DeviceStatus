@@ -143,10 +143,6 @@ paths:
                   $ref: "#/components/responses/Generic401"
                 "403":
                   $ref: "#/components/responses/Generic403"
-                "410":
-                  $ref: "#/components/responses/Generic410"
-                "429":
-                  $ref: "#/components/responses/Generic429"
                 "500":
                   $ref: "#/components/responses/Generic500"
                 "503":
@@ -184,8 +180,6 @@ paths:
           $ref: "#/components/responses/Generic409"
         "422":
           $ref: "#/components/responses/CreateSubscription422"
-        "429":
-          $ref: "#/components/responses/Generic429"
         "500":
           $ref: "#/components/responses/Generic500"
         "503":
@@ -1023,50 +1017,49 @@ components:
             InvalidArgument:
               value:
                 status: 400
-                code: "INVALID_ARGUMENT"
-                message: "Client specified an invalid argument, request body or query param"
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param
             InvalidProtocol:
               value:
                 status: 400
-                code: "INVALID_PROTOCOL"
-                message: "Only HTTP is supported"
+                code: INVALID_PROTOCOL
+                message: Only HTTP is supported
             InvalidCredential:
               value:
                 status: 400
-                code: "INVALID_CREDENTIAL"
-                message: "Only Access token is supported"
+                code: INVALID_CREDENTIAL
+                message: Only Access token is supported
             InvalidToken:
               value:
                 status: 400
-                code: "INVALID_TOKEN"
-                message: "Only bearer token is supported"
+                code: INVALID_TOKEN
+                message: Only bearer token is supported
     Generic400:
-      description: Problem with the client request
+      description: Bad Request
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             status: 400
-            code: "INVALID_ARGUMENT"
-            message: "Client specified an invalid argument, request body or query param"
+            code: INVALID_ARGUMENT
+            message: Client specified an invalid argument, request body or query param
     Generic401:
       description: Authentication problem with the client request
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             status: 401
-            code: "UNAUTHENTICATED"
-            message: "Request not authenticated due to missing, invalid, or expired credentials"
-
+            code: UNAUTHENTICATED
+            message: Request not authenticated due to missing, invalid, or expired credentials.
     CreateSubscription403:
       description: Client does not have sufficient permission
       headers:
@@ -1080,55 +1073,15 @@ components:
             PermissionDenied:
               value:
                 status: 403
-                code: "PERMISSION_DENIED"
-                message: "Client does not have sufficient permissions to perform this action"
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action
             TokenMismatch:
               value:
                 status: 403
-                code: "SUBSCRIPTION_MISMATCH"
-                message: "Inconsistent access token for requested events subscription"
-
+                code: SUBSCRIPTION_MISMATCH
+                message: Inconsistent access token for requested events subscription
     Generic403:
-      description: Client does not have sufficient permission
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 403
-            code: "PERMISSION_DENIED"
-            message: "Client does not have sufficient permissions to perform this action"
-    Generic404:
-      description: Resource Not Found
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 404
-            code: NOT_FOUND
-            message: "The specified resource is not found"
-    Generic409:
-      description: Conflict
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 409
-            code: CONFLICT
-            message: "The specified resource is in a conflict"
-    Generic410:
-      description: Gone
+      description: Forbidden
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
@@ -1137,9 +1090,38 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            status: 410
-            code: GONE
-            message: "The specified resource is no longer available at the requested address"
+            status: 403
+            code: PERMISSION_DENIED
+            message: Client does not have sufficient permissions to perform this action
+    Generic404:
+      description: Not found
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_404_NOT_FOUND:
+              description: Resource is not found
+              value:
+                status: 404
+                code: NOT_FOUND
+                message: The specified resource is not found.
+    Generic409:
+      description: Conflict
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          example:
+            status: 409
+            code: CONFLICT
+            message: The specified resource is in a conflict
     CreateSubscription422:
       description: Unprocessable Entity
       headers:
@@ -1153,47 +1135,37 @@ components:
             PermissionDenied:
               value:
                 status: 422
-                code: "MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED"
-                message: "Multi event types subscription not managed"
-    Generic429:
-      description: Too Many Requests
+                code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
+                message: Multi event types subscription not managed
+    Generic500:
+      description: Server error
       headers:
-        X-Correlator:
+        x-correlator:
           $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
-            status: 429
-            code: TOO_MANY_REQUESTS
-            message: "Endpoint does not support as many requests per time slot"
-    Generic500:
-      description: Server error
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
             status: 500
-            code: "INTERNAL"
-            message: "Server error"
+            code: INTERNAL
+            message: Server error
     Generic503:
       description: Service unavailable. Typically the server is down.
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 503
-            code: "UNAVAILABLE"
-            message: "Service unavailable"
+          examples:
+            GENERIC_503_UNAVAILABLE:
+              description: Service is not available. Temporary situation usually related to maintenance process in the server side
+              value:
+                status: 503
+                code: UNAVAILABLE
+                message: Service Unavailable.
     SubscriptionIdRequired:
       description: Problem with the client request
       headers:
