@@ -85,7 +85,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RequestRoamingStatus"
+              $ref: "#/components/schemas/RoamingStatusRequest"
         required: true
       responses:
         "200":
@@ -275,7 +275,7 @@ components:
       items:
         type: string
 
-    RequestRoamingStatus:
+    RoamingStatusRequest:
       description: The request for retrieving the current roaming status for the requested device.
       type: object
       properties:
