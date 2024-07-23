@@ -57,7 +57,7 @@
     And the response property "$.code" is "UNAVAILABLE"
     And the response property "$.message" contains a user friendly text
 	
-	@Device_Reachability_Status_05_Status_ConnectedSMS_Service_bad_request
+ @Device_Reachability_Status_05_Status_ConnectedSMS_Service_bad_request
   Scenario: Check device reachability synchronously if the device is connected for SMS usage & device parameter values not present/invalid values
     Given Use BaseURL
     When request reachability status for "$.phonenumber" is set to a invalid testing device not supported by the service 
@@ -66,7 +66,7 @@
     And the response property "$.code" is "BAD_REQUEST"
     And the response property "$.message" contains a user friendly text
 	
-	@Device_Reachability_Status_06_Status_ConnectedSMS_Token_expired
+ @Device_Reachability_Status_06_Status_ConnectedSMS_Token_expired
   Scenario: Check device reachability synchronously if the device is connected for SMS usage & device parameter values not present/invalid values
     Given Use BaseURL
     When request reachability status for "$.phonenumber" is set to a valid testing device supported by the service
@@ -75,7 +75,7 @@
     And the response property "$.code" is "UNAUTHORIZED"
     And the response property "$.message" contains a user friendly text
 	
-	@Device_Reachability_Status_07_ConnectedSMS_phonenumber_Not_available
+ @Device_Reachability_Status_07_ConnectedSMS_phonenumber_Not_available
   Scenario: Check device reachability synchronously if the device is connected for SMS usage & phonenumber not available
     Given Use BaseURL
     When request reachability status for "$.phonenumber" is set to a invalid testing device not available by the service
@@ -84,8 +84,8 @@
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 	
-	@Device_Reachability_Status_07_ConnectedSMS_Get_Method_call
-	Scenario: Check device reachability synchronously if the device is connected for SMS usage & invalid method 
+ @Device_Reachability_Status_07_ConnectedSMS_Get_Method_call
+   Scenario: Check device reachability synchronously if the device is connected for SMS usage & invalid method 
     Given Use BaseURL
     When get method request reachability status for "$.phonenumber"
     Then response code is 405
