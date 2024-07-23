@@ -184,8 +184,7 @@ paths:
         "409":
           $ref: "#/components/responses/Generic409"
         "422":
-          $ref: "#/components/responses/CreateSubscriptionUnprocessableEntity4\
-                22"
+          $ref: "#/components/responses/CreateSubscriptionUnprocessableEntity422"
         "429":
           $ref: "#/components/responses/Generic429"
         "500":
