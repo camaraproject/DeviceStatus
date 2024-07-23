@@ -1,6 +1,6 @@
 # Changelog DeviceStatus
 ## Table of Contents
-- [r0.7](#r07)
+- [r1.1](#r07)
 - [r0.6](#r06)
 - [v0.5.1](#v051)
 - [v0.5.0](#v050)
@@ -16,7 +16,7 @@ The below sections record the changes for each API version in each release as fo
 * for subsequent alpha or release-candidate API versions, the delta with respect to the previous pre-release
 * for a public API version, the consolidated changes since the release of the previous public API version
 
-# r0.7
+# r1.1
 ## Release Notes
 
 This release contains the definition and documentation of
@@ -32,12 +32,12 @@ The API definition(s) are based on
 
 ## device-roaming-status v0.6.0-rc.1
 
-**device-roaming-status v0.6.0-rc.1 is a ... version. ...**
+**device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.7/code/API_definitions/device-roaming-status.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-roaming-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-roaming-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-roaming-status.yaml)
 
 ### Added
 
@@ -53,12 +53,12 @@ The API definition(s) are based on
 
 ## device-roaming-status-subscriptions v0.6.0-rc.1
 
-**device-roaming-status-subscriptions v0.6.0-rc.1 is a ... version. ...**
+**device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-roaming-status-subscriptions.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.7/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
 
 ### Added
 
@@ -74,12 +74,12 @@ The API definition(s) are based on
 
 ## device-reachability-status v0.6.0-rc.1
 
-**device-reachability-status v0.6.0-rc.1 is a ... version. ...**
+**device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.7/code/API_definitions/device-reachability-status.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-reachability-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-reachability-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-reachability-status.yaml)
 
 ### Added
 
@@ -95,12 +95,12 @@ The API definition(s) are based on
 
 ## device-reachability-status-subscriptions v0.6.0-rc.1
 
-**device-reachability-status-subscriptions v0.6.0-rc.1 is a ... version. ...**
+**device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-0.7/code/API_definitions/device-reachability-status-subscriptions.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-0.7/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
 
 ### Added
 
