@@ -27,11 +27,11 @@ Repository to describe, develop, document and test the DeviceStatus API family
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available public release**.
 
 <!-- following part left in for now but could be omitted going forward -->
-* The latest available release is the [version 0.7](https://github.com/camaraproject/DeviceStatus/tree/r0.7)
+* The latest available release is the [version 1.1](https://github.com/camaraproject/DeviceStatus/tree/r1.1)
   - API definition with inline documentation:
-    - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r0.7/code/API_definitions/device-status.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r0.7/code/API_definitions/device-status.yaml&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r0.7/code/API_definitions/device-status.yaml) 
+    - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-status.yaml)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-status.yaml&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-status.yaml) 
 
 ## Contributing
 * Meetings
