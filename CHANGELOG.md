@@ -1,6 +1,6 @@
 # Changelog DeviceStatus
 ## Table of Contents
-- [r1.1](#r07)
+- [r1.1](#r11)
 - [r0.6](#r06)
 - [v0.5.1](#v051)
 - [v0.5.0](#v050)
