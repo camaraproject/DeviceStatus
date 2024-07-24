@@ -45,11 +45,12 @@ The API definition(s) are based on
 * Separate endpoint yamls proposal for direct API by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/152
 * Switch device structure to optional by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/179
 * `device-reachability-status` & `device-roaming-status`: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/183
-* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
 ### Fixed
+* Renamed RequestRoamingStatus to RoamingStatusRequest by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/194
 
 ### Removed
+* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
 ## device-roaming-status-subscriptions v0.6.0-rc.1
 
@@ -61,16 +62,16 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
 
 ### Added
+* Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
 
 ### Changed
 * split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
-* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 * Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
-* Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
 
 ### Fixed
 
 ### Removed
+* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
 ## device-reachability-status v0.6.0-rc.1
 
@@ -87,11 +88,11 @@ The API definition(s) are based on
 * Separate endpoint yamls proposal for direct API by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/152
 * Switch device structure to optional by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/179
 * `device-reachability-status` & `device-roaming-status`: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/183
-* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
 ### Fixed
 
 ### Removed
+* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
 ## device-reachability-status-subscriptions v0.6.0-rc.1
 
@@ -103,17 +104,16 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
 
 ### Added
+* Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
 
 ### Changed
 * split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
-* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 * Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
-* Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
-
 
 ### Fixed
 
 ### Removed
+* Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
 # r0.6  
 ## Please note:
