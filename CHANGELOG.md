@@ -35,9 +35,9 @@ The API definition(s) are based on
 **device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-roaming-status.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-roaming-status.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-roaming-status.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-roaming-status.yaml)
 
 ### Added
 
@@ -58,9 +58,9 @@ The API definition(s) are based on
 **device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
 
 ### Added
 * Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
@@ -81,9 +81,9 @@ The API definition(s) are based on
 **device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-reachability-status.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-reachability-status.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-reachability-status.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-reachability-status.yaml)
 
 ### Added
 
@@ -103,9 +103,9 @@ The API definition(s) are based on
 **device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/release-1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/release-1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
 
 ### Added
 * Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
