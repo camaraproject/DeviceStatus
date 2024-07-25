@@ -69,6 +69,7 @@ The API definition(s) are based on
 * split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
 * Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
 * Removing note that the API-scope is limited to 4G and 5G by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/195
+* Subscription-APIs: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/193
 
 ### Fixed
 
@@ -113,6 +114,7 @@ The API definition(s) are based on
 * split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
 * Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
 * Removing note that the API-scope is limited to 4G and 5G by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/195
+* Subscription-APIs: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/193
 
 ### Fixed
 
