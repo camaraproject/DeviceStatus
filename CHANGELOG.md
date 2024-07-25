@@ -45,6 +45,7 @@ The API definition(s) are based on
 * Separate endpoint yamls proposal for direct API by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/152
 * Switch device structure to optional by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/179
 * `device-reachability-status` & `device-roaming-status`: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/183
+* Removing note that the API-scope is limited to 4G and 5G by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/195
 
 ### Fixed
 * Renamed RequestRoamingStatus to RoamingStatusRequest by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/194
@@ -67,6 +68,7 @@ The API definition(s) are based on
 ### Changed
 * split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
 * Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
+* Removing note that the API-scope is limited to 4G and 5G by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/195
 
 ### Fixed
 
@@ -88,6 +90,7 @@ The API definition(s) are based on
 * Separate endpoint yamls proposal for direct API by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/152
 * Switch device structure to optional by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/179
 * `device-reachability-status` & `device-roaming-status`: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/183
+* Removing note that the API-scope is limited to 4G and 5G by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/195
 
 ### Fixed
 
@@ -109,6 +112,7 @@ The API definition(s) are based on
 ### Changed
 * split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
 * Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
+* Removing note that the API-scope is limited to 4G and 5G by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/195
 
 ### Fixed
 
