@@ -40,8 +40,12 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-roaming-status.yaml)
 
 ### Added
+* Addition of "lastStatusTime" Field by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/146
+* include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
 
 ### Changed
+* Change endpoint names to comply with guideline by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/131
+* Make '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/144
 * Separate endpoint yamls proposal for direct API by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/152
 * Switch device structure to optional by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/179
 * `device-reachability-status` & `device-roaming-status`: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/183
@@ -55,7 +59,7 @@ The API definition(s) are based on
 
 ## device-roaming-status-subscriptions v0.6.0-rc.1
 
-**device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
+**device-roaming-status-subscriptions v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
@@ -64,9 +68,12 @@ The API definition(s) are based on
 
 ### Added
 * Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
+* include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
 
 ### Changed
+* Make '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/144
 * split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
+* renaming "EventType"-components to be more clear & update component descriptions by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/141
 * Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
 * Removing note that the API-scope is limited to 4G and 5G by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/195
 * Subscription-APIs: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/193
@@ -78,7 +85,7 @@ The API definition(s) are based on
 
 ## device-reachability-status v0.6.0-rc.1
 
-**device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
+**device-reachability-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status.yaml&nocors)
@@ -86,8 +93,12 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-reachability-status.yaml)
 
 ### Added
+* Addition of "lastStatusTime" Field by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/146
+* include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
 
 ### Changed
+* Change endpoint names to comply with guideline by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/131
+* Make '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/144
 * Separate endpoint yamls proposal for direct API by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/152
 * Switch device structure to optional by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/179
 * `device-reachability-status` & `device-roaming-status`: Alignment of errors with Commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/183
@@ -100,7 +111,7 @@ The API definition(s) are based on
 
 ## device-reachability-status-subscriptions v0.6.0-rc.1
 
-**device-roaming-status v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
+**device-reachability-status-subscriptions v0.6.0-rc.1 is the 1st release candidate of the version 0.6**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
@@ -109,8 +120,11 @@ The API definition(s) are based on
 
 ### Added
 * Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
+* include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
 
 ### Changed
+* renaming "EventType"-components to be more clear & update component descriptions by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/141
+* Make '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/144
 * split `/subscription`-endpoints into seperate APIs by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/161
 * Update the subscription models to align on CAMARA commonalities by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/170
 * Removing note that the API-scope is limited to 4G and 5G by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/195
