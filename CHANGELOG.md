@@ -121,6 +121,8 @@ The API definition(s) are based on
 ### Removed
 * Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
 
+**Full Changelog**: https://github.com/camaraproject/DeviceStatus/compare/v0.5.1...r1.1
+
 # r0.6  
 ## Please note:
 - This release contains an alpha version of the API, it should be considered as a draft.
