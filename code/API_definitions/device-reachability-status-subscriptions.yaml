@@ -1159,7 +1159,7 @@ components:
     Generic429:
       description: Too Many Requests
       headers:
-        X-Correlator:
+        x-correlator:
           $ref: "#/components/headers/x-correlator"
       content:
         application/json:
