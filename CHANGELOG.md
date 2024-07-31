@@ -29,7 +29,7 @@ The API definition(s) are based on
 * Commonalities v0.4.0-rc.1
 * Identity and Consent Management v0.2.0-rc.1
 
-Note: the previous device-status API with roaming and connectivity endpoints has been splitted into 4 specific APIs
+Note: the previous device-status API with roaming and connectivity endpoints has been split into 4 specific APIs
 
 ## device-roaming-status v0.6.0-rc.1
 
