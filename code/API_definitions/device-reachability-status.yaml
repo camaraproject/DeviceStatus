@@ -322,10 +322,8 @@ components:
         In addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:
           - Phone number cannot be deducted from access token context.(`{"code": "INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
-        X-Correlator:
-          description: Correlation id for the different services
-          schema:
-            type: string
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
