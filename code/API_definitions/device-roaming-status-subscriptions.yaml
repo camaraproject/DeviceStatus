@@ -70,13 +70,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 0.6.0-rc.1
+  x-camara-commonalities: 0.4.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/device-roaming-status-subscriptions/v0"
+  - url: "{apiRoot}/device-roaming-status-subscriptions/v0.6rc1"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -1063,7 +1064,7 @@ components:
     Generic429:
       description: Too Many Requests
       headers:
-        X-Correlator:
+        x-correlator:
           $ref: "#/components/headers/x-correlator"
       content:
         application/json:

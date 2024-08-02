@@ -45,13 +45,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 0.6.0-rc.1
+  x-camara-commonalities: 0.4.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/device-reachability-status/v0"
+  - url: "{apiRoot}/device-reachability-status/v0.6rc1"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -321,10 +322,8 @@ components:
         In addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:
           - Phone number cannot be deducted from access token context.(`{"code": "INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
-        X-Correlator:
-          description: Correlation id for the different services
-          schema:
-            type: string
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
