@@ -10,9 +10,11 @@
 Repository to describe, develop, document and test the DeviceStatus API family
 
 ## Scope
-* Service APIs for “Device Status” (see APIBacklog.md)  
+* Service APIs for “Device Status” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))  
 * It provides the customer with the ability to:  
-  * check if a device is losing connection to the network or gets reachable again, and the roaming status.
+  - check if a device is reachable or has lost connectivity to the network
+  - check if a device is roaming, and in which country
+  - receive notifications if the connectivity or roaming status of the device changes
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: July 2022 
 
