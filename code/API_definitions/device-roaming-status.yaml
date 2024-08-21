@@ -125,8 +125,6 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
-        "405":
-          $ref: "#/components/responses/Generic405"
         "406":
           $ref: "#/components/responses/Generic406"
         "415":
@@ -385,22 +383,6 @@ components:
                 status: 404
                 code: DEVICE_NOT_FOUND
                 message: Some identifier cannot be matched to a device
-    Generic405:
-      description: Method Not Allowed
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_405_METHOD_NOT_ALLOWED:
-              description: Invalid HTTP verb used with a given endpoint
-              value:
-                status: 405
-                code: METHOD_NOT_ALLOWED
-                message: The requested method is not allowed/supported on the target resource.
     Generic406:
       description: Not Acceptable
       headers:
