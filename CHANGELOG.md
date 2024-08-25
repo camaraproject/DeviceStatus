@@ -56,6 +56,7 @@ Note: the previous device-status API with roaming and connectivity endpoints has
 
 ### Removed
 * Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
+* Remove response code 405 by bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/198
 
 ## device-roaming-status-subscriptions v0.6.0
 
@@ -104,6 +105,7 @@ Note: the previous device-status API with roaming and connectivity endpoints has
 
 ### Removed
 * Remove `terms of service` and `contact` by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/185
+* Remove response code 405 by bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/198
 
 ## device-reachability-status-subscriptions v0.6.0
 
