@@ -10,10 +10,11 @@
 Repository to describe, develop, document and test the DeviceStatus API family
 
 ## Scope
-* Service APIs for “Device Status” (see APIBacklog.md)  
+* Service APIs for “Device Status” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))  
 * It provides the customer with the ability to:  
-  * check if a device is losing connection to the network or gets reachable again, and the roaming status.
-  * NOTE: The scope of this API family should be limited (at least at a first stage) to 4G and 5G.  
+  - check if a device is reachable or has lost connectivity to the network
+  - check if a device is roaming, and in which country
+  - receive notifications if the connectivity or roaming status of the device changes
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: July 2022 
 
@@ -27,11 +28,20 @@ Repository to describe, develop, document and test the DeviceStatus API family
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available public release**.
 
 <!-- following part left in for now but could be omitted going forward -->
-* The latest available release version 0.6 (with API version 0.6.0-alpha.1) is available [here](https://github.com/camaraproject/DeviceStatus/tree/r0.6)
-  - API definition with inline documentation:
-    - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r0.6/code/API_definitions/device-status.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r0.6/code/API_definitions/device-status.yaml&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r0.6/code/API_definitions/device-status.yaml) 
+* The latest pre-release is [r1.1](https://github.com/camaraproject/DeviceStatus/tree/r1.1)  
+The release r1.1 contains the following API definitions (with inline documentation):
+  - device-roaming-status [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-roaming-status.yaml)
+[[View it on ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status.yaml&nocors)
+[[View it on Swagger Editor]](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status.yaml)
+  - device-roaming-status-subscriptions [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
+[[View it on ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
+[[View it on Swagger Editor]](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - device-reachability-status [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-reachability-status.yaml)
+[[View it on ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status.yaml&nocors)
+[[View it on Swagger Editor]](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status.yaml)
+  - device-reachability-status-subscriptions [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
+[[View it on ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
+[[View it on Swagger Editor]](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
 
 ## Contributing
 * Meetings

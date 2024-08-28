@@ -38,31 +38,46 @@ info:
 
     Note: Additionally to these list, ``org.camaraproject.roaming-status-subscriptions.v0.subscription-ends`` notification `type` is sent when the subscription ends.
     This notification does not require dedicated subscription.
-    It is used when the subscription expire time (optionally set by the requester) has been reached or if the API server has to stop sending notification prematurely.
+
+    It is used in following cases:
+      - the subscription expire time (optionally set by the requester) has been reached
+      - the maximum number of subscription events (optionally set by the requester) has been reached
+      - the subscription was deleted by the requester
+      - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
+      - the API server has to stop sending notification prematurely
 
     ### Notifications callback
 
-    The `notifications` callback describes the format of event notifications and expected responses to the messages sent when the event occurs. As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
+    This endpoint describes the event notification received on subscription listener side when the event occurred.
+    As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
 
-    **WARNING**: This callback endpoint must be exposed and reachable on the listener side under `notificationUrl` defined in the `webhook` attribute.
+    _**WARNING**: This callback endpoint must be exposed on the consumer side as `POST /{$request.body#/sink}`.
+      Developers may provide a callback URL on which notifications regarding reachability-status can be received from the service provider.
+      If an event occurs the application will send events to the provided webhook - `sink`._
 
     ## Further info and support
 
     (FAQs will be added in a later version of the documentation)
 
-  termsOfService: https://swagger.io/terms/
-  contact:
-    email: project-email@sample.com
+    # Authorization and authentication
+
+    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
+
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 0.6.0-rc.1
+  x-camara-commonalities: 0.4.0
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/roaming-status-subscriptions/v0"
+  - url: "{apiRoot}/device-roaming-status-subscriptions/v0.6rc1"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -84,20 +99,21 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - roaming-status:subscriptions:create
+            - device-roaming-status-subscriptions:org.camaraproject.roaming-status-subscriptions.v0.roaming-status:create
+            - device-roaming-status-subscriptions:org.camaraproject.roaming-status-subscriptions.v0.roaming-on:create
+            - device-roaming-status-subscriptions:org.camaraproject.roaming-status-subscriptions.v0.roaming-off:create
+            - device-roaming-status-subscriptions:org.camaraproject.roaming-status-subscriptions.v0.roaming-change-country:create
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateSubscription"
+              $ref: "#/components/schemas/SubscriptionRequest"
         required: true
       callbacks:
         notifications:
-          "{$request.body#/webhook/notificationUrl}":
+          "{$request.body#/sink}":
             post:
-              tags:
-                - Session notifications callback
-              summary: "Session notifications callback"
+              summary: "notifications callback"
               description: |
                 Important: this endpoint is to be implemented by the API consumer.
                 The Device status server will call this endpoint whenever any device roaming status related event occurs.
@@ -150,7 +166,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubscriptionInfo"
+                $ref: "#/components/schemas/Subscription"
         "202":
           description: Request accepted to be processed. It applies for async creation process.
           headers:
@@ -161,13 +177,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
         "400":
-          $ref: "#/components/responses/Generic400"
+          $ref: "#/components/responses/CreateSubscriptionBadRequest400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
-          $ref: "#/components/responses/Generic403"
+          $ref: "#/components/responses/CreateSubscription403"
         "409":
           $ref: "#/components/responses/Generic409"
+        "422":
+          $ref: "#/components/responses/CreateSubscriptionUnprocessableEntity422"
+        "429":
+          $ref: "#/components/responses/Generic429"
         "500":
           $ref: "#/components/responses/Generic500"
         "503":
@@ -182,7 +202,7 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - roaming-status:subscriptions:read
+            - device-roaming-status-subscriptions:read
       responses:
         "200":
           description: List of event subscription details
@@ -195,7 +215,7 @@ paths:
                 type: array
                 minItems: 0
                 items:
-                  $ref: "#/components/schemas/SubscriptionInfo"
+                  $ref: "#/components/schemas/Subscription"
         "400":
           $ref: "#/components/responses/Generic400"
         "401":
@@ -215,7 +235,7 @@ paths:
       description: Retrieve a given subscription by ID
       security:
         - openId:
-            - roaming-status:subscriptions:read
+            - device-roaming-status-subscriptions:read
       parameters:
         - $ref: "#/components/parameters/SubscriptionId"
         - $ref: '#/components/parameters/x-correlator'
@@ -228,15 +248,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubscriptionInfo"
+                $ref: "#/components/schemas/Subscription"
+              examples:
+                subscription-active:
+                  $ref: "#/components/examples/SUBSCRIPTION_ACTIVE"
+                subscription-activation-requested:
+                  $ref: "#/components/examples/SUBSCRIPTION_ACTIVATION_REQUESTED"
+                subscription-deleted:
+                  $ref: "#/components/examples/SUBSCRIPTION_DELETED"
         "400":
-          $ref: "#/components/responses/Generic400"
+          $ref: "#/components/responses/SubscriptionIdRequired"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+        "429":
+          $ref: "#/components/responses/Generic429"
         "500":
           $ref: "#/components/responses/Generic500"
         "503":
@@ -249,7 +278,7 @@ paths:
       description: Delete a given subscription by ID
       security:
         - openId:
-            - roaming-status:subscriptions:delete
+            - device-roaming-status-subscriptions:delete
       parameters:
         - $ref: "#/components/parameters/SubscriptionId"
         - $ref: '#/components/parameters/x-correlator'
@@ -269,13 +298,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
         "400":
-          $ref: "#/components/responses/Generic400"
+          $ref: "#/components/responses/SubscriptionIdRequired"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+        "429":
+          $ref: "#/components/responses/Generic429"
         "500":
           $ref: "#/components/responses/Generic500"
         "503":
@@ -292,7 +323,7 @@ components:
       description: Subscription identifier that was obtained from the create event subscription operation
       required: true
       schema:
-        $ref: '#/components/schemas/SubscriptionId'
+        $ref: "#/components/schemas/SubscriptionId"
     x-correlator:
       name: x-correlator
       in: header
@@ -305,6 +336,246 @@ components:
       schema:
         type: string
   schemas:
+
+    SubscriptionRequest:
+      description: The request for creating a event-type event subscription
+      type: object
+      required:
+        - sink
+        - protocol
+        - config
+        - types
+      properties:
+        protocol:
+          $ref: "#/components/schemas/Protocol"
+        sink:
+          type: string
+          format: url
+          description: The address to which events shall be delivered using the selected protocol.
+          example: "https://endpoint.example.com/sink"
+        sinkCredential:
+          allOf:
+            - description: A sink credential provides authentication or authorization information necessary to enable delivery of events to a target.
+            - $ref: "#/components/schemas/SinkCredential"
+        types:
+          description: |
+            Camara Event types eligible to be delivered by this subscription.
+            Note: As of now we enforce to have only event type per subscription.
+          type: array
+          minItems: 1
+          maxItems: 1
+          items:
+            $ref: "#/components/schemas/SubscriptionEventType"
+        config:
+          $ref: "#/components/schemas/Config"
+      discriminator:
+        propertyName: protocol
+        mapping:
+          HTTP: "#/components/schemas/HTTPSubscriptionRequest"
+          MQTT3: "#/components/schemas/MQTTSubscriptionRequest"
+          MQTT5: "#/components/schemas/MQTTSubscriptionRequest"
+          AMQP: "#/components/schemas/AMQPSubscriptionRequest"
+          NATS: "#/components/schemas/NATSSubscriptionRequest"
+          KAFKA: "#/components/schemas/ApacheKafkaSubscriptionRequest"
+
+    Protocol:
+      type: string
+      enum: ["HTTP", "MQTT3", "MQTT5", "AMQP", "NATS", "KAFKA"]
+      description: Identifier of a delivery protocol. Only HTTP is allowed for now
+      example: "HTTP"
+
+    Config:
+      description: |
+        Implementation-specific configuration parameters needed by the subscription manager for acquiring events.
+        In CAMARA we have predefined attributes like `subscriptionExpireTime`, `subscriptionMaxEvents`, `initialEvent`
+        Specific event type attributes must be defined in `subscriptionDetail`
+        Note: if a request is performed for several event type, all subscribed event will use same `config` parameters.
+      type: object
+      required:
+        - subscriptionDetail
+      properties:
+        subscriptionDetail:
+          $ref: "#/components/schemas/SubscriptionDetail"
+        subscriptionExpireTime:
+          type: string
+          format: date-time
+          example: 2023-01-17T13:18:23.682Z
+          description: The subscription expiration time (in date-time format) requested by the API consumer.
+        subscriptionMaxEvents:
+          type: integer
+          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
+          minimum: 1
+          example: 5
+        initialEvent:
+          type: boolean
+          description: |
+            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
+            Example: Consumer subscribes to reachability SMS. If consumer sets initialEvent to true and device is already reachable by SMS, an event is triggered.
+
+    SinkCredential:
+      type: object
+      properties:
+        credentialType:
+          type: string
+          enum:
+            - PLAIN
+            - ACCESSTOKEN
+            - REFRESHTOKEN
+          description: "The type of the credential."
+      discriminator:
+        propertyName: credentialType
+        mapping:
+          PLAIN: "#/components/schemas/PlainCredential"
+          ACCESSTOKEN: "#/components/schemas/AccessTokenCredential"
+          REFRESHTOKEN: "#/components/schemas/RefreshTokenCredential"
+      required:
+        - credentialType
+
+    PlainCredential:
+      type: object
+      description: A plain credential as a combination of an identifier and a secret.
+      allOf:
+        - $ref: "#/components/schemas/SinkCredential"
+        - type: object
+          required:
+            - identifier
+            - secret
+          properties:
+            identifier:
+              description: The identifier might be an account or username.
+              type: string
+            secret:
+              description: The secret might be a password or passphrase.
+              type: string
+
+    AccessTokenCredential:
+      type: object
+      description: An access token credential.
+      allOf:
+        - $ref: "#/components/schemas/SinkCredential"
+        - type: object
+          properties:
+            accessToken:
+              description: REQUIRED. An access token is a previously acquired token granting access to the target resource.
+              type: string
+            accessTokenExpiresUtc:
+              type: string
+              format: date-time
+              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+            accessTokenType:
+              description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
+              type: string
+              enum:
+                - bearer
+          required:
+            - accessToken
+            - accessTokenExpiresUtc
+            - accessTokenType
+
+    RefreshTokenCredential:
+      type: object
+      description: An access token credential with a refresh token.
+      allOf:
+        - $ref: "#/components/schemas/SinkCredential"
+        - type: object
+          properties:
+            accessToken:
+              description: REQUIRED. An access token is a previously acquired token granting access to the target resource.
+              type: string
+            accessTokenExpiresUtc:
+              type: string
+              format: date-time
+              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+            accessTokenType:
+              description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
+              type: string
+              enum:
+                - bearer
+            refreshToken:
+              description: REQUIRED. An refresh token credential used to acquire access tokens.
+              type: string
+            refreshTokenEndpoint:
+              type: string
+              format: uri
+              description: REQUIRED. A URL at which the refresh token can be traded for an access token.
+      required:
+        - accessToken
+        - accessTokenExpiresUtc
+        - accessTokenType
+        - refreshToken
+        - refreshTokenEndpoint
+
+    SubscriptionDetail:
+      description: The detail of the requested event subscription
+      type: object
+      properties:
+        device:
+          $ref: "#/components/schemas/Device"
+      required:
+        - device
+
+    Subscription:
+      description: Represents a event-type subscription.
+      type: object
+      required:
+        - sink
+        - protocol
+        - config
+        - types
+        - id
+        - startsAt
+      properties:
+        protocol:
+          $ref: "#/components/schemas/Protocol"
+        sink:
+          type: string
+          format: url
+          description: The address to which events shall be delivered using the selected protocol.
+          example: "https://endpoint.example.com/sink"
+        sinkCredential:
+          $ref: "#/components/schemas/SinkCredential"
+        types:
+          description: |
+            Camara Event types eligible to be delivered by this subscription.
+          type: array
+          items:
+            type: string
+        config:
+          $ref: "#/components/schemas/Config"
+        id:
+          $ref: "#/components/schemas/SubscriptionId"
+        startsAt:
+          type: string
+          format: date-time
+          description: Date when the event subscription will begin/began
+        expiresAt:
+          type: string
+          format: date-time
+          description: Date when the event subscription will expire. Only provided when `subscriptionExpireTime` is indicated by API client or Telco Operator has specific policy about that.
+        status:
+          type: string
+          description: |-
+            Current status of the subscription - Management of Subscription State engine is not mandatory for now. Note not all statuses may be considered to be implemented. Details:
+              - `ACTIVATION_REQUESTED`: Subscription creation (POST) is triggered but subscription creation process is not finished yet.
+              - `ACTIVE`: Subscription creation process is completed. Subscription is fully operative.
+              - `INACTIVE`: Subscription is temporarily inactive, but its workflow logic is not deleted.
+              - `EXPIRED`: Subscription is ended (no longer active). This status applies when subscription is ended due to `SUBSCRIPTION_EXPIRED` or `ACCESS_TOKEN_EXPIRED` event.
+              - `DELETED`: Subscription is ended as deleted (no longer active). This status applies when subscription information is kept (i.e. subscription workflow is no longer active but its meta-information is kept).
+          enum:
+            - ACTIVATION_REQUESTED
+            - ACTIVE
+            - EXPIRED
+            - INACTIVE
+            - DELETED
+      discriminator:
+        propertyName: protocol
+        mapping:
+          HTTP: "#/components/schemas/HTTPSubscriptionResponse"
+          MQTT3: "#/components/schemas/MQTTSubscriptionResponse"
+          MQTT5: "#/components/schemas/MQTTSubscriptionResponse"
+          AMQP: "#/components/schemas/AMQPSubscriptionResponse"
+          NATS: "#/components/schemas/NATSSubscriptionResponse"
+          KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
 
     Device:
       description: |
@@ -411,58 +682,6 @@ components:
           type: string
           description: Detailed error description
 
-    CreateSubscription:
-      description: The request for creating a device roaming status event subscription
-      type: object
-      required:
-        - webhook
-        - subscriptionDetail
-      properties:
-        subscriptionDetail:
-          $ref: "#/components/schemas/SubscriptionDetail"
-        subscriptionExpireTime:
-          type: string
-          format: date-time
-          example: 2023-01-17T13:18:23.682Z
-          description: The date time when the status-tracking has to be terminated.
-            It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-            Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z
-        webhook:
-          $ref: "#/components/schemas/Webhook"
-
-    Webhook:
-      description: Webhook information for event channel
-      type: object
-      required:
-        - notificationUrl
-      properties:
-        notificationUrl:
-          $ref: "#/components/schemas/NotificationUrl"
-        notificationAuthToken:
-          $ref: "#/components/schemas/NotificationAuthToken"
-
-    NotificationUrl:
-      type: string
-      example: "https://application-server.com"
-      description: https callback address where the event notification must be POST-ed
-
-    NotificationAuthToken:
-      type: string
-      example: "c8974e592c2fa383d4a3960714"
-      description: "OAuth2 token to be used by the callback API endpoint. It MUST be indicated within HTTP Authorization header e.g. Authorization: Bearer $notificationAuthToken"
-
-    SubscriptionDetail:
-      description: The detail of the requested event subscription
-      type: object
-      required:
-        - type
-        - device
-      properties:
-        device:
-          $ref: "#/components/schemas/Device"
-        type:
-          $ref: "#/components/schemas/SubscriptionEventType"
-
     NotificationEventType:
       type: string
       description: |
@@ -498,36 +717,9 @@ components:
         - org.camaraproject.roaming-status-subscriptions.v0.roaming-on
         - org.camaraproject.roaming-status-subscriptions.v0.roaming-off
         - org.camaraproject.roaming-status-subscriptions.v0.roaming-change-country
-        - org.camaraproject.roaming-status-subscriptions.v0.connectivity-data
-        - org.camaraproject.roaming-status-subscriptions.v0.connectivity-sms
-        - org.camaraproject.roaming-status-subscriptions.v0.connectivity-disconnected
-
-    SubscriptionInfo:
-      description: Represents a device roaming status subscription.
-      allOf:
-        - $ref: "#/components/schemas/CreateSubscription"
-        - type: object
-          properties:
-            subscriptionId:
-              $ref: "#/components/schemas/SubscriptionId"
-            startsAt:
-              type: string
-              format: date-time
-              description: The date time when the subscription started.
-                It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-                Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
-            expiresAt:
-              type: string
-              format: date-time
-              description: The date time when the subscription will expire or expired.
-                It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-                Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
-          required:
-            - subscriptionId
-            - type
 
     SubscriptionAsync:
-      description: Response for a device roaming status operation managed asynchronously (Creation or Deletion)
+      description: Response for a device reachability status operation managed asynchronously (Creation or Deletion)
       type: object
       properties:
         subscriptionId:
@@ -717,68 +909,123 @@ components:
       description: |
         NETWORK_TERMINATED - API server stopped sending notification
         SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+        SUBSCRIPTION_DELETED - Subscription was deleted by the requester
       enum:
         - NETWORK_TERMINATED
         - SUBSCRIPTION_EXPIRED
+        - SUBSCRIPTION_DELETED
 
   responses:
-    Generic400:
+    CreateSubscriptionBadRequest400:
       description: Problem with the client request
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            InvalidArgument:
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param
+            InvalidProtocol:
+              value:
+                status: 400
+                code: INVALID_PROTOCOL
+                message: Only HTTP is supported
+            InvalidCredential:
+              value:
+                status: 400
+                code: INVALID_CREDENTIAL
+                message: Only Access token is supported
+            InvalidToken:
+              value:
+                status: 400
+                code: INVALID_TOKEN
+                message: Only bearer token is supported
+    Generic400:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             status: 400
-            code: "INVALID_ARGUMENT"
-            message: "Client specified an invalid argument, request body or query param"
+            code: INVALID_ARGUMENT
+            message: Client specified an invalid argument, request body or query param
     Generic401:
       description: Authentication problem with the client request
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             status: 401
-            code: "UNAUTHENTICATED"
-            message: "Request not authenticated due to missing, invalid, or expired credentials"
-    Generic403:
+            code: UNAUTHENTICATED
+            message: Request not authenticated due to missing, invalid, or expired credentials.
+    CreateSubscription403:
       description: Client does not have sufficient permission
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            PermissionDenied:
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action
+            TokenMismatch:
+              value:
+                status: 403
+                code: SUBSCRIPTION_MISMATCH
+                message: Inconsistent access token for requested events subscription
+    Generic403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             status: 403
-            code: "PERMISSION_DENIED"
-            message: "Client does not have sufficient permissions to perform this action"
+            code: PERMISSION_DENIED
+            message: Client does not have sufficient permissions to perform this action
     Generic404:
-      description: Resource Not Found
+      description: Not found
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 404
-            code: NOT_FOUND
-            message: "The specified resource is not found"
+          examples:
+            GENERIC_404_NOT_FOUND:
+              description: Resource is not found
+              value:
+                status: 404
+                code: NOT_FOUND
+                message: The specified resource is not found.
     Generic409:
       description: Conflict
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
@@ -786,34 +1033,107 @@ components:
           example:
             status: 409
             code: CONFLICT
-            message: "The specified resource is in a conflict"
+            message: The specified resource is in a conflict
+    CreateSubscriptionUnprocessableEntity422:
+      description: Unprocessable Entity
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            PermissionDenied:
+              value:
+                status: 422
+                code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
+                message: Multi event types subscription not managed
+            DeviceIdentifierMismatch:
+              description: Inconsistency between device identifiers not pointing to the same device
+              value:
+                status: 422
+                code: DEVICE_IDENTIFIERS_MISMATCH
+                message: Provided device identifiers are not consistent.
+            DeviceNotApplicable:
+              description: Service is not available for the provided device
+              value:
+                status: 422
+                code: DEVICE_NOT_APPLICABLE
+                message: The service is not available for the provided device.
+    Generic429:
+      description: Too Many Requests
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_429_QUOTA_EXCEEDED:
+              description: Request is rejected due to exceeding a business quota limit
+              value:
+                status: 429
+                code: QUOTA_EXCEEDED
+                message: Either out of resource quota or reaching rate limiting.
+            GENERIC_429_TOO_MANY_REQUESTS:
+              description: API Server request limit is overpassed
+              value:
+                status: 429
+                code: TOO_MANY_REQUESTS
+                message: Either out of resource quota or reaching rate limiting.
     Generic500:
       description: Server error
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           example:
             status: 500
-            code: "INTERNAL"
-            message: "Server error"
+            code: INTERNAL
+            message: Server error
     Generic503:
       description: Service unavailable. Typically the server is down.
       headers:
         x-correlator:
-          $ref: '#/components/headers/x-correlator'
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 503
-            code: "UNAVAILABLE"
-            message: "Service unavailable"
-
+          examples:
+            GENERIC_503_UNAVAILABLE:
+              description: Service is not available. Temporary situation usually related to maintenance process in the server side
+              value:
+                status: 503
+                code: UNAVAILABLE
+                message: Service Unavailable.
+    SubscriptionIdRequired:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            Generic400:
+              summary: Schema validation failed
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Client specified an invalid argument, request body or query param"
+            subscriptionIdRequired:
+              summary: subscription id is required
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Expected property is missing: subscriptionId"
   examples:
     ROAMING_STATUS:
       value:
@@ -885,3 +1205,57 @@ components:
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: qs15-h556-rt89-1298
         time: 2023-01-19T13:18:23.682Z
+
+    SUBSCRIPTION_ACTIVE:
+      value:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.roaming-status-subscriptions.v0.roaming-on"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: "+123456789"
+          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: 2024-07-03T21:12:02.871Z
+        expiresAt: 2024-07-03T21:12:02.871Z
+        status: ACTIVE
+
+    SUBSCRIPTION_ACTIVATION_REQUESTED:
+      value:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.roaming-status-subscriptions.v0.roaming-on"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: "+123456789"
+          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: 2024-07-03T21:12:02.871Z
+        expiresAt: 2024-07-03T21:12:02.871Z
+        status: ACTIVATION_REQUESTED
+
+    SUBSCRIPTION_DELETED:
+      value:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.roaming-status-subscriptions.v0.roaming-on"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: "+123456789"
+          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: 2024-07-03T21:12:02.871Z
+        expiresAt: 2024-07-03T21:12:02.871Z
+        status: DELETED
