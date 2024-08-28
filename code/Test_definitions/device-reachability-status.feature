@@ -1,11 +1,11 @@
 
 @Device_reachability_status
-Feature: CAMARA Device reachabilityreachability Status API, v0.6.0 - Operations for reachability Status
+Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachability status
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specifies in device-reachability-status.yaml, version v0.6.0
 
-  Background: Common Device reachabilityreachability status setup
+  Background: Common Device reachability status setup
     Given the resource "{api-root}/device-reachability-status/v0.6/retrieve" set as base-url                                                             |
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
@@ -14,9 +14,9 @@ Feature: CAMARA Device reachabilityreachability Status API, v0.6.0 - Operations 
 #############Happy Path Scenarios##################	
 
   @device_reachability_status_01_reachabilityStatusConnectedSms
-  Scenario: Check the reachability status when Device reachability 
+  Scenario: Check the reachability status if device is connected with SMS
     Given a valid devicestatus request body with "$.phoneNumber"
-    When the  request "getReachabilityStatus" is sent
+    When the request "getReachabilityStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -24,19 +24,19 @@ Feature: CAMARA Device reachabilityreachability Status API, v0.6.0 - Operations 
     And the response property "$.status" is 200
     And the response property "$.code" is "OK"
     And the response property "$.message" contains a user friendly text
-    Then the reachability status is "CONNECTED_SMS"
+    And the response property "$.reachabilityStatus" is "CONNECTED_SMS"
 
   @device_reachability_status_02_reachabilityStatusConnectedData
-  Scenario: Check the reachability state 
+  Scenario: Check the reachability status if device is connected with DATA  
     Given a valid devicestatus request body with "$.phoneNumber"
     When the request "getReachabilityStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
-	And the response property "$.status" is 200
+    And the response property "$.status" is 200
     And the response property "$.code" is "OK"
-	Then the reachability status is "CONNECTED_DATA"
+    And the response property "$.reachabilityStatus" is  "CONNECTED_DATA"
 	
   @device_reachability_status_03_reachabilityStatusDeviceNotConnected
   Scenario: Check the reachability status for  DeviceNotConnected
@@ -46,9 +46,9 @@ Feature: CAMARA Device reachabilityreachability Status API, v0.6.0 - Operations 
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
-	And the response property "$.status" is 200
+    And the response property "$.status" is 200
     And the response property "$.code" is "OK"
-	Then the reachability status is "NOT_CONNECTED"
+    And the response property "$.reachabilityStatus" is  "NOT_CONNECTED"
 	
 	
 #############Error Response Scenarios##################
@@ -58,7 +58,7 @@ Feature: CAMARA Device reachabilityreachability Status API, v0.6.0 - Operations 
     Given a valid devicestatus request body with invalid parameter
     When the request "getReachabilityStatus" is sent
     Then Response code is 400
-	And the response property "$.status" is 400
+   And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
