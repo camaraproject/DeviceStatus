@@ -1,92 +1,108 @@
 
-@DeviceRoamingStatusSanity
-Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations Device Status
+@Device_Roaming_Status
+Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Status
 
-  # Input to be provided by the implementation to the tests
-  # References to OAS spec schemas refer to schemas specifies in device-roaming-status.yaml, version v0.6.0
+# Input to be provided by the implementation to the tests
+# References to OAS spec schemas refer to schemas specifies in device-roaming-status.yaml, version v0.6.0
 
   Background: Common Device Roaming status setup
-    Given the resource "/device-roaming-status/v0/retrieve"                                                              |
+    Given the resource "{api-root}/device-roaming-status/v0.6/retrieve" set as base-url                                                             |
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
-	And the header "x-correlator" is set to a UUID value
-    And the request body is set by default to a request body compliant with the schema
+    And the header "x-correlator" is set to a UUID value
 	
-	
-  @Device_Roaming_Status_01_RoamingStatusTrue
-  Scenario: Check the roaming state and the country information synchronously if the device is in the roaming mode
-    Given Use BaseURL
-    When Request roaming status for "$.msisdn"
-    Then Response code is 200
+#############Happy Path Scenarios##################	
+
+  @device_roaming_status_01_roamingStatusTrue
+  Scenario: Check the roaming status when device is in the roaming mode
+    Given a valid devicestatus request body with "$.phoneNumber"
+    When the  request "getRoamingStatus" is sent
+    Then the response code is 200
 	And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/RoamingStatusResponse"
-	And the response property "$.status" is 200
+    And the response property "$.status" is 200
     And the response property "$.code" is "OK"
     And the response property "$.message" contains a user friendly text
-    Then The roaming status is true
+    Then the roaming status is true
 
-  @Device_Roaming_Status_02_RoamingStatusFalse
+  @device_roaming_status_02_roamingStatusFalse
   Scenario: Check the roaming state synchronously if the device is not in the roaming mode
-    Given Use BaseURL
-    When request roaming status for "$.msisdn"
-    Then response code is 200
-    Then the roaming status is false
-
-  @Device_Roaming_Status_03_DeviceStatus_WithoutDoubleQuoteInMsisdn
-  Scenario: Device status request with missing double quote in json request body
-    Given Use BaseURL
-    When Request device status with missing double quote in json payload
-    Then Response code is 400
-	And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-	And the response header "Content-Type" is "application/json"
+    Given a valid devicestatus request body with "$.phoneNumber"
+    When the request "getRoamingStatus" is sent
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/RoamingStatusResponse"
+    And the response property "$.status" is 200
+    And the response property "$.code" is "OK"
+    Then the roaming status is false
 
-  @Device_Roaming_Status_04_DeviceStatusWithMissingBracket
-  Scenario: Device status request with missing bracket in json request
-    Given Use BaseURL
-    When Request device status with missing bracket in json payload
+#############Error Response Scenarios##################
+	
+  @device_roaming_status_03_deviceStatus_with_invalid_parameter
+  Scenario: Device status request with invalid parameter 
+    Given a valid devicestatus request body with invalid parameter
+    When the request "getRoamingStatus" is sent
     Then Response code is 400
 	And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @Device_Roaming_Status_05_DeviceStatusWithIncorrectEventType
-  Scenario: Device status request with incorrect EventType
-    Given Use BaseURL
-    When Request device status with with incorrect EventType
-    Then Response code is 400
-	And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
+  @device_roaming_status_04_expired_access_token
+   Scenario: Expired access token
+    Given a valid devicestatus request body and header "Authorization" is expired
+    When the  request "getRoamingStatus" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+	
+  @device_roaming_status_05_no_authorization_header
+   Scenario: No Authorization header
+    Given a valid devicestatus request body and header "Authorization" is not available
+    When the  request "getRoamingStatus" is sent 
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+	
+  @device_roaming_status_06_invalid_access_token
+   Scenario: Invalid access token
+    Given a valid devicestatus request body and header "Authorization" set to an invalid access token
+    When the  request "getRoamingStatus" is sent
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+	
+  @device_roaming_status_07_deviceStatus_inconsistent_access_token
+   Scenario: Inconsistent access token context for the device
+    # To test this, a token have to be obtained for a different device
+    Given a valid subscription request body with "$.phoneNumber" and token from different device
+    When the request "getRoamingStatus" is sent
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
 
-  @Device_Roaming_Status_06_DeviceStatusWithIncorrectIpAddress
-  Scenario: Device status request with incorrect ipaddress
-    Given Use BaseURL
-    When Request device status with incorrect ipaddress in json payload
-    Then Response code is 400
-	And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-  @Device_Roaming_Status_07_DeviceStatusWithIncorrectHTTPMethod
-  Scenario: Device status request with incorrect HTTP request method
-    Given Use BaseURL
-    When Put request for DeviceStatus Status
+  @device_roaming_status_08_deviceStatusWithIncorrectHTTPMethod
+   Scenario: Device status request with incorrect HTTP request method
+    Given a valid devicestatus request body with "$.phoneNumber"
+    When the "PUT" request "getRoamingStatus" is sent
     Then Response code is 405
-	And the response property "$.status" is 405
+    And the response property "$.status" is 405
     And the response property "$.code" is "Method_Not_Allowed"
     And the response property "$.message" contains a user friendly text
-
- @Device_Roaming_Status_08_DeviceStatusServiceUnavailable
-  Scenario: Server not available
-	  Given Use the BaseURL
-      Test for Create when service unavailable
-      When Verify DeviceStatus with valid msisdn when service is not available
-      Then Response code is 503
-	  And the response property "$.status" is 503
-      And the response property "$.code" is "Service_Unavailable"
-      And the response property "$.message" contains a user friendly text
+	
+  @device_roaming_status_09_deviceStatusWithIdentifiersMismatch
+    Scenario: Device identifiers mismatch
+    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
+    Given a valid devicestatus request body with "$.phoneNumber" and config_var "identifier_types_unsupported" contains at least 2 items
+    And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
+    When the request "getRoamingStatus" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "DEVICE_IDENTIFIERS_MISMATCH"
+    And the response property "$.message" contains a user friendly text
