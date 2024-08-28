@@ -1,94 +1,121 @@
- @Device_Reachability_Status_Sanity
- Feature: CAMARA Device Reachability Status API, v0.6.0 - Operations Device Status Check
- 
-  # Input to be provided by the implementation to the tests
-  # References to OAS spec schemas refer to schemas specifies in device-reachability-status.yaml, version v0.6.0
 
-  Background: Common Device Reachability status setup
-    Given the resource "/device-reachability-status/v0/retrive"                                                              |
+@Device_reachability_status
+Feature: CAMARA Device reachabilityreachability Status API, v0.6.0 - Operations for reachability Status
+
+# Input to be provided by the implementation to the tests
+# References to OAS spec schemas refer to schemas specifies in device-reachability-status.yaml, version v0.6.0
+
+  Background: Common Device reachabilityreachability status setup
+    Given the resource "{api-root}/device-reachability-status/v0.6/retrieve" set as base-url                                                             |
     And the header "Content-Type" is set to "application/json"
-	And the header "x-correlator" is set to a UUID value
     And the header "Authorization" is set to a valid access token
-    And the requestbody is set by default to a requestbody compliant with the schema
+    And the header "x-correlator" is set to a UUID value
 	
-	
- @Device_Reachability_Status_01_ReachabilityStatusConnectedSMS
-  Scenario: Check device reachability synchronously if the device is connected for SMS usage
-    Given Use BaseURL
-    When request reachability status for "$.phonenumber" is set to a valid testing device supported by the service
-	Then response code is 200
-	And the response property "$.status" is 200
-    And the response property "$.code" is "OK"
+#############Happy Path Scenarios##################	
+
+  @device_reachability_status_01_reachabilityStatusConnectedSms
+  Scenario: Check the reachability status when Device reachability 
+    Given a valid devicestatus request body with "$.phoneNumber"
+    When the  request "getReachabilityStatus" is sent
+    Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
-	And the reachability status is CONNECTED_SMS
-
-  @Device_Reachability_Status_02_Status_ConnectedData
-  Scenario: Check device reachability synchronously if the device is connected for Data usage
-    Given Use BaseURL
-    When request reachability status for "$.phonenumber" is set to a valid testing device supported by the service
-    Then response code is 200
     And the response property "$.status" is 200
     And the response property "$.code" is "OK"
+    And the response property "$.message" contains a user friendly text
+    Then the reachability status is "CONNECTED_SMS"
+
+  @device_reachability_status_02_reachabilityStatusConnectedData
+  Scenario: Check the reachability state 
+    Given a valid devicestatus request body with "$.phoneNumber"
+    When the request "getReachabilityStatus" is sent
+    Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
-	Then the reachability status is CONNECTED_DATA
-
-  @Device_Reachability_Status_03_Status_NotConnected
-  Scenario: Check device reachability synchronously if the device is not connected to network
-    Given Use BaseURL
-    When request reachability status for "$.phonenumber" is set to a valid testing device supported by the service
-    Then response code is 200
 	And the response property "$.status" is 200
     And the response property "$.code" is "OK"
+	Then the reachability status is "CONNECTED_DATA"
+	
+  @device_reachability_status_03_reachabilityStatusDeviceNotConnected
+  Scenario: Check the reachability status for  DeviceNotConnected
+    Given a valid devicestatus request body with "$.phoneNumber"
+    When the request "getReachabilityStatus" is sent
+    Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
-	And the reachability status is NOT_CONNECTED
+	And the response property "$.status" is 200
+    And the response property "$.code" is "OK"
+	Then the reachability status is "NOT_CONNECTED"
 	
- @Device_Reachability_Status_04_Status_ConnectedSMS_Service_unavailable
-  Scenario: Check device reachability synchronously if the device is connected for SMS usage & Service_unavailable
-    Given Use BaseURL
-    When request reachability status for "$.phonenumber" is set to a valid testing device supported by the service 
-    Then response code is 503
-	And the response property "$.status" is 503
-    And the response property "$.code" is "UNAVAILABLE"
-    And the response property "$.message" contains a user friendly text
 	
- @Device_Reachability_Status_05_Status_ConnectedSMS_Service_bad_request
-  Scenario: Check device reachability synchronously if the device is connected for SMS usage & device parameter values not present/invalid values
-    Given Use BaseURL
-    When request reachability status for "$.phonenumber" is set to a invalid testing device not supported by the service 
-    Then response code is 400
+#############Error Response Scenarios##################
+	
+  @device_reachability_status_04_deviceStatus_with_invalid_parameter
+  Scenario: Device reachability status request with invalid parameter 
+    Given a valid devicestatus request body with invalid parameter
+    When the request "getReachabilityStatus" is sent
+    Then Response code is 400
 	And the response property "$.status" is 400
-    And the response property "$.code" is "BAD_REQUEST"
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @device_reachability_status_05_expired_access_token
+  Scenario: Expired access token
+    Given a valid devicestatus request body and header "Authorization" is expired
+    When the  request "getReachabilityStatus" is sent
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 	
- @Device_Reachability_Status_06_Status_ConnectedSMS_Token_expired
-  Scenario: Check device reachability synchronously if the device is connected for SMS usage & device parameter values not present/invalid values
-    Given Use BaseURL
-    When request reachability status for "$.phonenumber" is set to a valid testing device supported by the service
-    Then response code is 401
-	And the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHORIZED"
+  @device_reachability_status_06_no_authorization_header
+  Scenario: No Authorization header
+    Given a valid devicestatus request body and header "Authorization" is not available
+    When the  request "getReachabilityStatus" is sent 
+    Then the response status code is 401
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 	
- @Device_Reachability_Status_07_ConnectedSMS_phonenumber_Not_available
-  Scenario: Check device reachability synchronously if the device is connected for SMS usage & phonenumber not available
-    Given Use BaseURL
-    When request reachability status for "$.phonenumber" is set to a invalid testing device not available by the service
-    Then response code is 404
-	And the response property "$.status" is 404
-    And the response property "$.code" is "NOT_FOUND"
+  @device_reachability_status_07_invalid_access_token
+  Scenario: Invalid access token
+    Given a valid devicestatus request body and header "Authorization" set to an invalid access token
+    When the request "getReachabilityStatus" is sent
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 	
- @Device_Reachability_Status_07_ConnectedSMS_Get_Method_call
-   Scenario: Check device reachability synchronously if the device is connected for SMS usage & invalid method 
-    Given Use BaseURL
-    When get method request reachability status for "$.phonenumber"
-    Then response code is 405
-	And the response property "$.status" is 405
-    And the response property "$.code" is "METHOD_NOT_ALLOWED"
+  @device_reachability_status_08_deviceStatus_inconsistent_access_token
+   Scenario: Inconsistent access token context for the device
+    # To test this, a token have to be obtained for a different device
+    Given a valid subscription request body with "$.phoneNumber" and token from different device
+    When the request "getReachabilityStatus" is sent
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    And the response property "$.message" contains a user friendly text
+
+  @device_reachability_status_09_deviceStatusWithIncorrectHTTPMethod
+   Scenario: Device reachabilitystatus request with incorrect HTTP request method
+    Given a valid devicestatus request body with "$.phoneNumber"
+    When the "PUT" request "getReachabilityStatus" is sent
+    Then Response code is 405
+    And the response property "$.status" is 405
+    And the response property "$.code" is "Method_Not_Allowed"
+    And the response property "$.message" contains a user friendly text
+	
+  @device_reachability_status_10_deviceStatusWithIdentifiersMismatch
+    Scenario: Device reachabilityidentifiers mismatch
+    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a Device reachability associated to a different phoneNumber
+    Given a valid devicestatus request body with "$.phoneNumber" and config_var "identifier_types_unsupported" contains at least 2 items
+    And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
+    When the request "getReachabilityStatus" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "DEVICE_IDENTIFIERS_MISMATCH"
     And the response property "$.message" contains a user friendly text
