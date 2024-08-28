@@ -18,7 +18,7 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
     Given a valid devicestatus request body with "$.phoneNumber"
     When the  request "getRoamingStatus" is sent
     Then the response code is 200
-	And the response header "Content-Type" is "application/json"
+    And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/RoamingStatusResponse"
     And the response property "$.status" is 200
