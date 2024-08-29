@@ -117,7 +117,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given that subscriptions are created synchronously
     And a valid subscription request body  
     And the request body property "$.type" is "roaming-status"
-    And the request body property "$.subscriptionExpireTime" set to smaller value
+    And the request body property "$.subscriptionExpireTime" is set to a value in the near future
     When the request "createSubscription" is sent
     Then the response code is 201 
     And the subscription is expired
@@ -157,7 +157,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
 
   @roaming_status_subscriptions_13_Create_roaming_status_subscription_for_a_device_with_invalid_parameter
   Scenario:  Create subscription with invalid parameter
-    Given a valid subscription request body with invalid parameter
+    Given the request body is not compliant with the schema "/components/schemas/SubscriptionRequest"
     When the  request "createSubscription" is sent 
     Then the response code is 400
     And the response property "$.status" is 400
@@ -217,10 +217,10 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-@roaming_status_subscription_20_invalid_resource_path
-   Scenario: subscription creation with invalid resource path
-    Given a valid subscription request body with invalid resource path
-    When the request "createSubscription" is sent
+@roaming_status_subscription_20_unknown_subscription_id
+   Scenario: Get subscription when subscription-id is unknown to the system 
+    Given the path parameter property "$.subscriptionId" is unknown to the system
+    When the request "retrieveRoamingStatusSubscription" is sent
     Then the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
