@@ -98,12 +98,12 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And notification body complies with the OAS schema at "##/components/schemas/EventReachabilityDisconnected"
     And type="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
 
-@reachability_status_subscriptions_10_subscriptionExpireTime
-  Scenario: Receive notification for subscription-ends event on expiry  
+@reachability_status_subscriptions_10_subscription_Expiry
+Scenario: Receive notification for subscription-ends event on expiry  
     Given that subscriptions are created synchronously
     And a valid subscription request body  
     And the request body property "$.type" is "reachability-data"
-    And the request body property "$.subscriptionExpireTime" set to smaller value
+    And the request body property "$.subscriptionExpireTime" is set to a value in the near future
     When the request "createSubscription" is sent
     Then the response code is 201 
     Then the subscription is expired
@@ -112,7 +112,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
 
-@reachability_status_subscriptions_11_subscriptionMaxEvents
+@reachability_status_subscriptions_11_subscription_end_when_max_events
    Scenario: Receive notification for subscription-ends event on max events reached 
     Given that subscriptions are created synchronously
     And a valid subscription request body  
@@ -143,7 +143,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
 
   @reachability_status_subscriptions_13_Create_reachability_status_subscription_for_a_device_with_invalid_parameter
   Scenario:  Create subscription with invalid parameter
-    Given a valid subscription request body with invalid parameter
+    Given the request body is not compliant with the schema "/components/schemas/SubscriptionRequest"
     When the  request "createSubscription" is sent 
     Then the response code is 400
     And the response property "$.status" is 400
@@ -162,7 +162,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
  @reachability_status_subscription_15_invalid_protocol
    Scenario: subscription creation with invalid protocol
     Given a valid subscription request body 
-    And "$.protocol" is not "HTTP"
+    And  the "$.protocol" is not "HTTP"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_PROTOCOL"
@@ -171,7 +171,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
 @reachability_status_subscription_16_invalid_credential_type
    Scenario: subscription creation with invalid credential type
     Given a valid subscription request body 
-    And "$.credentialType" is not "ACCESSTOKEN"
+    And the "$.credentialType" is not "ACCESSTOKEN"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_CREDENTIAL"
@@ -206,7 +206,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
 @reachability_status_subscription_20_unknown_subscription_id
    Scenario: Get subscription when subscription-id is unknown to the system 
     Given the path parameter property "$.subscriptionId" is unknown to the system
-    When the request "createSubscription" is sent
+    When the request "retrieveReachabilityStatusSubscription" is sent
     Then the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
