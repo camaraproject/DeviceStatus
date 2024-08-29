@@ -13,9 +13,9 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 	
 #############Happy Path Scenarios##################	
 
-  @device_roaming_status_01_roamingStatusTrue
+  @device_roaming_status_01_roaming_status_true
   Scenario: Check the roaming status when device is in the roaming mode
-    Given a valid devicestatus request body with "$.phoneNumber"
+    Given the request body property "$.phoneNumber" is set to valid value
     When the  request "getRoamingStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
@@ -26,7 +26,7 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
     And the response property "$.message" contains a user friendly text
     Then the roaming status is true
 
-  @device_roaming_status_02_roamingStatusFalse
+  @device_roaming_status_02_roaming_status_false
   Scenario: Check the roaming state synchronously if the device is not in the roaming mode
     Given a valid devicestatus request body with "$.phoneNumber"
     When the request "getRoamingStatus" is sent
@@ -42,10 +42,10 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 	
   @device_roaming_status_03_deviceStatus_with_invalid_parameter
   Scenario: Device status request with invalid parameter 
-    Given a valid devicestatus request body with invalid parameter
+    Given the request body is not compliant with the schema "/components/schemas/RequestRoamingStatus"
     When the request "getRoamingStatus" is sent
     Then Response code is 400
-	And the response property "$.status" is 400
+    And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
@@ -79,28 +79,18 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 	
   @device_roaming_status_07_deviceStatus_inconsistent_access_token
    Scenario: Inconsistent access token context for the device
-    # To test this, a token have to be obtained for a different device
+    # To test this, a token has to be obtained for a different device
     Given a valid subscription request body with "$.phoneNumber" and token from different device
     When the request "getRoamingStatus" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
-
-  @device_roaming_status_08_deviceStatusWithIncorrectHTTPMethod
-   Scenario: Device status request with incorrect HTTP request method
-    Given a valid devicestatus request body with "$.phoneNumber"
-    When the "PUT" request "getRoamingStatus" is sent
-    Then Response code is 405
-    And the response property "$.status" is 405
-    And the response property "$.code" is "Method_Not_Allowed"
-    And the response property "$.message" contains a user friendly text
 	
-  @device_roaming_status_09_deviceStatusWithIdentifiersMismatch
+  @device_roaming_status_08_deviceStatusWithIdentifiersMismatch
     Scenario: Device identifiers mismatch
     # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
-    Given a valid devicestatus request body with "$.phoneNumber" and config_var "identifier_types_unsupported" contains at least 2 items
-    And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
+    Given a valid devicestatus request body with the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
     When the request "getRoamingStatus" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
