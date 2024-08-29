@@ -134,6 +134,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     And the request body property "$.subscriptionMaxEvents" is set to 1 
     When the request "createSubscription" is sent
     Then the response code is 201 
+    Then event notification "roaming_on" is received on callback-url
     Then event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
     And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
