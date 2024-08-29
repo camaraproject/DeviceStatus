@@ -85,7 +85,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And notification body complies with the OAS schema at "##/components/schemas/EventReachabilitySms"
     And type="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
 
-@reachability_status_subscriptions_07_Receive_notification_when_device_reachability_changed_to_disconnected
+@reachability_status_subscriptions_08_Receive_notification_when_device_reachability_changed_to_disconnected
   Scenario: Receive notification for reachability-disconnected event
     Given that subscriptions are created synchronously
     And a valid subscription request body  
@@ -98,7 +98,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And notification body complies with the OAS schema at "##/components/schemas/EventReachabilityDisconnected"
     And type="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
 
-@reachability_status_subscriptions_10_subscription_Expiry
+@reachability_status_subscriptions_09_subscription_Expiry
 Scenario: Receive notification for subscription-ends event on expiry  
     Given that subscriptions are created synchronously
     And a valid subscription request body  
@@ -112,7 +112,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
 
-@reachability_status_subscriptions_11_subscription_end_when_max_events
+@reachability_status_subscriptions_10_subscription_end_when_max_events
    Scenario: Receive notification for subscription-ends event on max events reached 
     Given that subscriptions are created synchronously
     And a valid subscription request body  
@@ -125,7 +125,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
 
-  @reachability_status_subscriptions_12_subscription_delete_event_validation
+  @reachability_status_subscriptions_11_subscription_delete_event_validation
    Scenario: Receive notification for subscription-ends event on deletion 
     Given that subscriptions are created synchronously
     And a valid subscription request body  
@@ -141,7 +141,7 @@ Scenario: Receive notification for subscription-ends event on expiry
 
 ############### Error response scenarios ###########################
 
-  @reachability_status_subscriptions_13_Create_reachability_status_subscription_for_a_device_with_invalid_parameter
+  @reachability_status_subscriptions_12_Create_reachability_status_subscription_for_a_device_with_invalid_parameter
   Scenario:  Create subscription with invalid parameter
     Given the request body is not compliant with the schema "/components/schemas/SubscriptionRequest"
     When the  request "createSubscription" is sent 
@@ -150,7 +150,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-@reachability_status_subscriptions_14_creation_of_subscription_with_expiry_time_in_past
+@reachability_status_subscriptions_13_creation_of_subscription_with_expiry_time_in_past
   Scenario: Expiry time in past
     Given a valid subscription request body with expiry time in past
     When the  request "createSubscription" is sent 
@@ -159,7 +159,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
- @reachability_status_subscription_15_invalid_protocol
+ @reachability_status_subscription_14_invalid_protocol
    Scenario: subscription creation with invalid protocol
     Given a valid subscription request body 
     And  the "$.protocol" is not "HTTP"
@@ -168,7 +168,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the response property "$.code" is "INVALID_PROTOCOL"
     And the response property "$.message" contains a user friendly text
 
-@reachability_status_subscription_16_invalid_credential_type
+@reachability_status_subscription_15_invalid_credential_type
    Scenario: subscription creation with invalid credential type
     Given a valid subscription request body 
     And the "$.credentialType" is not "ACCESSTOKEN"
@@ -177,7 +177,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the response property "$.code" is "INVALID_CREDENTIAL"
     And the response property "$.message" contains a user friendly text
 	
-@reachability_status_subscription_17_invalid_access_token_type
+@reachability_status_subscription_16_invalid_access_token_type
    Scenario: subscription creation with invalid access token type 
     Given a valid subscription request body 
     And "$.accessTokenType" is not "bearer"
@@ -186,7 +186,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the response property "$.code" is "INVALID_TOKEN"
     And the response property "$.message" contains a user friendly text
 
-@reachability_status_subscription_18_invalid_credentials
+@reachability_status_subscription_17_invalid_credentials
    Scenario: subscription creation with invalid credentials
     Given a valid subscription request body with invalid credentials
     When the request "createSubscription" is sent
@@ -194,7 +194,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-@reachability_status_subscription_19_invalid_inconsistent_access_token
+@reachability_status_subscription_18_invalid_inconsistent_access_token
    Scenario: subscription creation with inconsistent access token for requested events subscription
   # To test this, a token have to be obtained for a different device
     Given a valid subscription request body with inconsistent access token from different device
@@ -203,7 +203,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-@reachability_status_subscription_20_unknown_subscription_id
+@reachability_status_subscription_19_unknown_subscription_id
    Scenario: Get subscription when subscription-id is unknown to the system 
     Given the path parameter property "$.subscriptionId" is unknown to the system
     When the request "retrieveReachabilityStatusSubscription" is sent
