@@ -98,8 +98,9 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
   @device_reachability_status_08_deviceStatus_inconsistent_access_token
    Scenario: Inconsistent access token context for the device
     # To test this, a token has to be obtained for a different device
-    Given a valid devicestatus request body with  token from different device
-    And the request body property "$.device" is set to appropriate value
+    Given a valid devicestatus request body
+    And the request body property "$.device" is set to a valid testing device supported by the service
+    And header "Authorization" set to access token referring different device
     When the request "getReachabilityStatus" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
