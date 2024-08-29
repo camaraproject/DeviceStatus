@@ -90,9 +90,44 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
   @device_roaming_status_08_deviceStatusWithIdentifiersMismatch
     Scenario: Device identifiers mismatch
     # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
-    Given a valid devicestatus request body with the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
+    Given a valid devicestatus request body 
+    And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
     When the request "getRoamingStatus" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "DEVICE_IDENTIFIERS_MISMATCH"
+    And the response property "$.message" contains a user friendly text
+
+
+  @device_roaming_status_09_deviceStatus_not_applicable
+    Scenario: Device roaming not applicable
+    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
+    Given a valid devicestatus request body 
+    And the request body property "$.device" refers to an unknown device
+    When the request "getRoamingStatus" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "DEVICE_NOT_APPLICABLE"
+    And the response property "$.message" contains a user friendly text
+
+    @device_roaming_status_10_deviceStatus_unable_to_provide_reachability_status
+    Scenario: Unable to provide roaming status for a device
+    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
+    Given a valid devicestatus request body 
+    And the request body property "$.device" refers to an unknown network
+    When the request "getRoamingStatus" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNABLE_TO_PROVIDE_ROAMING_STATUS"
+    And the response property "$.message" contains a user friendly text
+
+    @device_roaming_status_11_deviceStatus_unsupported_device_identifiers
+    Scenario: Unsupported device identifiers
+    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
+    Given a valid devicestatus request body 
+    And the request body property "$.device" set to unsupported identifiers value by the service
+    When the request "getRoamingStatus" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNSUPPORTED_DEVICE_IDENTIFIERS"
     And the response property "$.message" contains a user friendly text
