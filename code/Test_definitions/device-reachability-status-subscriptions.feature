@@ -203,9 +203,9 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-@reachability_status_subscription_20_invalid_resource_path
-   Scenario: subscription creation with invalid resource path
-    Given a valid subscription request body with invalid resource path
+@reachability_status_subscription_20_unknown_subscription_id
+   Scenario: Get subscription when subscription-id is unknown to the system 
+    Given the path parameter property "$.subscriptionId" is unknown to the system
     When the request "createSubscription" is sent
     Then the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
