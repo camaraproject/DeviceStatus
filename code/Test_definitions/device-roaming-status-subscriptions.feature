@@ -126,7 +126,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
 
-@roaming_status_subscriptions_11_subscriptionMaxEvents
+@roaming_status_subscriptions_11_subscription_ends_when_max_events_reached
    Scenario: Receive notification for subscription-ends event on max events reached 
     Given that subscriptions are created synchronously
     And a valid subscription request body  
