@@ -43,7 +43,8 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
 
  @reachability_status_subscriptions_04_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id
   Scenario: Get a subscription based on existing subscription-id.
-    Given the request body is not available and path parameter "subscriptionId" is set to the identifier of an existing subscription
+    Given the request body is not available 
+    And path parameter "subscriptionId" is set to the identifier of an existing subscription
     When the request "retrieveReachabilityStatusSubscription" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
@@ -52,7 +53,8 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
 
  @reachability_status_subscriptions_05_Operation_to_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
-    Given the request body is not available and path parameter "subscriptionId" is set to the identifier of an existing subscription
+    Given the request body is not available 
+    And path parameter "subscriptionId" is set to the identifier of an existing subscription
     When the request "deleteReachabilityStatusSubscription" is sent
     Then the response code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -163,7 +165,7 @@ Scenario: Receive notification for subscription-ends event on expiry
  @reachability_status_subscription_14_invalid_protocol
    Scenario: subscription creation with invalid protocol
     Given a valid subscription request body 
-    And  the "$.protocol" is not "HTTP"
+    And  the request property "$.protocol" is not set to "HTTP"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_PROTOCOL"
@@ -172,7 +174,7 @@ Scenario: Receive notification for subscription-ends event on expiry
 @reachability_status_subscription_15_invalid_credential_type
    Scenario: subscription creation with invalid credential type
     Given a valid subscription request body 
-    And the "$.credentialType" is not "ACCESSTOKEN"
+    And the request property "$.credentialType" is not "ACCESSTOKEN"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_CREDENTIAL"
@@ -181,7 +183,7 @@ Scenario: Receive notification for subscription-ends event on expiry
 @reachability_status_subscription_16_invalid_access_token_type
    Scenario: subscription creation with invalid access token type 
     Given a valid subscription request body 
-    And "$.accessTokenType" is not "bearer"
+    And the request property "$.accessTokenType" is not "bearer"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_TOKEN"
