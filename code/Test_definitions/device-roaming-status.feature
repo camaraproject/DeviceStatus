@@ -15,7 +15,8 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 
   @device_roaming_status_01_roaming_status_true
   Scenario: Check the roaming status when device is in the roaming mode
-    Given the request body property "$.phoneNumber" is set to valid value
+    Given a valid devicestatus request body 
+    And the request body property "$.device" is set to a valid testing device supported by the service
     When the  request "getRoamingStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
@@ -28,7 +29,8 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 
   @device_roaming_status_02_roaming_status_false
   Scenario: Check the roaming state synchronously if the device is not in the roaming mode
-    Given a valid devicestatus request body with "$.phoneNumber"
+    Given a valid devicestatus request body 
+    And the request body property "$.device" is set to a valid testing device supported by the service
     When the request "getRoamingStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
@@ -51,7 +53,8 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 
   @device_roaming_status_04_expired_access_token
    Scenario: Expired access token
-    Given a valid devicestatus request body and header "Authorization" is expired
+    Given a valid devicestatus request body 
+    And header "Authorization" is set to expired token
     When the  request "getRoamingStatus" is sent
     Then the response status code is 401
     And the response property "$.status" is 401
@@ -60,7 +63,8 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 	
   @device_roaming_status_05_no_authorization_header
    Scenario: No Authorization header
-    Given a valid devicestatus request body and header "Authorization" is not available
+    Given a valid devicestatus request body 
+    And header "Authorization" is not available
     When the  request "getRoamingStatus" is sent 
     Then the response status code is 401
     And the response property "$.status" is 401
@@ -69,8 +73,8 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 	
   @device_roaming_status_06_invalid_access_token
    Scenario: Invalid access token
-    Given a valid devicestatus request body and header "Authorization" set to an invalid access token
-    When the  request "getRoamingStatus" is sent
+    Given a valid devicestatus request body 
+    And header "Authorization" set to an invalid access token
     Then the response status code is 401
     And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
@@ -80,7 +84,9 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
   @device_roaming_status_07_deviceStatus_inconsistent_access_token
    Scenario: Inconsistent access token context for the device
     # To test this, a token has to be obtained for a different device
-    Given a valid subscription request body with "$.phoneNumber" and token from different device
+    Given a valid devicestatus request body
+    And the request body property "$.device" is set to a valid testing device supported by the service
+    And header "Authorization" set to access token referring different device
     When the request "getRoamingStatus" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
@@ -98,10 +104,8 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
     And the response property "$.code" is "DEVICE_IDENTIFIERS_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-
   @device_roaming_status_09_deviceStatus_not_applicable
     Scenario: Device roaming not applicable
-    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
     Given a valid devicestatus request body 
     And the request body property "$.device" refers to an unknown device
     When the request "getRoamingStatus" is sent
@@ -112,9 +116,8 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 
     @device_roaming_status_10_deviceStatus_unable_to_provide_reachability_status
     Scenario: Unable to provide roaming status for a device
-    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
     Given a valid devicestatus request body 
-    And the request body property "$.device" refers to an unknown network
+    And the request body property "$.device" refers to a device having network issue
     When the request "getRoamingStatus" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
@@ -123,9 +126,8 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
 
     @device_roaming_status_11_deviceStatus_unsupported_device_identifiers
     Scenario: Unsupported device identifiers
-    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
     Given a valid devicestatus request body 
-    And the request body property "$.device" set to unsupported identifiers value by the service
+    And the request body property "$.device" set to unsupported identifiers value for the service
     When the request "getRoamingStatus" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
