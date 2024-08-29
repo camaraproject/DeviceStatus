@@ -120,6 +120,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the request body property "$.subscriptionMaxEvents" is set to 1 
     When the request "createSubscription" is sent
     Then the response code is 201 
+    Then event notification "reachability-data" is received on callback-url
     Then event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
     And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
@@ -196,7 +197,7 @@ Scenario: Receive notification for subscription-ends event on expiry
 
 @reachability_status_subscription_18_invalid_inconsistent_access_token
    Scenario: subscription creation with inconsistent access token for requested events subscription
-  # To test this, a token have to be obtained for a different device
+   # To test this, a token have to be obtained for a different device
     Given a valid subscription request body with inconsistent access token from different device
     When the request "createSubscription" is sent
     Then the response property "$.status" is 403
