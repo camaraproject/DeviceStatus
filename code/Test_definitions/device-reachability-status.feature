@@ -103,9 +103,43 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
   @device_reachability_status_09_deviceStatusWithIdentifiersMismatch
     Scenario: Device reachabilityidentifiers mismatch
     # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a Device reachability associated to a different phoneNumber
-    Given a valid devicestatus request body with the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
+    Given a valid devicestatus request body 
+    And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
     When the request "getReachabilityStatus" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "DEVICE_IDENTIFIERS_MISMATCH"
+    And the response property "$.message" contains a user friendly text
+
+    @device_reachability_status_10_deviceStatus_NotApplicable
+    Scenario: Device reachability not applicable
+    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a Device reachability associated to a different phoneNumber
+    Given a valid devicestatus request body 
+    And the request body property "$.device" refers to an unknown device
+    When the request "getReachabilityStatus" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "DEVICE_NOT_APPLICABLE"
+    And the response property "$.message" contains a user friendly text
+
+    @device_reachability_status_11_unable_to_provide_reachability_status
+    Scenario: Unable to provide reachability status for a device
+    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a Device reachability associated to a different phoneNumber
+    Given a valid devicestatus request body 
+    And the request body property "$.device" refers to an unknown network
+    When the request "getReachabilityStatus" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNABLE_TO_PROVIDE_REACHABILITY_STATUS"
+    And the response property "$.message" contains a user friendly text
+
+    @device_reachability_status_12_unsupported_device_identifiers
+    Scenario: Unsupported device identifiers
+    # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a Device reachability associated to a different phoneNumber
+    Given a valid devicestatus request body
+    And the request body property "$.device" set to unsupported identifiers value by the service
+    When the request "getReachabilityStatus" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNSUPPORTED_DEVICE_IDENTIFIERS"
     And the response property "$.message" contains a user friendly text
