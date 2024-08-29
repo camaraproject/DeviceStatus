@@ -141,7 +141,7 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     @device_reachability_status_12_unsupported_device_identifiers
     Scenario: Unsupported device identifiers
     Given a valid devicestatus request body
-    And the request body property "$.device" set to unsupported identifiers value by the service
+    And the request body property "$.device" set to unsupported identifiers value for the service
     When the request "getReachabilityStatus" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
