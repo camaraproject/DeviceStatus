@@ -161,7 +161,8 @@ Scenario: Receive notification for subscription-ends event on expiry
 
 @reachability_status_subscriptions_14_creation_of_subscription_with_expiry_time_in_past
   Scenario: Expiry time in past
-    Given a valid subscription request body with expiry time in past
+    Given a valid subscription request body 
+    And request body property "$.subscriptionexpiretime" in past
     When the  request "createSubscription" is sent 
     Then the response code is 400
     And the response property "$.status" is 400
