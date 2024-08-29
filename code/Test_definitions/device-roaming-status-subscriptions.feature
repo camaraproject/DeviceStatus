@@ -177,7 +177,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
  @roaming_status_subscription_15_invalid_protocol
    Scenario: subscription creation with invalid protocol
     Given a valid subscription request body 
-    And "$.protocol" is not "HTTP"
+    And the request property "$.protocol" is not "HTTP"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_PROTOCOL"
@@ -186,7 +186,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
 @roaming_status_subscription_16_invalid_credential_type
    Scenario: subscription creation with invalid credential type
     Given a valid subscription request body 
-    And "$.credentialType" is not "ACCESSTOKEN"
+    And the request property "$.credentialType" is not "ACCESSTOKEN"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_CREDENTIAL"
@@ -195,7 +195,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
 @roaming_status_subscription_17_invalid_access_token_type
    Scenario: subscription creation with invalid access token type 
     Given a valid subscription request body 
-    And "$.accessTokenType" is not "bearer"
+    And the request property "$.accessTokenType" is not "bearer"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_TOKEN"
