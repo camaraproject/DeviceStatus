@@ -16,7 +16,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   Scenario:  Create roaming status subscription synchronously
     Given that subscriptions are created synchronously
     And a valid subscription request body 
-    When the  request "createSubscription" is sent 
+    When the  request "createDeviceRoamingStatusSubscription" is sent 
     Then the response code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -26,7 +26,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   Scenario:  Create roaming status subscription asynchronously
     Given that subscriptions are created asynchronously
     And a valid subscription request body 
-    When the  request "createSubscription" is sent 
+    When the  request "createDeviceRoamingStatusSubscription" is sent 
     Then the response code is 202
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -53,7 +53,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
  @roaming_status_subscriptions_05_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id
   Scenario: Get a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the request "retrieveRoamingStatusSubscription" is sent
+    When the request "retrieveSubscription" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -62,7 +62,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
  @roaming_status_subscriptions_06_Operation_to_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the request "deleteRoamingStatusSubscription" is sent
+    When the request "deleteSubscription" is sent
     Then the response code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And if the response property $.status is 204 then response body is not available
@@ -73,7 +73,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given that subscriptions are created synchronously
     And a valid subscription request body 
     And the request body property "$.type" is "roaming-on"	
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response code is 201
     And if the device switch from roaming "OFF" to roaming "ON"
     Then event notification "roaming-on" is received on callback-url
@@ -86,7 +86,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given that subscriptions are created synchronously
     And a valid subscription request body  
     And the request body property "$.type" is "roaming-off"	
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response code is 201
     And if the device switch from roaming "ON" to roaming "OFF"
     Then event notification "roaming-off" is received on callback-url
@@ -99,7 +99,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given that subscriptions are created synchronously
     And a valid subscription request body  
     And the request body property "$.type" is "roaming-status"	
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response code is 201
     And if the device roaming-status changes
     Then event notification "roaming-status" is received on callback-url
@@ -112,7 +112,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given that subscriptions are created synchronously
     And a valid subscription request body  
     And the request body property "$.type" is "roaming-change-country"	
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response code is 201
     And if the device roaming country changes
     Then event notification "roaming-change-country" is received on callback-url
@@ -125,7 +125,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given that subscriptions are created synchronously
     And a valid subscription request body
     And the request body property "$.subscriptionExpireTime" is set to a value in the near future
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response code is 201 
     And the subscription is expired
     And event notification "subscription-ends" is received on callback-url
@@ -139,7 +139,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     And a valid subscription request body  
     And the request body property "$.type" is "roaming_on"
     And the request body property "$.subscriptionMaxEvents" is set to 1 
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response code is 201 
     Then event notification "roaming_on" is received on callback-url
     Then event notification "subscription-ends" is received on callback-url
@@ -151,9 +151,9 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
    Scenario: Receive notification for subscription-ends event on deletion 
     Given that subscriptions are created synchronously
     And a valid subscription request body  
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response code is 201 
-    When the request "deleteRoamingStatusSubscription" is sent
+    When the request "deleteSubscription" is sent
     Then the response code is 202 or 204	
     Then event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
@@ -166,7 +166,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   @roaming_status_subscriptions_14_Create_roaming_status_subscription_with_invalid_parameter
   Scenario:  Create subscription with invalid parameter
     Given the request body is not compliant with the schema "/components/schemas/SubscriptionRequest"
-    When the  request "createSubscription" is sent 
+    When the  request "createDeviceRoamingStatusSubscription" is sent 
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -176,7 +176,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   Scenario: Expiry time in past
     Given a valid subscription request body
     And request body property "$.subscriptionExpireTime" in past
-    When the  request "createSubscription" is sent 
+    When the  request "createDeviceRoamingStatusSubscription" is sent 
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -186,7 +186,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
    Scenario: subscription creation with invalid protocol
     Given a valid subscription request body 
     And the request property "$.protocol" is not "HTTP"
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_PROTOCOL"
     And the response property "$.message" contains a user friendly text
@@ -195,7 +195,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
    Scenario: subscription creation with invalid credential type
     Given a valid subscription request body 
     And the request property "$.credentialType" is not "ACCESSTOKEN"
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_CREDENTIAL"
     And the response property "$.message" contains a user friendly text
@@ -204,7 +204,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
    Scenario: subscription creation with invalid access token type 
     Given a valid subscription request body 
     And the request property "$.accessTokenType" is not "bearer"
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_TOKEN" or "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
@@ -213,7 +213,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
    Scenario: subscription creation with invalid credentials
     Given a valid subscription request body 
     And header "Authorization" token is set to invalid credentials
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
@@ -224,7 +224,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given a valid subscription request body 
     And the request body property "$.device" is set to a valid testing device supported by the service
     And header "Authorization" set to access token referring different device
-    When the request "createSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
@@ -232,7 +232,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
 @roaming_status_subscription_21_unknown_subscription_id
    Scenario: Get subscription when subscription-id is unknown to the system 
     Given the path parameter property "$.subscriptionId" is unknown to the system
-    When the request "retrieveRoamingStatusSubscription" is sent
+    When the request "retrieveSubscription" is sent
     Then the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
