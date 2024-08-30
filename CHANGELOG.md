@@ -42,6 +42,7 @@ Note: the previous device-status API with roaming and connectivity endpoints has
 ### Added
 * Addition of "lastStatusTime" Field by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/146
 * include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
+* Create Gherkin tests for device-status-reachability and device-status-roaming by @mdomale in https://github.com/camaraproject/DeviceStatus/pull/186
 
 ### Changed
 * Change endpoint names to comply with guideline by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/131
@@ -68,6 +69,7 @@ Note: the previous device-status API with roaming and connectivity endpoints has
 ### Added
 * Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
 * include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
+* Create Gherkin tests for device-reachability-status-subscriptions & device-roaming-status-subscriptions by @mdomale in https://github.com/camaraproject/DeviceStatus/pull/187
 
 ### Changed
 * Make '+' mandatory for phoneNumber by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/144
@@ -92,6 +94,7 @@ Note: the previous device-status API with roaming and connectivity endpoints has
 ### Added
 * Addition of "lastStatusTime" Field by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/146
 * include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
+* Create Gherkin tests for device-status-reachability and device-status-roaming by @mdomale in https://github.com/camaraproject/DeviceStatus/pull/186
 
 ### Changed
 * Change endpoint names to comply with guideline by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/131
@@ -117,6 +120,7 @@ Note: the previous device-status API with roaming and connectivity endpoints has
 ### Added
 * Add termination reason `SUBSCRIPTION_DELETED` when subscription deleted by the user by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/121
 * include x-correlator by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/112
+* Create Gherkin tests for device-reachability-status-subscriptions & device-roaming-status-subscriptions by @mdomale in https://github.com/camaraproject/DeviceStatus/pull/187
 
 ### Changed
 * renaming "EventType"-components to be more clear & update component descriptions by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/141
