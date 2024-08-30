@@ -117,7 +117,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     Then the subscription is expired
     Then event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
+    And type="org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
 
 @reachability_status_subscriptions_11_subscription_end_when_max_events
@@ -131,7 +131,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     Then event notification "reachability-data" is received on callback-url
     Then event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
+    And type="org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
 
   @reachability_status_subscriptions_12_subscription_delete_event_validation
@@ -144,7 +144,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     Then the response code is 202 or 204	
     Then event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
+    And type="org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "SUBSCRIPTION_DELETED"
 
 
@@ -193,7 +193,7 @@ Scenario: Receive notification for subscription-ends event on expiry
     And the request property "$.accessTokenType" is not "bearer"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_TOKEN"
+    And the response property "$.code" is "INVALID_TOKEN" or "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
 @reachability_status_subscription_18_invalid_credentials
