@@ -16,7 +16,7 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
   @device_roaming_status_01_roaming_status_true
   Scenario: Check the roaming status when device is in the roaming mode
     Given a valid devicestatus request body 
-    And the request body property "$.device" is set to a valid testing device supported by the service
+    And the request body property "$.device" is set to a valid testing device which is in roaming and supported by the service
     When the  request "getRoamingStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
@@ -30,7 +30,7 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
   @device_roaming_status_02_roaming_status_false
   Scenario: Check the roaming state synchronously if the device is not in the roaming mode
     Given a valid devicestatus request body 
-    And the request body property "$.device" is set to a valid testing device supported by the service
+    And the request body property "$.device" is set to a valid testing device which is not in roaming and supported by the service
     When the request "getRoamingStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
