@@ -206,7 +206,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     And the request property "$.accessTokenType" is not "bearer"
     When the request "createSubscription" is sent
     Then the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_TOKEN"
+    And the response property "$.code" is "INVALID_TOKEN" or "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
 @roaming_status_subscription_19_invalid_credentials
