@@ -130,7 +130,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     And the subscription is expired
     And event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
+    And type="org.camaraproject.roaming-status-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
 
 @roaming_status_subscriptions_12_subscription_ends_when_max_events_reached
@@ -144,7 +144,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Then event notification "roaming_on" is received on callback-url
     Then event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
+    And type="org.camaraproject.roaming-status-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
 
   @roaming_status_subscriptions_13_subscription_delete_event_validation
@@ -157,7 +157,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Then the response code is 202 or 204	
     Then event notification "subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "##/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.geofencing-subscriptions.v0.subscription-ends"
+    And type="org.camaraproject.roaming-status-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "SUBSCRIPTION_DELETED"
 
 
