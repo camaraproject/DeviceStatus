@@ -410,7 +410,7 @@ components:
           type: boolean
           description: |
             Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
-            Example: Consumer subscribes to reachability SMS. If consumer sets initialEvent to true and device is already reachable by SMS, an event is triggered.
+            Example: Consumer subscribes to roaming-on. If consumer sets initialEvent to true and the device is already roaming-on, an event is triggered.
 
     SinkCredential:
       type: object
@@ -1200,7 +1200,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           examples:
-            PermissionDenied:
+            MultieventSubscriptionNotSupported:
               value:
                 status: 422
                 code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED

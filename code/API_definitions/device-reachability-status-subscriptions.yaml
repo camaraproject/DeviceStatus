@@ -1143,7 +1143,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           examples:
-            PermissionDenied:
+            MultieventSubscriptionNotSupported:
               value:
                 status: 422
                 code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
