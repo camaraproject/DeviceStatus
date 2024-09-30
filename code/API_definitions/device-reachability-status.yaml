@@ -16,8 +16,8 @@ info:
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
 
     * **Reachability** : Reachability status.
-      - `CONNECTED_SMS`, if device is connected to the network via SMS usage
-      - `CONNECTED_DATA`, if device is connected to the network via data usage
+      - `CONNECTED_SMS`, if device is connected to the network only via SMS usage
+      - `CONNECTED_DATA`, if device is connected to the network via data usage (regardless of the SMS reachability)
       - `NOT_CONNECTED`, if device is not connected to the network
 
     * **LastStatusTime** : This property specifies the time when the status was last updated. Its presence in the response indicates the freshness of the information, while its absence implies the information may be outdated or its freshness is uncertain.
@@ -186,9 +186,9 @@ components:
           $ref: "#/components/schemas/ReachabilityStatus"
     ReachabilityStatus:
       description: |
-        CONNECTED_DATA: The device is connected to the network for Data usage
+        CONNECTED_DATA: The device is connected to the network for Data usage (regardless of the SMS reachability)
 
-        CONNECTED_SMS: The device is connected to the network for SMS usage
+        CONNECTED_SMS: The device is connected to the network only for SMS usage
 
         NOT_CONNECTED: The device is not connected
       type: string
