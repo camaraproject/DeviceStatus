@@ -28,9 +28,9 @@ info:
     When subscribing, it is mandatory to provide the event `types` you are subscribing to, as multiple subscription-types are managed by this API.
 
     Following event ``types`` are managed for this API:
-      - ``org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data``: Event triggered when the device is connected to the network for Data usage.
+      - ``org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data``: Event triggered when the device is connected to the network for Data usage (regardless of the SMS reachability).
 
-      - ``org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms``: Event triggered when the device is connected to the network for SMS usage
+      - ``org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms``: Event triggered when the device is connected to the network only for SMS usage
 
       - ``org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected``: Event triggered when the device is not connected.
 
@@ -675,9 +675,9 @@ components:
     NotificationEventType:
       type: string
       description: |
-        reachability-data - Event triggered when the device is connected to the network for Data usage.
+        reachability-data - Event triggered when the device is connected to the network for Data usage (regardless of the SMS reachability).
 
-        reachability-sms - Event triggered when the device is connected to the network for SMS usage
+        reachability-sms - Event triggered when the device is connected to the network only for SMS usage
 
         reachability-disconnected - Event triggered when the device is not connected.
 
@@ -691,9 +691,9 @@ components:
     SubscriptionEventType:
       type: string
       description: |
-        reachability-data - Event triggered when the device is connected to the network for Data usage.
+        reachability-data - Event triggered when the device is connected to the network for Data usage (regardless of the SMS reachability).
 
-        reachability-sms - Event triggered when the device is connected to the network for SMS usage
+        reachability-sms - Event triggered when the device is connected to the network only for SMS usage
 
         reachability-disconnected - Event triggered when the device is not connected.
 
