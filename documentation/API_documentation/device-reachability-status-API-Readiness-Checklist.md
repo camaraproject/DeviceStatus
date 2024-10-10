@@ -1,6 +1,6 @@
 # API Readiness Checklist
 
-Checklist for device-reachability-status 0.6.0 in r1.2.
+Checklist for device-reachability-status 0.6.1 in r1.3.
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status | Comments |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|
