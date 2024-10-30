@@ -29,7 +29,7 @@ Repository to describe, develop, document and test the DeviceStatus APIs
 
 ## Contributing
 * Meetings
-  * Bi-weekly on Wednesday, 11:00 CET/CEST (08:00 UTC, 09:00 UTC during European DST)
+  * Bi-weekly on Wednesday, 09:00 UTC
   * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/93413850406?password=3aeb0f1b-d9f9-42c5-91d8-3d2b20421ef1)
   * Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/fzLe) 
 * Mailing List
