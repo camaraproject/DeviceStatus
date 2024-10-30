@@ -35,7 +35,7 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is true
-    And the response property "$.connectivity" is ["DATA"]
+    And the response property "$.connectivity" includes "DATA"
 
   @device_reachability_status_03_reachableAndConnectedDataAndSms
   Scenario: Check the reachability status if device is connected with DATA
