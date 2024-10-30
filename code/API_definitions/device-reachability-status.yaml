@@ -117,15 +117,23 @@ paths:
                 Connected-With-SMS:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
-                    reachabilityStatus: CONNECTED_SMS
+                    reachable: true
+                    connectivity: ["SMS"]
                 Connected-With-DATA:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
-                    reachabilityStatus: CONNECTED_DATA
-                Not-Connected:
+                    reachable: true
+                    connectivity: ["DATA"]
+
+                Connected-With-DATA-And-SMS:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
-                    reachabilityStatus: NOT_CONNECTED
+                    reachable: true
+                    connectivity: ["DATA","SMS"]
+                Not-Reachable:
+                  value:
+                    lastStatusTime: "2024-02-20T10:41:38.657Z"
+                    reachable: false
         "400":
           $ref: "#/components/responses/Generic400"
         "401":
@@ -178,24 +186,27 @@ components:
     ReachabilityStatusResponse:
       type: object
       required:
-        - reachabilityStatus
+        - reachable
       properties:
         lastStatusTime:
           $ref: "#/components/schemas/LastStatusTime"
-        reachabilityStatus:
-          $ref: "#/components/schemas/ReachabilityStatus"
-    ReachabilityStatus:
+        reachable:
+          description: Indicates overall device reachability
+          type: boolean
+        connectivity:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConnectivityType"
+    ConnectivityType:
       description: |
-        CONNECTED_DATA: The device is connected to the network for Data usage (regardless of the SMS reachability)
+        DATA: The device is connected to the network for Data usage (regardless of the SMS reachability)
 
-        CONNECTED_SMS: The device is connected to the network only for SMS usage
+        SMS: The device is connected to the network only for SMS usage
 
-        NOT_CONNECTED: The device is not connected
       type: string
       enum:
-        - CONNECTED_DATA
-        - CONNECTED_SMS
-        - NOT_CONNECTED
+        - DATA
+        - SMS
     Device:
       description: |
         End-user equipment able to connect to a mobile network. Examples of devices include smartphones or IoT sensors/actuators.
