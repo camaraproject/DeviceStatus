@@ -40,7 +40,7 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
   @device_reachability_status_03_reachableAndConnectedDataAndSms
   Scenario: Check the reachability status if device is connected with DATA
     Given a valid device reachability status request body
-    And the request body property "$.device" is set to a valid testing device which is connected with data and supported by the service
+    And the request body property "$.device" is set to a valid testing device which is connected with both data and sms, and supported by the service
     When the request "getReachabilityStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
