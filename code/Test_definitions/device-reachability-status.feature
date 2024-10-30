@@ -38,7 +38,7 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     And the response property "$.connectivity" includes "DATA"
 
   @device_reachability_status_03_reachableAndConnectedDataAndSms
-  Scenario: Check the reachability status if device is connected with DATA
+  Scenario: Check the reachability status if device is connected with DATA and SMS
     Given a valid device reachability status request body
     And the request body property "$.device" is set to a valid testing device which is connected with both data and sms, and supported by the service
     When the request "getReachabilityStatus" is sent
