@@ -75,7 +75,7 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/device-reachability-status/v0.6"
+  - url: "{apiRoot}/device-reachability-status/vwip"
     variables:
       apiRoot:
         default: http://localhost:9091
