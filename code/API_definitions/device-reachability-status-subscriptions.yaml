@@ -72,7 +72,7 @@ info:
   x-camara-commonalities: 0.4.0
 externalDocs:
   description: Product documentation at CAMARA
-  url: https://github.com/camaraproject/
+  url: https://github.com/camaraproject/DeviceStatus
 
 servers:
   - url: "{apiRoot}/device-reachability-status-subscriptions/v0.6"
