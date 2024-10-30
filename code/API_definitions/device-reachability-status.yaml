@@ -15,10 +15,9 @@ info:
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
 
-    * **Reachability** : Reachability status.
-      - `CONNECTED_SMS`, if device is connected to the network only via SMS usage
-      - `CONNECTED_DATA`, if device is connected to the network via data usage (regardless of the SMS reachability)
-      - `NOT_CONNECTED`, if device is not connected to the network
+    * **Reachability:** Indicates the device's network connectivity status.
+      - `reachable: true`, the device is reachable from the network. The specific connectivity types (DATA, SMS, or both) are detailed in the `connectivity` array.
+      - `reachable: false`, the device is not reachable from the network.
 
     * **LastStatusTime** : This property specifies the time when the status was last updated. Its presence in the response indicates the freshness of the information, while its absence implies the information may be outdated or its freshness is uncertain.
 
