@@ -22,7 +22,7 @@ The below sections record the changes for each API version in each release as fo
 ## Release Notes
 
 This patch release contains the definition and documentation of
-* device-roaming-status v0.6.0
+* device-roaming-status v0.6.1
 * device-roaming-status-subscriptions v0.6.1
 * device-reachability-status v0.6.1
 * device-reachability-status-subscriptions v0.6.1
@@ -33,7 +33,7 @@ The API definition(s) are based on
 
 Note: these patch release notes are listing only the change compared to the [r1.2](https://github.com/camaraproject/DeviceStatus/releases/tag/r1.2) release. For the full list of changes of the 0.6.0 API versions compared to 0.5.x see [r1.2](#r12).
 
-## device-roaming-status v0.6.0
+## device-roaming-status v0.6.1
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r1.3/code/API_definitions/device-roaming-status.yaml&nocors)
@@ -45,6 +45,7 @@ Note: these patch release notes are listing only the change compared to the [r1.
 ### Changed
 
 ### Fixed
+* Minor corrections in info.description
 
 ### Removed
 
@@ -62,6 +63,7 @@ Note: these patch release notes are listing only the change compared to the [r1.
 ### Fixed
 * Add missing `protocol`-components for device-roaming-status-subscriptions by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/208
 * Correct the examples for sub - initialEvent and error MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED by @dfischer-tech in https://github.com/camaraproject/DeviceStatus/pull/210
+* Minor corrections in info.description
 
 ### Removed
 
@@ -79,6 +81,7 @@ Note: these patch release notes are listing only the change compared to the [r1.
 * Update description of the reachability types by @akoshunyadi in https://github.com/camaraproject/DeviceStatus/pull/215
 
 ### Fixed
+* Minor corrections in info.description
 
 ### Removed
 
@@ -96,6 +99,7 @@ Note: these patch release notes are listing only the change compared to the [r1.
 
 ### Fixed
 * Correct the examples for sub - initialEvent and error MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED by @dfischer-tech in https://github.com/camaraproject/DeviceStatus/pull/210
+* Minor corrections in info.description
 
 ### Removed
 
