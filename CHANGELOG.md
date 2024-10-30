@@ -29,7 +29,7 @@ This patch release contains the definition and documentation of
 
 The API definition(s) are based on
 * Commonalities v0.4.0
-* Identity and Consent Management v0.2.0
+* Identity and Consent Management v0.2.1
 
 Note: these patch release notes are listing only the change compared to the [r1.2](https://github.com/camaraproject/DeviceStatus/releases/tag/r1.2) release. For the full list of changes of the 0.6.0 API versions compared to 0.5.x see [r1.2](#r12).
 
