@@ -59,7 +59,7 @@ info:
 
     (FAQs will be added in a later version of the documentation)
 
-  ### Authorization and authentication
+    ### Authorization and authentication
 
     The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
 
