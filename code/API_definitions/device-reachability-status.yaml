@@ -128,7 +128,7 @@ paths:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
                     reachable: true
-                    connectivity: ["DATA","SMS"]
+                    connectivity: ["DATA", "SMS"]
                 Not-Reachable:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
