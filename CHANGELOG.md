@@ -45,7 +45,7 @@ Note: these patch release notes are listing only the change compared to the [r1.
 ### Changed
 
 ### Fixed
-* Minor corrections in info.description
+* Minor corrections in info.description by @akoshunyadi in https://github.com/camaraproject/DeviceStatus/pull/216
 
 ### Removed
 
@@ -63,7 +63,7 @@ Note: these patch release notes are listing only the change compared to the [r1.
 ### Fixed
 * Add missing `protocol`-components for device-roaming-status-subscriptions by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/208
 * Correct the examples for sub - initialEvent and error MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED by @dfischer-tech in https://github.com/camaraproject/DeviceStatus/pull/210
-* Minor corrections in info.description
+* Minor corrections in info.description by @akoshunyadi in https://github.com/camaraproject/DeviceStatus/pull/216
 
 ### Removed
 
@@ -81,7 +81,7 @@ Note: these patch release notes are listing only the change compared to the [r1.
 * Update description of the reachability types by @akoshunyadi in https://github.com/camaraproject/DeviceStatus/pull/215
 
 ### Fixed
-* Minor corrections in info.description
+* Minor corrections in info.description by @akoshunyadi in https://github.com/camaraproject/DeviceStatus/pull/216
 
 ### Removed
 
@@ -99,7 +99,7 @@ Note: these patch release notes are listing only the change compared to the [r1.
 
 ### Fixed
 * Correct the examples for sub - initialEvent and error MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED by @dfischer-tech in https://github.com/camaraproject/DeviceStatus/pull/210
-* Minor corrections in info.description
+* Minor corrections in info.description by @akoshunyadi in https://github.com/camaraproject/DeviceStatus/pull/216
 
 ### Removed
 
