@@ -7,12 +7,12 @@
 <a href="https://github.com/camaraproject/DeviceStatus/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/DeviceStatus?style=plastic"></a>
 
 # DeviceStatus
-Repository to describe, develop, document and test the DeviceStatus API family
+Repository to describe, develop, document and test the DeviceStatus APIs
 
 ## Scope
 * Service APIs for “Device Status” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))  
-* It provides the customer with the ability to:  
-  - check if a device is reachable or has lost connectivity to the network
+* It provides the API consumer with the ability to:  
+  - check if a device is reachable or is not connected to the network
   - check if a device is roaming, and in which country
   - receive notifications if the connectivity or roaming status of the device changes
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
@@ -29,7 +29,7 @@ Repository to describe, develop, document and test the DeviceStatus API family
 
 ## Contributing
 * Meetings
-  * Bi-weekly on Wednesday, 11:00 CET/CEST (08:00 UTC, 09:00 UTC during European DST)
+  * Bi-weekly on Wednesday, 09:00 UTC
   * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/93413850406?password=3aeb0f1b-d9f9-42c5-91d8-3d2b20421ef1)
   * Access [meeting minutes](https://lf-camaraproject.atlassian.net/wiki/x/fzLe) 
 * Mailing List

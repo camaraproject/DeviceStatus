@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Device Roaming Status
   description: |
-    This API provides the customer with the ability to query device roaming Status
+    This API provides the API consumer with the ability to query device roaming Status
 
     # Introduction
 
@@ -21,7 +21,7 @@ info:
     ## Relevant terms and definitions
 
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
-      At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
+      At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier (not supported for this API version) assigned by the mobile network operator for the device.
 
     * **Roaming** : Roaming status - `true`, if device is in roaming situation - `false` else.
 
@@ -37,9 +37,9 @@ info:
 
     The endpoint `POST /retrieve` allows to get roaming status and country information (if device in roaming situation) synchronously.
 
-    # Authorization and authentication
+    ### Authorization and authentication
 
-    [Camara Security and Interoperability Profile](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-Security-Interoperability.md) provides details on how a client requests an access token.
+    The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
 
     Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
 
@@ -76,11 +76,11 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 0.6.1
   x-camara-commonalities: 0.4.0
 externalDocs:
   description: Product documentation at CAMARA
-  url: https://github.com/camaraproject/
+  url: https://github.com/camaraproject/DeviceStatus
 
 servers:
   - url: "{apiRoot}/device-roaming-status/v0.6"
