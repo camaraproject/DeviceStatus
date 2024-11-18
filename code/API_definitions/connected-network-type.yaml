@@ -16,13 +16,11 @@ info:
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
 
     * **Network Type** : Network Type is intended to provide insight to connected network's capabilities from standards perspective.  Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
-      - `2G`, if device is connected to the 2G network
-      - `3G`, if device is connected to the 3G network
-      - `4GLTE`, if device is connected to the 4G network
-      - `5GNSA`, if device's is connected to the 4G network but using 5G New Radio (NR) capability
-      - `5GSA`, if device is connected to the 5G network
-      - `NON3GPP4G`, if device is connected to the 4G network via WiFi network
-      - `NON3GPP5G`, if device's is connected to the 5G network via WiFi network
+      - `2G`, if device is connected to the 2G network technology
+      - `3G`, if device is connected to the 3G network technology
+      - `4G`, if device is connected to the 4G network technology
+      - `5G`, if device is connected to the 5G network technology
+      - `UNKNOWN` if connection [technology] can not be determined
 
 
     * **LastStatusTime** : This property specifies the time when the status was last updated. Its presence in the response indicates the freshness of the information, while its absence implies the information may be outdated or its freshness is uncertain.
@@ -90,22 +88,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/ConnectedNetworkTypeResponse"
               examples:
-                Connected-to-4GLTE:
+                Connected-to-4G:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
-                    connectedNetworkType: 4GLTE
-                Connected-To-5GNSA:
+                    connectedNetworkType: 4G
+                Connected-to-5G:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
-                    connectedNetworkType: 5GNSA
-                Connected-To-Non3gpp4g:
+                    connectedNetworkType: 5G
+                Connected-to-Undetermined:
                   value:
                     lastStatusTime: "2024-02-20T10:41:38.657Z"
-                    connectedNetworkType: NON3GPP4G
-                Not-Connected:
-                  value:
-                    lastStatusTime: "2024-02-20T10:41:38.657Z"
-                    connectedNetworkType: NOT_CONNECTED
+                    connectedNetworkType: UNKNOWN
         "400":
           $ref: "#/components/responses/Generic400"
         "401":
@@ -156,24 +150,19 @@ components:
 
     ConnectedNetworkType:
       description: |
-        * NOT_CONNECTED: The device is not connected to network
+        * UNKNOWN: Used when connection [technology] can not be determined
         * 2G: 2nd Generation Mobile Communication Technology
         * 3G: 3rd Generation Mobile Communication Technology
-        * 4GLTE: 4th Generation Mobile Communication Technology aka LTE
-        * 5GNSA:4th Generation Mobile Communication Technology aka LTE with device connected 5G New Radio (NR)
-        * 5GSA: 5th Generation Mobile Communication Technology
-        * NON3GPP4G: Device connected via non-3GPP Radio Access Technology but connected to 4G Network (e.g. WiFi Calling)
-        * NON3GPP5G: Device connected via non-3GPP Radio Access Technology but connected to 5G Network (e.g. WiFi Calling)
+        * 4G: 4th Generation Mobile Communication Technology
+        * 5G: 5th Generation Mobile Communication Technology
+
       type: string
       enum:
         - 2G
         - 3G
-        - 4GLTE
-        - 5GNSA
-        - 5GSA
-        - NON3GPP4G
-        - NON3GPP5G
-        - NOT_CONNECTED
+        - 4G
+        - 5G
+        - UNKNOWN
 
     Device:
       description: |
