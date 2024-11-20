@@ -50,19 +50,19 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/network-type-retrieval/v0"
+  - url: "{apiRoot}/network-type-retrieval/vwip"
     variables:
       apiRoot:
         default: http://localhost:9091
         description: API root
 tags:
-  - name: Connected  Network Type
+  - name: Connected Network Type
     description: Operations to get the network type device is connected to
 paths:
   /retrieve-network-type:
     post:
       tags:
-        - Connected network type
+        - Connected Network Type
       summary: "Get the connected network type"
       description: Get the connected network type
       operationId: getConnectedNetworkType
