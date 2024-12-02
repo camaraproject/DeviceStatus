@@ -31,7 +31,7 @@ info:
 
     ## Connected Network Type
 
-    The endpoint `POST /retrieve-network-type` allows to get connected Network Type.
+    The endpoint `POST /retrieve` allows to get connected Network Type.
 
 
     ## Further info and support
@@ -50,7 +50,7 @@ externalDocs:
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/network-type-retrieval/vwip"
+  - url: "{apiRoot}/connected-network-type/vwip"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -59,12 +59,12 @@ tags:
   - name: Connected Network Type
     description: Operations to get the network type device is connected to
 paths:
-  /retrieve-network-type:
+  /retrieve:
     post:
       tags:
         - Connected Network Type
       summary: "Get the connected network type"
-      description: Get the connected network type
+      description: Get the connected network type to which the user device is connected
       operationId: getConnectedNetworkType
       parameters:
         - $ref: '#/components/parameters/x-correlator'
@@ -75,7 +75,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RequestConnectedNetworkType"
+              $ref: "#/components/schemas/ConnectedNetworkTypeRequest"
         required: true
       responses:
         "200":
@@ -242,7 +242,7 @@ components:
       format: ipv6
       example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
 
-    RequestConnectedNetworkType:
+    ConnectedNetworkTypeRequest:
       type: object
       properties:
         device:
