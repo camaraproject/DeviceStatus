@@ -53,7 +53,10 @@ info:
 
     # Multi-SIM scenario handling
 
-    In multi-SIM scenarios where more than one mobile device is associated with a phone number (e.g. a smartphone with an associated smartwatch), it might not be possible to uniquely identify the device for which the reachability status should be returned from that phone number. If the phone number is used as the device identifier when querying in a multi-SIM scenario, the API may respond with an error, return a combined status for the multi-SIM group as a whole, or return the status for a single device in the multi-SIM group which may not be the intended device.
+    In multi-SIM scenarios where more than one mobile device is associated with a phone number (e.g. a smartphone with an associated smartwatch), it might not be possible to uniquely identify the device for which the reachability status should be returned from that phone number. If the phone number is used as the device identifier when querying in a multi-SIM scenario, the API may:
+    - respond with an error, or
+    - return a combined status for the multi-SIM group as a whole, or
+    - return the status for a single device in the multi-SIM group, which may not be the intended device.
 
     Possible solutions in such a scenario include:
     - Using the authorisation code flow to obtain an access token, which will automatically identify the intended device
