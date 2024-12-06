@@ -8,7 +8,7 @@ info:
 
     ## Connected Network Type
 
-    API consumer is able to inquire device's connected network type.
+    The API consumer is able to query the device's connected network type. The API provider can determine this in various ways. For example, the network type can be inferred from the specific radio cell to which the device is connected, as radio cells only support a single technology. It is important to note that the API does not query the device directly.
 
     # Relevant terms and definitions
 
