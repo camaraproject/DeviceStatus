@@ -33,7 +33,19 @@ info:
 
     The endpoint `POST /retrieve` allows to get connected Network Type.
 
+    # Identifying the device from the access token
 
+    This API requires the API consumer to identify a device as the subject of the API as follows:
+    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `device` object, which therefore MUST be provided.
+
+    - When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
+
+    This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
+
+    ## Error handling:
+    - If the subject cannot be identified from the access token and the optional `device` object is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
+
+    - If the subject can be identified from the access token and the optional `device` object is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
     ## Further info and support
 
     (FAQs will be added in a later version of the documentation)
@@ -314,11 +326,6 @@ components:
                 status: 403
                 code: "PERMISSION_DENIED"
                 message: "Client does not have sufficient permissions to perform this action"
-            InvalidTokenContext:
-              value:
-                status: 403
-                code: INVALID_TOKEN_CONTEXT
-                message: Invalid access token context
     ConnectedStatusNotFound404:
       description: Resource Not Found
       headers:
@@ -337,7 +344,7 @@ components:
             DeviceIdentifierNotFound:
               value:
                 status: 404
-                code: DEVICE_NOT_FOUND
+                code: IDENTIFIER_NOT_FOUND
                 message: Some identifier cannot be matched to a device
     Generic409:
       description: Conflict
@@ -365,18 +372,28 @@ components:
             UnsupportedDeviceIdentifiers:
               value:
                 status: 422
-                code: UNSUPPORTED_DEVICE_IDENTIFIERS
+                code: UNSUPPORTED_IDENTIFIER
                 message: "None of the provided device identifiers is supported by the implementation"
             InconsistentDeviceIdentifiers:
               value:
                 status: 422
-                code: DEVICE_IDENTIFIERS_MISMATCH
+                code: IDENTIFIER_MISMATCH
                 message: Device identifiers mismatch
             DeviceNotSupported:
               value:
                 status: 422
-                code: DEVICE_NOT_APPLICABLE
+                code: SERVICE_NOT_APPLICABLE
                 message: Service not applicable to the device
+            UnnecessaryDeviceIdentifier:
+              value:
+                status: 422
+                code: UNNECESSARY_IDENTIFIER
+                message: The device is already identified by the access token
+            MissingIdentifier:
+              value:
+                status: 422
+                code: MISSING_IDENTIFIER
+                message: The device cannot be identified
     Generic500:
       description: Server error
       headers:
