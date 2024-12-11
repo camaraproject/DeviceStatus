@@ -15,10 +15,10 @@ info:
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
 
-    * **Network Type** : Network Type is intended to provide insight to connected network's capabilities from standards perspective.  Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
-      - `2G`, if device is connected to the 2G network technology
-      - `3G`, if device is connected to the 3G network technology
-      - `4G`, if device is connected to the 4G network technology
+    * **Network Type** : Network Type is intended to provide insight into connected network's capabilities from standards perspective, and to reflect the mobile technology that would be displayed by the device to the end user where applicable.  Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
+      - `2G`, if device is connected to the 2G network technology (alternative indicators such as "G" or "E" may be displayed on the device)
+      - `3G`, if device is connected to the 3G network technology (alternative indicators such as "H" or "H+" may be displayed on the device)
+      - `4G`, if device is connected to the 4G network technology (alternative indicators such as "LTE" or "LTE+" may be displayed on the device)
       - `5G`, if device is connected to the 5G network technology
       - `UNKNOWN` if connection [technology] can not be determined
 
