@@ -54,7 +54,7 @@ info:
 
     Following table illustrate behaviour regarding event triggering depending on **initial** reachability state of the device:
 
-    | subscrived event-type | device reachability status at subscription time | event send if ``initialEvent`` set to true |
+    | subscribed event-type | device reachability status at subscription time | event sent if ``initialEvent`` set to true |
     | ----------------------| ------------- | --------------- |
     | reachability-data  | OK for data usage |   Yes |
     | reachability-data  | disconnected or only SMS | No |
