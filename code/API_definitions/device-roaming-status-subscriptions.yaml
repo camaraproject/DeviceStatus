@@ -55,7 +55,7 @@ info:
 
     Following table illustrate behaviour regarding event triggering depending on **initial** roaming state of the device:
 
-    | subscrived event-type | device roaming status at subscription time | event send if ``initialEvent`` set to true |
+    | subscribed event-type | device roaming status at subscription time | event sent if ``initialEvent`` set to true |
     | ----------------------| ------------- | --------------- |
     | roaming-status  | Roaming On |   Yes |
     | roaming-status  | Roaming Off | Yes |
@@ -70,7 +70,7 @@ info:
 
     **Clarification on ``roaming-change-country`` event-type:**
 
-    ``roaming-change-country`` event is send only when the device stays in roaming situation and change country.
+    ``roaming-change-country`` event is sent only when the device stays in roaming situation and change country.
     Suppose a device from Germany & all event types subscribed:
 
     - Device moves from Germany to France:
