@@ -14,14 +14,12 @@ info:
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
       At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
 
-    * **Connected Network Type**: Network Type is intended to provide insight to connected network's capabilities from standards perspective. Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
-       - `2G`: if device is connected to the 2G network
-       - `3G`: if device is connected to the 3G network
-       - `4GLTE`: if device is connected to the 4G network
-       - `5GNSA`: if device's is connected to the 4G network but using 5G New Radio (NR) capability
-       - `5GSA`: if device is connected to the 5G network
-       - `NON3GPP4G`: if device is connected to the 4G network via WiFi network (e.g. WiFi Calling)
-       - `NON3GPP5G`: if device's is connected to the 5G network via WiFi network (e.g. WiFi Calling)
+    * **Connected Network Type**: Network Type is intended to provide insight into connected network's capabilities from standards perspective, and to reflect the mobile technology that would be displayed by the device to the end user where applicable.  Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
+       - `2G`: if device is connected to the 2G network technology (alternative indicators such as "G" or "E" may be displayed on the device)
+       - `3G`: if device is connected to the 3G network technology (alternative indicators such as "H" or "H+" may be displayed on the device)
+       - `4G`: if device is connected to the 4G network technology (alternative indicators such as "LTE" or "LTE+" may be displayed on the device)
+       - `5G`: if device is connected to the 5G network technology
+       - `UNKNOWN`: if connection [technology] can not be determined
        
     # API Functionality
 
@@ -48,6 +46,13 @@ info:
       Developers may provide a callback URL on which notifications regarding connected network type can be received from the service provider.
       If an event occurs the application will send events to the provided webhook - 'sink'._
 
+    # Authorization and authentication
+    The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the API Provider, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
+
     # Further info and support
 
     (FAQs will be added in a later version of the documentation)
@@ -59,12 +64,14 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: wip
+  x-camara-commonalities: 0.4.0
+
 externalDocs:
   description: Product documentation at Camara
   url: https://github.com/camaraproject/
 
 servers:
-  - url: "{apiRoot}/connected-network-type-subscriptions/v0"
+  - url: "{apiRoot}/connected-network-type-subscriptions/vwip"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -495,11 +502,9 @@ components:
       enum:
         - 2G
         - 3G
-        - 4GLTE
-        - 5GNSA
-        - 5GSA
-        - NON3GPP4G
-        - NON3GPP5G
+        - 4G
+        - 5G
+        - UNKNOWN
 
     SubscriptionDetail:
       description: The detail of the requested event subscription
@@ -1146,5 +1151,5 @@ components:
           subscriptionId: 987654321
           device:
             phoneNumber: +123456789
-          connectedNetworkType: 5GNSA 
+          connectedNetworkType: 5G 
         time: 2023-03-22T05:40:23.682Z
