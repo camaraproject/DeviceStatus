@@ -20,7 +20,6 @@ info:
        - `4G`: if device is connected to the 4G network technology (alternative indicators such as "LTE" or "LTE+" may be displayed on the device)
        - `5G`: if device is connected to the 5G network technology
        - `UNKNOWN`: if connection [technology] can not be determined
-       
     # API Functionality
 
     The API exposes following capabilities:
