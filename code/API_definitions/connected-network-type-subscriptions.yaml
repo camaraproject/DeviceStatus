@@ -1150,5 +1150,5 @@ components:
           subscriptionId: 987654321
           device:
             phoneNumber: +123456789
-          connectedNetworkType: 5G 
+          connectedNetworkType: 5G
         time: 2023-03-22T05:40:23.682Z
