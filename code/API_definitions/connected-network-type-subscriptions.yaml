@@ -34,8 +34,6 @@ info:
     Following event ``type`` are managed for this API:
       - ``org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed``: This event is triggered when the connected network type of the device changes.
 
-
-
     ### Notification callback
 
     This endpoint describes the event notification received on subscription listener side when the event occurred.
