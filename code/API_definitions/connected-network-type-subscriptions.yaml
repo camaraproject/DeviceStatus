@@ -34,6 +34,8 @@ info:
     Following event ``type`` are managed for this API:
       - ``org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed``: This event is triggered when the connected network type of the device changes.
 
+    Note: Additionally, the event `org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends` is sent when the subscription ends. This notification does not require a dedicated subscription.
+
     ### Notification callback
 
     This endpoint describes the event notification received on subscription listener side when the event occurred.
@@ -117,6 +119,8 @@ paths:
                     examples:
                       network-type-changed:
                         $ref: "#/components/examples/NETWORK_TYPE_CHANGED"
+                      subscription-ends:
+                        $ref: "#/components/examples/SUBSCRIPTION_ENDS"
               responses:
                 "204":
                   description: Successful notification
@@ -516,7 +520,6 @@ components:
       type: string
       description: |
         network-type-changed - Event triggered when the connected network type of the device changes.
-
       enum:
         - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
 
@@ -524,8 +527,10 @@ components:
       type: string
       description: |
         network-type-changed - Event triggered when the connected network type of the device changes.
+        subscription-ends - Event triggered when the subscription is terminated.
       enum:
         - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
+        - org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends
 
     Subscription:
       description: Represents a event-type subscription.
@@ -718,6 +723,7 @@ components:
         propertyName: "type"
         mapping:
           org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed: "#/components/schemas/EventNetworkTypeChange"
+          org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends: "#/components/schemas/EventSubscriptionEnds"
 
     Source:
       type: string
@@ -764,6 +770,36 @@ components:
           $ref: "#/components/schemas/ConnectedNetworkType"
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
+
+    EventSubscriptionEnds:
+      description: Event detail structure for org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends event
+      type: object
+      required:
+        - device
+        - terminationReason
+        - subscriptionId
+      properties:
+        device:
+          $ref: "#/components/schemas/Device"
+        terminationReason:
+          $ref: "#/components/schemas/TerminationReason"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
+
+    TerminationReason:
+      type: string
+      description: |
+        - NETWORK_TERMINATED - API server stopped sending notification
+        - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
+        - SUBSCRIPTION_DELETED - Subscription was deleted by the requester
+        - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
+        - ACCESS_TOKEN_EXPIRED - Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+      enum:
+        - MAX_EVENTS_REACHED
+        - NETWORK_TERMINATED
+        - SUBSCRIPTION_EXPIRED
+        - SUBSCRIPTION_DELETED
+        - ACCESS_TOKEN_EXPIRED
 
     HTTPSubscriptionRequest:
       allOf:
@@ -1150,3 +1186,17 @@ components:
             phoneNumber: +123456789
           connectedNetworkType: 5G
         time: 2023-03-22T05:40:23.682Z
+
+    SUBSCRIPTION_ENDS:
+      value:
+        id: "124003"
+        source: https://dataUsageServer.supertelco.com
+        type: org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends
+        specversion: "1.0"
+        datacontenttype: application/json
+        data:
+          device:
+            phoneNumber: +123456789
+          terminationReason: SUBSCRIPTION_EXPIRED
+          subscriptionId: dv10-h556-rt89-1403
+        time: 2024-03-05T15:00:23.682Z
