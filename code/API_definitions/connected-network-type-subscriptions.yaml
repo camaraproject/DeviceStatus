@@ -34,9 +34,17 @@ info:
     Following event ``type`` are managed for this API:
       - ``org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed``: This event is triggered when the connected network type of the device changes.
 
-    Note: Additionally, the event `org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends` is sent when the subscription ends. This notification does not require a dedicated subscription.
+    Note: Additionally, the event `org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends` is sent when the subscription ends.
+    This notification does not require dedicated subscription.
 
-    ### Notification callback
+    It is used in following cases:
+      - the subscription expire time (optionally set by the requester) has been reached
+      - the maximum number of subscription events (optionally set by the requester) has been reached
+      - the subscription was deleted by the requester
+      - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
+      - the API server has to stop sending notification prematurely
+
+    ### Notifications callback
 
     This endpoint describes the event notification received on subscription listener side when the event occurred.
     As for subscription, detailed description of the event notification is provided in the CAMARA API design guideline document.
@@ -246,6 +254,8 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+        "429":
+          $ref: "#/components/responses/Generic429"
         "500":
           $ref: "#/components/responses/Generic500"
         "503":
@@ -285,6 +295,8 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+        "429":
+          $ref: "#/components/responses/Generic429"
         "500":
           $ref: "#/components/responses/Generic500"
         "503":
@@ -984,7 +996,7 @@ components:
                 code: "INVALID_TOKEN"
                 message: "Only bearer token is supported"
     Generic400:
-      description: Problem with the client request
+      description: Bad Request
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
