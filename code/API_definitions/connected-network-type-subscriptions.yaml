@@ -165,7 +165,6 @@ paths:
               examples:
                 subscription-active:
                   $ref: "#/components/examples/SUBSCRIPTION_ACTIVE"
-              
         "202":
           description: Request accepted to be processed. It applies for async creation process.
           headers:
