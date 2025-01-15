@@ -22,7 +22,6 @@ info:
       - `5G`, if device is connected to the 5G network technology
       - `UNKNOWN` if connection [technology] can not be determined
 
-
     * **LastStatusTime** : This property specifies the time when the status was last updated. Its presence in the response indicates the freshness of the information, while its absence implies the information may be outdated or its freshness is uncertain.
 
     # API Functionality
@@ -34,8 +33,6 @@ info:
     The endpoint `POST /retrieve` allows to get connected Network Type.
 
     # Further info and support
-
-    (FAQs will be added in a later version of the documentation)
 
     ## Authorization and authentication
     The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
@@ -77,6 +74,8 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: wip
+  x-camara-commonalities: 0.5
+
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/
