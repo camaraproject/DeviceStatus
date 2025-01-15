@@ -55,8 +55,6 @@ info:
 
     # Further info and support
 
-    (FAQs will be added in a later version of the documentation)
-
     ## Authorization and authentication
     The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
 
@@ -97,7 +95,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: wip
-  x-camara-commonalities: 0.4.0
+  x-camara-commonalities: 0.5
 
 externalDocs:
   description: Product documentation at Camara
