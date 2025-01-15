@@ -54,15 +54,15 @@ info:
 
     Following table illustrate behaviour regarding event triggering depending on **initial** reachability state of the device:
 
-    | subscribed event-type | device reachability status at subscription time | event sent if ``initialEvent`` set to true |
-    | ----------------------| ------------- | --------------- |
-    | reachability-data  | OK for data usage |   Yes |
-    | reachability-data  | disconnected or only SMS | No |
-    | reachability-sms  | OK for data usage | No |
-    | reachability-sms  |  only SMS | Yes |
-    | reachability-sms  | disconnected | No |
-    | reachability-disconnected  | OK for Data or SMS usage | No |
-    | reachability-disconnected  | disconnected | Yes |
+    | subscribed event-type | device reachability status at subscription time | event sent if ``initialEvent`` set to true | Explanation |
+    | ----------------------| ------------- | --------------- | ---------------|
+    | reachability-data  | Device can use data |   Yes | The device is reachable for data, so the event is triggered. |
+    | reachability-data  | Device is disconnected or SMS-only | No | The device cannot use data, so no event is sent. |
+    | reachability-sms  | Device can use data | No | The device can use data, but for thids event is only for SMS. |
+    | reachability-sms  |  Device is SMS-only | Yes | The device supports SMS, so the event is triggered. |
+    | reachability-sms  | Device is disconnected | No | The device cannot send SMS, so no event is send. |
+    | reachability-disconnected  | Device can use data or SMS usage | No | The device is reachable, so no "disconnected" event is sent. |
+    | reachability-disconnected  | Device is disconnected | Yes | The device is disconnected, so the event is triggered. |
 
     ### Notifications callback
 
