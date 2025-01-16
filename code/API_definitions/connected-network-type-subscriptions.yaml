@@ -162,6 +162,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Subscription"
+              examples:
+                subscription-active:
+                  $ref: "#/components/examples/SUBSCRIPTION_ACTIVE"
         "202":
           description: Request accepted to be processed. It applies for async creation process.
           headers:
@@ -406,7 +409,7 @@ components:
         subscriptionExpireTime:
           type: string
           format: date-time
-          example: 2023-01-17T13:18:23.682Z
+          example: "2023-01-17T13:18:23.682Z"
           description: The subscription expiration time (in date-time format) requested by the API consumer.
         subscriptionMaxEvents:
           type: integer
@@ -1197,7 +1200,7 @@ components:
           device:
             phoneNumber: +123456789
           connectedNetworkType: 5G
-        time: 2023-03-22T05:40:23.682Z
+        time: "2023-03-22T05:40:23.682Z"
 
     SUBSCRIPTION_ENDS:
       value:
@@ -1211,4 +1214,22 @@ components:
             phoneNumber: +123456789
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: dv10-h556-rt89-1403
-        time: 2024-03-05T15:00:23.682Z
+        time: "2024-03-05T15:00:23.682Z"
+
+    SUBSCRIPTION_ACTIVE:
+      value:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: "+123456789"
+          subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: "2024-07-03T21:12:02.871Z"
+        expiresAt: "2024-07-03T21:12:02.871Z"
+        status: ACTIVE
