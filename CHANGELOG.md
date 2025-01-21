@@ -62,10 +62,11 @@ The API definition(s) are based on
 ### Changed
 
 ### Fixed
-* 
+* Fix example for SUBSCRIPTION_ACTIVE by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/231
+* Fix dateTime literals by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/240
 
 ### Removed
-
+* remove `allOf` in `sinkCredential` by @dfischer-tech in https://github.com/camaraproject/DeviceStatus/pull/226
 
 ## device-reachability-status v1.0.0-rc.1
 
@@ -77,7 +78,7 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
-* 
+* rework reachability-status to support reachability with multiple connectivity-types by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/221
 
 ### Fixed
 * 
@@ -94,12 +95,14 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
-* 
+
 
 ### Fixed
-* 
+* Fix example for SUBSCRIPTION_ACTIVE by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/231
+* Fix dateTime literals by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/240
 
 ### Removed
+* remove `allOf` in `sinkCredential` by @dfischer-tech in https://github.com/camaraproject/DeviceStatus/pull/226
 
 ## connected-network-type v0.1.0-rc.1
 
@@ -109,6 +112,7 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/connected-network-type.yaml)
 
 ### Added
+* Create connected-network-type.yaml by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/158
 
 ### Changed
 * 
@@ -126,12 +130,13 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/connected-network-type-subscriptions.yaml)
 
 ### Added
+* Create connected-network-type-subscriptions.yaml by @VijayKesharwani in https://github.com/camaraproject/DeviceStatus/pull/171
 
 ### Changed
 * 
 
 ### Fixed
-* 
+* Fix dateTime literals by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/240
 
 ### Removed
 
