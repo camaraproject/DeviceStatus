@@ -43,6 +43,26 @@ info:
       - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
       - the API server has to stop sending notification prematurely
 
+    **Note on combined usage of ``initialEvent`` and ``subscriptionMaxEvents``**:
+
+    If an event is triggered following ``initialEvent`` set to true,
+    this event will be counted towards ``subscriptionMaxEvents`` (if provided).
+
+
+    **Clarification on ``initialEvent`` & ``event-type`` behaviour:**
+
+    Following table illustrate behaviour regarding event triggering depending on **initial** reachability state of the device:
+
+    | subscribed event-type | device reachability status at subscription time | event sent if ``initialEvent`` set to true | Explanation |
+    | ----------------------| ------------- | --------------- | ---------------|
+    | reachability-data  | Device can use data |   Yes | The device is reachable for data, so the event is triggered. |
+    | reachability-data  | Device is disconnected or SMS-only | No | The device cannot use data, so no event is sent. |
+    | reachability-sms  | Device can use data | No | The device can use data, but for thids event is only for SMS. |
+    | reachability-sms  |  Device is SMS-only | Yes | The device supports SMS, so the event is triggered. |
+    | reachability-sms  | Device is disconnected | No | The device cannot send SMS, so no event is send. |
+    | reachability-disconnected  | Device can use data or SMS usage | No | The device is reachable, so no "disconnected" event is sent. |
+    | reachability-disconnected  | Device is disconnected | Yes | The device is disconnected, so the event is triggered. |
+
     ### Notifications callback
 
     This endpoint describes the event notification received on subscription listener side when the event occurred.
