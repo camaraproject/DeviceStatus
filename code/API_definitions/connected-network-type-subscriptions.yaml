@@ -44,6 +44,18 @@ info:
       - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
       - the API server has to stop sending notification prematurely
 
+    **Note on combined usage of ``initialEvent`` and ``subscriptionMaxEvents``**:
+
+    If an event is triggered following ``initialEvent`` set to true,
+    this event will be counted towards ``subscriptionMaxEvents`` (if provided).
+
+
+    **Clarification on ``initialEvent`` & ``event-type`` behaviour:**
+
+    When ``initialEvent`` is set to ``true`` in the subscription request, a notification has to be sent immediatly to provide the connected network type of the device targeted.
+    If the device is not connected, `UNKNOWN` is sent as ``connectedNetworkType`` in this notification.
+
+    
     ### Notifications callback
 
     This endpoint describes the event notification received on subscription listener side when the event occurred.
