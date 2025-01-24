@@ -580,9 +580,6 @@ components:
         - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data
         - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms
         - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected
- 
-
-
     Subscription:
       description: Represents a event-type subscription.
       type: object
