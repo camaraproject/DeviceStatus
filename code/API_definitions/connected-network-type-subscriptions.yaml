@@ -52,7 +52,7 @@ info:
 
     **Clarification on ``initialEvent`` & ``event-type`` behaviour:**
 
-    When ``initialEvent`` is set to ``true`` in the subscription request, a notification has to be sent immediatly to provide the connected network type of the device targeted.
+    When ``initialEvent`` is set to ``true`` in the subscription request, a notification has to be sent immediately to provide the connected network type of the device targeted.
     If the device is not connected, `UNKNOWN` is sent as ``connectedNetworkType`` in this notification.
 
     ### Notifications callback
