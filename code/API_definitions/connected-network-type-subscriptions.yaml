@@ -1377,7 +1377,8 @@ components:
       value:
         id: "124003"
         source: https://dataUsageServer.supertelco.com
-        type: org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends
+        type: 
+          -  "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
         specversion: "1.0"
         datacontenttype: application/json
         data:
