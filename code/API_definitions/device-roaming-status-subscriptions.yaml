@@ -31,7 +31,7 @@ info:
 
       - ``org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on`` - Event triggered when the device switch from roaming OFF to roaming ON
 
-      - ``org.camaraproject.device-oaming-status-subscriptions.v0.roaming-off``: Event triggered when the device switch from roaming ON to roaming OFF
+      - ``org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off``: Event triggered when the device switch from roaming ON to roaming OFF
 
       - ``org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country``: Event triggered when the device in roaming change country code
 
@@ -287,8 +287,8 @@ paths:
       tags:
         - Device roaming status subscription
       summary: "Retrieve a roaming status event subscription for a device"
-      description: retrieve device status roaming subscription information for a given subscription.
-      operationId: retrieveDeviceStatusRoamingSubscription 
+      description: retrieve device roaming roaming subscription information for a given subscription.
+      operationId: retrieveDeviceRoamingStatusSubscription 
       security:
         - openId:
             - device-roaming-status-subscriptions:read
