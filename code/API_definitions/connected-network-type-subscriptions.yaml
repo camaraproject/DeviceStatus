@@ -546,7 +546,7 @@ components:
         subscription-ends - Event triggered when the subscription is terminated
       enum:
         - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
-        - org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends
+        - org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends
 
     SubscriptionEventType:
       type: string
@@ -555,7 +555,6 @@ components:
         subscription-ends - Event triggered when the subscription is terminated.
       enum:
         - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
-        - org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends
 
     Subscription:
       description: Represents a event-type subscription.
