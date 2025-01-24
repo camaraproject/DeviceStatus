@@ -43,10 +43,10 @@ info:
       - the subscription was deleted by the requester
       - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
       - the API server has to stop sending notification prematurely
-   
-    **Note on combined usage of ``initialEvent`` and ``subscriptionMaxEvents``**:
-   
-   If an event is triggered following ``initialEvent`` set to true,
+      
+      **Note on combined usage of ``initialEvent`` and ``subscriptionMaxEvents``**:
+
+    If an event is triggered following ``initialEvent`` set to true,
      this event will be counted towards ``subscriptionMaxEvents`` (if provided).
     
     **Clarification on ``initialEvent`` & ``event-type`` behaviour:**
