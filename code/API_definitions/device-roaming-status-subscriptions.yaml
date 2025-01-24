@@ -153,8 +153,8 @@ paths:
     post:
       tags:
         - Device roaming status subscription
-      summary: "Create a roaming status event subscription for a device"
-      description: Create a roaming status event subscription for a device
+      summary: "Create a device roaming status event subscription for a device"
+      description: Create a device roaming status event subscription for a device
       operationId: createDeviceRoamingStatusSubscription
       parameters:
         - $ref: '#/components/parameters/x-correlator'
