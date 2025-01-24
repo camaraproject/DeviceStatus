@@ -287,7 +287,7 @@ paths:
       tags:
         - Device roaming status subscription
       summary: "Retrieve a roaming status event subscription for a device"
-      description: retrieve device roaming roaming subscription information for a given subscription.
+      description: retrieve device roaming status subscription information for a given subscription.
       operationId: retrieveDeviceRoamingStatusSubscription
       security:
         - openId:
