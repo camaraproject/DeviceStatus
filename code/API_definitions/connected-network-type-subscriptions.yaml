@@ -52,8 +52,8 @@ info:
 
     **Clarification on ``initialEvent`` & ``event-type`` behaviour:**
 
-    When ``initialEvent`` is set to ``true`` in the subscription request, a notification has to be sent immediately to provide the connected network type of the device targeted (except if the device is not connected).
-    Note: If the status can not be determined we send an inital event with ``connectedNetworkType`` valued to`UNKNOWN`.
+    When ``initialEvent`` is set to ``true`` in the subscription request, a notification has to be sent immediately to provide the connected network type of the device targeted.
+    Note: If the status can not be determined, or if the device is not connected, we send an inital event with ``connectedNetworkType`` valued to`UNKNOWN`.
 
     ### Notifications callback
 
