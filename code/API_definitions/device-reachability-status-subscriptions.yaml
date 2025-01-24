@@ -726,10 +726,6 @@ components:
       type: string
       format: ipv6
       example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
-
-  
-    
-    
     SubscriptionAsync:
       description: Response for a device reachability status operation managed asynchronously (Creation or Deletion)
       type: object
@@ -1061,7 +1057,7 @@ components:
                 code: INVALID_PROTOCOL
                 message: Only HTTP is supported
             GENERIC_400_INVALID_CREDENTIAL:
-              description: Invalid sink credential type 
+              description: Invalid sink credential type
               value:
                 status: 400
                 code: INVALID_CREDENTIAL
@@ -1184,7 +1180,7 @@ components:
               value:
                 status: 403
                 code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action.       
+                message: Client does not have sufficient permissions to perform this action.
     SubscriptionPermissionDenied403:
       description: Client does not have sufficient permission
       headers:
@@ -1398,7 +1394,6 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Either out of resource quota or reaching rate limiting.
-  
   examples:
     REACHABILITY_DATA:
       value:
