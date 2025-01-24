@@ -1363,8 +1363,7 @@ components:
       value:
         id: "123655"
         source: https://notificationSendServer12.supertelco.com
-        type: 
-          -  "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+        type: "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
         specversion: "1.0"
         datacontenttype: application/json
         data:
