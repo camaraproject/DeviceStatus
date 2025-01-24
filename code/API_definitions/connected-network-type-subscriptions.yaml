@@ -543,8 +543,10 @@ components:
       type: string
       description: |
         network-type-changed - Event triggered when the connected network type of the device changes.
+        subscription-ends - Event triggered when the subscription is terminated
       enum:
         - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
+        - org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends
 
     SubscriptionEventType:
       type: string
