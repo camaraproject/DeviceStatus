@@ -43,6 +43,24 @@ info:
       - the subscription was deleted by the requester
       - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
       - the API server has to stop sending notification prematurely
+    
+     **Note on combined usage of ``initialEvent`` and ``subscriptionMaxEvents``**:
+
+     If an event is triggered following ``initialEvent`` set to true,
+     this event will be counted towards ``subscriptionMaxEvents`` (if provided).
+
+     
+    **Clarification on ``initialEvent`` & ``event-type`` behaviour:**
+
+    Following table illustrate behaviour regarding event triggering depending on **initial** connected network type of the device:
+
+    | subscribed event-type | connected network type at subscription time | event sent if ``initialEvent`` set to true | Explanation |
+    | ----------------------| ------------- | --------------- | ---------------|
+    | network-type-changed  | Device is connected to 2G |   Yes | The device is connected to the 2G network, so the event is triggered. |
+    | network-type-changed  | Device is connected to 3G |   Yes | The device is connected to the 3G network, so the event is triggered. |
+    | network-type-changed  | Device is connected to 4G |   Yes | The device is connected to the 4G network, so the event is triggered. |
+    | network-type-changed  | Device is connected to 5G |   Yes | The device is connected to the 5G network, so the event is triggered. |
+    | network-type-changed  | Device connection [technology] can not be determined |   No |  network type is Unknown, so no event is triggered. |  
 
     ### Notifications callback
 
