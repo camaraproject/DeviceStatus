@@ -520,7 +520,6 @@ components:
     CreateSubscriptionDetail:
       description: The detail of the requested event subscription.
       type: object
-    
     ConnectedNetworkType:
       type: string
       description: Network Type is intended to provide insight to connected network's capabilities from standards perspective. Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
@@ -1021,7 +1020,7 @@ components:
                 code: INVALID_PROTOCOL
                 message: Only HTTP is supported
             GENERIC_400_INVALID_CREDENTIAL:
-              description: Invalid sink credential type 
+              description: Invalid sink credential type
               value:
                 status: 400
                 code: INVALID_CREDENTIAL
@@ -1144,7 +1143,7 @@ components:
               value:
                 status: 403
                 code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action.       
+                message: Client does not have sufficient permissions to perform this action.
     SubscriptionPermissionDenied403:
       description: Client does not have sufficient permission
       headers:
@@ -1358,9 +1357,6 @@ components:
                 status: 429
                 code: TOO_MANY_REQUESTS
                 message: Either out of resource quota or reaching rate limiting.
-  
-  
-  
   examples:
     NETWORK_TYPE_CHANGED:
       description: The cloud event when a connected network type changed
