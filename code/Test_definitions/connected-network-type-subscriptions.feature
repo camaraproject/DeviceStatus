@@ -1,5 +1,5 @@
 @Connected_network_type_subscription
-Feature: CAMARA Device reachability status API, vwip - Operations on subscriptions
+Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on subscriptions
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specifies in connected-network-type-subscriptions.yaml, version vwip
@@ -12,7 +12,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations on subscriptio
 ######### Happy Path Scenarios #################################
 
   @connected_network_type_subscriptions_01_create_connected_network_type_subscription_sync
-  Scenario:  Create connected network type subscription synchronously
+  Scenario: Create connected network type subscription synchronously
     Given that subscriptions are created synchronously
     And a valid subscription request body
     When the request "createSubscription" is sent
@@ -22,10 +22,10 @@ Feature: CAMARA Device reachability status API, vwip - Operations on subscriptio
     And the response body complies with the OAS schema at "/components/schemas/Subscription"
 
   @connected_network_type_subscriptions_02_create_connected_network_type_subscription_async
-  Scenario:  Create connected network type subscription asynchronously
+  Scenario: Create connected network type subscription asynchronously
     Given that subscriptions are created asynchronously
     And a valid subscription request body
-    When the  request "createSubscription" is sent
+    When the request "createSubscription" is sent
     Then the response code is 202
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -123,9 +123,9 @@ Feature: CAMARA Device reachability status API, vwip - Operations on subscriptio
 ############### Error response scenarios ###########################
 
   @connected_network_type_subscriptions_11_create_network_type_subscription_with_invalid_parameter
-  Scenario:  Create subscription with invalid parameter
+  Scenario: Create subscription with invalid parameter
     Given the request body is not compliant with the schema "/components/schemas/SubscriptionRequest"
-    When the  request "createSubscription" is sent
+    When the request "createSubscription" is sent
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -135,7 +135,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations on subscriptio
   Scenario: Expiry time in past
     Given a valid subscription request body
     And request body property "$.subscriptionexpiretime" in past
-    When the  request "createSubscription" is sent
+    When the request "createSubscription" is sent
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -154,7 +154,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations on subscriptio
   @connected_network_type_subscriptions_14_invalid_protocol
   Scenario: subscription creation with invalid protocol
     Given a valid subscription request body
-    And  the request property "$.protocol" is not set to "HTTP"
+    And the request property "$.protocol" is not set to "HTTP"
     When the request "createSubscription" is sent
     Then the response code is 400
     And the response property "$.status" is 400
@@ -222,7 +222,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations on subscriptio
     And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_21_delete_unknown_subscription_id
-  Scenario:  Delete subscription with subscription-id unknown to the system
+  Scenario: Delete subscription with subscription-id unknown to the system
     Given the path parameter "subscriptionId" is set to the value unknown to system
     When the request "deleteSubscription" is sent
     Then the response code is 404

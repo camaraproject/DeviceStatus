@@ -5,7 +5,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
 # References to OAS spec schemas refer to schemas specifies in connected-network-type.yaml, version vwip
 
   Background: Common Connected Network Type setup
-    Given the resource "{api-root}/connected-network-type/vwip/retrieve" set as base-url                                                             |
+    Given the resource "{api-root}/connected-network-type/vwip/retrieve" set as base-url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -21,6 +21,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/ConnectedNetworkTypeResponse"
+    And the response property "$.connectedNetworkType" is "2G" or "3G" or "4G" or "5G"
 
   @connected_network_type_02_retrieval_undetermined_network
   Scenario: The connected network type of the user device can not be determined
@@ -83,7 +84,17 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
       | 123                |
       | ++49565456787      |
 
-  @connected_network_type_6_device_identifiers_unsupported
+  @connected_network_type_6_device_not_found
+  Scenario: Some identifier cannot be matched to a device
+    Given the request body property "$.device" is set to a value compliant to the OAS schema at "/components/schemas/Device" but does not identify a valid device
+    And the header "Authorization" is set to a valid access token which does not identify a single device
+    When the HTTP "POST" request is sent
+    Then the response status code is 404
+    And the response property "$.status" is 404
+    And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
+
+  @connected_network_type_7_device_identifiers_unsupported
   Scenario: None of the provided device identifiers is supported by the implementation
     Given that some type of device identifiers are not supported by the implementation
     And the header "Authorization" is set to a valid access token which does not identify a single device
@@ -92,16 +103,6 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIERS"
-    And the response property "$.message" contains a user friendly text
-
-  @connected_network_type_7_device_not_found
-  Scenario: Some identifier cannot be matched to a device
-    Given the request body property "$.device" is set to a value compliant to the OAS schema at "/components/schemas/Device" but does not identify a valid device
-    And the header "Authorization" is set to a valid access token which does not identify a single device
-    When the HTTP "POST" request is sent
-    Then the response status code is 404
-    And the response property "$.status" is 404
-    And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
   @connected_network_type_8_device_identifiers_mismatch
@@ -136,9 +137,19 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text
 
+  @connected_network_type_11_device_missing_identifier
+  Scenario: Cannot be identified from the access token and the optional device object
+    Given the request body property "$.device" is optional and not set
+    And the header "Authorization" is set to a valid access token without a device identifier
+    When the HTTP "POST" request is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
+
   # Generic 400 errors
 
-  @connected_network_type_11_no_request_body
+  @connected_network_type_12_no_request_body
   Scenario: Missing request body
     Given the request body is not included
     When the HTTP "POST" request is sent
@@ -149,7 +160,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
 
   # Other specific 400 errors
 
-  @connected_network_type_12_max_age_schema_compliant
+  @connected_network_type_13_max_age_schema_compliant
   Scenario: Input property values doe not comply with the schema
     Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the "maxAge" is set to 6a0
@@ -159,8 +170,8 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_13_required_device_identifier_missing
-  Scenario: Required device identifier is  missing
+  @connected_network_type_14_required_device_identifier_missing
+  Scenario: Required device identifier is missing
     Given the request body property "$.device" is not included
     And the header "Authorization" is set to a valid access token which does not identify a single device
     When the HTTP "POST" request is sent
@@ -171,7 +182,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
 
   # Generic 401 errors
 
-  @connected_network_type_14_no_authorization_header
+  @connected_network_type_15_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     And the request body is set to a valid request body
@@ -181,7 +192,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_15_expired_access_token
+  @connected_network_type_16_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     And the request body is set to a valid request body
@@ -191,7 +202,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_16_invalid_access_token
+  @connected_network_type_17_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And the request body is set to a valid request body
@@ -204,7 +215,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
 
   # Generic 403 error
 
-  @connected_network_type_17_permissions_denied
+  @connected_network_type_18_permissions_denied
   Scenario: Client does not have sufficient permissions to perform this action
     Given the header "Authorization" is set to an invalid access token
     And the request body is set to a valid request body
