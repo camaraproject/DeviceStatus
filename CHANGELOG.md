@@ -44,7 +44,7 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
-* Update documentation with handling of access token and multisim scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
 
 ### Fixed
 
@@ -60,7 +60,7 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
-* Update documentation with handling of access token and multisim scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
 * Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/237
 
 ### Fixed
@@ -81,7 +81,7 @@ The API definition(s) are based on
 
 ### Changed
 * rework reachability-status to support reachability with multiple connectivity-types by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/221
-* Update documentation with handling of access token and multisim scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
 
 ### Fixed
 
@@ -97,7 +97,7 @@ The API definition(s) are based on
 ### Added
 
 ### Changed
-* Update documentation with handling of access token and multisim scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
 * Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/237
 
 ### Fixed
@@ -118,7 +118,7 @@ The API definition(s) are based on
 * Create connected-network-type.yaml by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/158
 
 ### Changed
-* Update documentation with handling of access token and multisim scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
  
 ### Fixed 
 
@@ -135,7 +135,7 @@ The API definition(s) are based on
 * Create connected-network-type-subscriptions.yaml by @VijayKesharwani in https://github.com/camaraproject/DeviceStatus/pull/171
   
 ### Changed
-* Update documentation with handling of access token and multisim scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
 * Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/247
 
 ### Fixed
