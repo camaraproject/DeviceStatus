@@ -106,7 +106,7 @@ servers:
     variables:
       apiRoot:
         default: http://localhost:9091
-        description: API root
+        description: API root, defined by the service provider, e.g. api.example.com or api.example.com/somepath
 
 tags:
   - name: Connected Network Type Subscription
@@ -119,7 +119,7 @@ paths:
         - Connected Network Type Subscription
       summary: "Create a subscription for receiving notifications on changes to the connected network type of a device"
       description: Create a subscription for receiving notifications on changes to the connected network type of a device.
-      operationId: createSubscription
+      operationId: createConnectedNetworkTypeSubscription
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       security:
@@ -423,7 +423,7 @@ components:
         initialEvent:
           type: boolean
           description: |
-            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
+            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.Up to API project decision to keep it.”
             Example: Consumer request area entered event. If consumer sets initialEvent to true and device is already in the geofence, an event is triggered
 
     SinkCredential:
