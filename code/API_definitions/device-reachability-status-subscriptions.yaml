@@ -123,7 +123,7 @@ servers:
     variables:
       apiRoot:
         default: http://localhost:9091
-        description: API root
+        description: API root, defined by the service provider, e.g. api.example.com or api.example.com/somepath
 
 tags:
   - name: Device reachability status subscription
@@ -235,7 +235,7 @@ paths:
         - Device reachability status subscription
       summary: "Retrieve a list of device reachability status event subscription"
       description: Retrieve a list of device reachability status event subscription(s)
-      operationId: retrieveSubscriptionList
+      operationId: retrieveDeviceReachabilityStatusSubscriptionList
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       security:
@@ -265,7 +265,7 @@ paths:
       tags:
         - Device reachability status subscription
       summary: "Retrieve a device reachability status event subscription for a device"
-      operationId: retrieveSubscription
+      operationId: retrieveDeviceReachabilityStatusSubscription
       description: Retrieve a given subscription by ID
       security:
         - openId:
@@ -303,7 +303,7 @@ paths:
       tags:
         - Device reachability status subscription
       summary: "Delete a device reachability status event subscription for a device"
-      operationId: deleteSubscription
+      operationId: deleteDeviceReachabilityStatusSubscription
       description: Delete a given subscription by ID
       security:
         - openId:
@@ -453,7 +453,7 @@ components:
         initialEvent:
           type: boolean
           description: |
-            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
+            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.Up to API project decision to keep it.
             Example: Consumer subscribes to reachability SMS. If consumer sets initialEvent to true and device is already reachable by SMS, an event is triggered.
 
     SinkCredential:
