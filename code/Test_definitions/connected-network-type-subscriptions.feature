@@ -67,7 +67,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And if the response property $.status is 204 then response body is not available
     And if the response property $.status is 202 then response body complies with the OAS schema at "/components/schemas/SubscriptionAsync"
 
-  connected_network_type_subscriptions_07_receive_notification_when_network_type_changed
+  @connected_network_type_subscriptions_07_receive_notification_when_network_type_changed
   Scenario: Receive notification for network-type-changed event
     Given that subscriptions are created synchronously
     And a valid subscription request body
@@ -229,3 +229,48 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
+
+  @connected_network_type_subscriptions_22_create_with_identifier_mismatch
+  Scenario: Create subscription with identifier mismatch
+    Given the request body includes inconsistent identifiers
+    When the HTTP "POST" request is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "IDENTIFIER_MISMATCH"
+    And the response property "$.message" contains "Identifiers are not consistent."
+
+  @connected_network_type_subscriptions_23_create_with_service_not_applicable
+  Scenario: Create subscription for a device not supported by the service
+    Given the request body includes a device identifier not applicable for this service
+    When the HTTP "POST" request is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
+    And the response property "$.message" contains "Service is not available for the provided device identifier."
+
+  @connected_network_type_subscriptions_24_create_with_unnecessary_identifier
+  Scenario: Create subscription with an unnecessary identifier
+    Given the request body explicitly includes a device identifier when it is not required
+    When the HTTP "POST" request is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
+    And the response property "$.message" contains "Device is already identified by the access token."
+
+  @connected_network_type_subscriptions_25_create_with_unsupported_identifier
+  Scenario: Create subscription with an unsupported identifier
+    Given the request body includes an identifier type not supported by the implementation
+    When the HTTP "POST" request is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
+    And the response property "$.message" contains "The identifier provided is not supported."
+
+  @connected_network_type_subscriptions_26_missing_identifier
+  Scenario: Create subscription and identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
+    Given the request body and identifier is not included and missing in the access token
+    When the HTTP "POST" request is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "MISSING_IDENTIFIER"
+    And the response property "$.message" contains "The device cannot be identified."
