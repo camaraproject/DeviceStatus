@@ -229,6 +229,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Subscription"
+              examples:
+                subscription-active:
+                  $ref: "#/components/examples/SUBSCRIPTION_ACTIVE"
         "202":
           description: Request accepted to be processed. It applies for async creation process.
           headers:
@@ -459,7 +462,7 @@ components:
         subscriptionExpireTime:
           type: string
           format: date-time
-          example: 2023-01-17T13:18:23.682Z
+          example: "2023-01-17T13:18:23.682Z"
           description: The subscription expiration time (in date-time format) requested by the API consumer.
         subscriptionMaxEvents:
           type: integer
@@ -1366,7 +1369,7 @@ components:
           countryCode: 208
           countryName: FR
           subscriptionId: qs15-h556-rt89-1298
-        time: 2023-01-17T13:18:23.682Z
+        time: "2023-01-17T13:18:23.682Z"
 
     ROAMING_OFF:
       value:
@@ -1379,7 +1382,7 @@ components:
           device:
             phoneNumber: +123456788
           subscriptionId: qs15-h556-rt89-1298
-        time: 2023-01-18T13:18:23.682Z
+        time: "2023-01-18T13:18:23.682Z"
 
     ROAMING_ON:
       value:
@@ -1392,7 +1395,7 @@ components:
           device:
             phoneNumber: +123456787
           subscriptionId: qs15-h556-rt89-1298
-        time: 2023-01-19T13:18:23.682Z
+        time: "2023-01-19T13:18:23.682Z"
 
     ROAMING_CHANGE_COUNTRY:
       value:
@@ -1407,7 +1410,7 @@ components:
           countryCode: 214
           countryName: ["ES"]
           subscriptionId: qs15-h556-rt89-1298
-        time: 2023-01-19T13:18:23.682Z
+        time: "2023-01-19T13:18:23.682Z"
 
     SUBSCRIPTION_ENDS:
       value:
@@ -1421,7 +1424,7 @@ components:
             phoneNumber: +123456789
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: qs15-h556-rt89-1298
-        time: 2023-01-19T13:18:23.682Z
+        time: "2023-01-19T13:18:23.682Z"
 
     SUBSCRIPTION_ACTIVE:
       value:
@@ -1434,11 +1437,11 @@ components:
           subscriptionDetail:
             device:
               phoneNumber: "+123456789"
-          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
           subscriptionMaxEvents: 5
           initialEvent: true
-        startsAt: 2024-07-03T21:12:02.871Z
-        expiresAt: 2024-07-03T21:12:02.871Z
+        startsAt: "2024-07-03T21:12:02.871Z"
+        expiresAt: "2024-07-03T21:12:02.871Z"
         status: ACTIVE
 
     SUBSCRIPTION_ACTIVATION_REQUESTED:
@@ -1452,11 +1455,11 @@ components:
           subscriptionDetail:
             device:
               phoneNumber: "+123456789"
-          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
           subscriptionMaxEvents: 5
           initialEvent: true
-        startsAt: 2024-07-03T21:12:02.871Z
-        expiresAt: 2024-07-03T21:12:02.871Z
+        startsAt: "2024-07-03T21:12:02.871Z"
+        expiresAt: "2024-07-03T21:12:02.871Z"
         status: ACTIVATION_REQUESTED
 
     SUBSCRIPTION_DELETED:
@@ -1470,9 +1473,9 @@ components:
           subscriptionDetail:
             device:
               phoneNumber: "+123456789"
-          subscriptionExpireTime: 2024-07-17T13:18:23.682Z
+          subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
           subscriptionMaxEvents: 5
           initialEvent: true
-        startsAt: 2024-07-03T21:12:02.871Z
-        expiresAt: 2024-07-03T21:12:02.871Z
+        startsAt: "2024-07-03T21:12:02.871Z"
+        expiresAt: "2024-07-03T21:12:02.871Z"
         status: DELETED
