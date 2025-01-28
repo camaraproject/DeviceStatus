@@ -129,8 +129,6 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
-        "409":
-          $ref: "#/components/responses/Generic409"
         "422":
           $ref: "#/components/responses/Generic422"
         "429":
@@ -398,31 +396,6 @@ components:
                 status: 404
                 code: IDENTIFIER_NOT_FOUND
                 message: The phone number provided is not associated with a customer account
-    Generic409:
-      description: Conflict
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 409
-                  code:
-                    enum:
-                      - CONFLICT
-          examples:
-            GENERIC_409_CONFLICT:
-              description: Duplication of an existing resource
-              value:
-                status: 409
-                code: CONFLICT
-                message: A specified resource duplicate entry found.
     Generic422:
       description: Unprocessable Content
       headers:
@@ -501,13 +474,13 @@ components:
               value:
                 status: 429
                 code: QUOTA_EXCEEDED
-                message: Either out of resource quota or reaching rate limiting.
+                message: Out of resource quota.
             GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
+              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
               value:
                 status: 429
                 code: TOO_MANY_REQUESTS
-                message: Either out of resource quota or reaching rate limiting.
+                message: Rate limit reached.
     Generic500:
       description: Internal Server Error
       headers:
