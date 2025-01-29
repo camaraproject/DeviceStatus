@@ -787,7 +787,6 @@ components:
       description: Event detail structure for network type changed data events
       type: object
       required:
-        - device
         - connectedNetworkType
         - subscriptionId
       properties:
@@ -802,7 +801,6 @@ components:
       description: Event detail structure for org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends event
       type: object
       required:
-        - device
         - terminationReason
         - subscriptionId
       properties:
