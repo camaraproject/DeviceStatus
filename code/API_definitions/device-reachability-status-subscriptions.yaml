@@ -145,11 +145,14 @@ paths:
             - device-reachability-status-subscriptions:org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms:create
             - device-reachability-status-subscriptions:org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected:create
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/SubscriptionRequest"
-        required: true
+            examples:
+              Create Subscription:
+                $ref: "#/components/examples/CREATE_SUBSCRIPTION"
       callbacks:
         notifications:
           "{$request.body#/sink}":
@@ -230,6 +233,7 @@ paths:
           $ref: "#/components/responses/CreateSubscriptionUnprocessableEntity422"
         "429":
           $ref: "#/components/responses/Generic429"
+
     get:
       tags:
         - Device reachability status subscription
@@ -260,6 +264,7 @@ paths:
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
+
   /subscriptions/{subscriptionId}:
     get:
       tags:
@@ -299,6 +304,7 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+
     delete:
       tags:
         - Device reachability status subscription
@@ -334,6 +340,7 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+
 components:
   securitySchemes:
     openId:
@@ -343,6 +350,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: "{$request.body#/sinkCredential.credentialType}"
+
   parameters:
     SubscriptionId:
       name: subscriptionId
@@ -351,6 +359,7 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/SubscriptionId"
+
     x-correlator:
       name: x-correlator
       in: header
@@ -359,12 +368,14 @@ components:
         type: string
         pattern: ^[a-zA-Z0-9-]{0,55}$
         example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         type: string
         pattern: ^[a-zA-Z0-9-]{0,55}$
+
   schemas:
     ErrorInfo:
       type: object
@@ -404,7 +415,7 @@ components:
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
-            Note: for the current Commonalities version (v0.5) only one event type per subscription is allowed, yet in the following releases use of array of event types SHALL be specified without changing this definition.
+            Note: For the current Commonalities API design guidelines, only one event type per subscription is allowed, yet in the following releases use of array of event types SHALL be specified without changing this definition.
           type: array
           minItems: 1
           maxItems: 1
@@ -475,6 +486,7 @@ components:
           REFRESHTOKEN: "#/components/schemas/RefreshTokenCredential"
       required:
         - credentialType
+
     PlainCredential:
       type: object
       description: A plain credential as a combination of an identifier and a secret.
@@ -491,6 +503,7 @@ components:
             secret:
               description: The secret might be a password or passphrase.
               type: string
+
     AccessTokenCredential:
       type: object
       description: An access token credential.
@@ -514,6 +527,7 @@ components:
             - accessToken
             - accessTokenExpiresUtc
             - accessTokenType
+
     RefreshTokenCredential:
       type: object
       description: An access token credential with a refresh token.
@@ -583,6 +597,7 @@ components:
         - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data
         - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms
         - org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected
+
     Subscription:
       description: Represents a event-type subscription.
       type: object
@@ -600,18 +615,15 @@ components:
           format: url
           description: The address to which events shall be delivered using the selected protocol.
           example: "https://endpoint.example.com/sink"
-        sinkCredential:
-          $ref: '#/components/schemas/SinkCredential'
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
-            Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
-             at API project level.
+            Note: For the current Commonalities API design guidelines, only one event type per subscription is allowed
           type: array
           minItems: 1
           maxItems: 1
           items:
-            type: string
+            $ref: "#/components/schemas/SubscriptionEventType"
         config:
           $ref: '#/components/schemas/Config'
         id:
@@ -648,6 +660,22 @@ components:
           AMQP: "#/components/schemas/AMQPSubscriptionResponse"
           NATS: "#/components/schemas/NATSSubscriptionResponse"
           KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
+      example:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: "+123456789"
+          subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: "2024-07-03T21:12:02.871Z"
+        expiresAt: "2024-07-03T21:12:02.871Z"
+        status: ACTIVE
 
     Device:
       description: |
@@ -726,6 +754,7 @@ components:
       type: string
       format: ipv6
       example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
+
     SubscriptionAsync:
       description: Response for a device reachability status operation managed asynchronously (Creation or Deletion)
       type: object
@@ -805,25 +834,41 @@ components:
         Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
       example: "2018-04-05T17:31:00Z"
 
-
     EventReachabilityData:
       description: event structure for reachability data usage
       allOf:
         - $ref: "#/components/schemas/CloudEvent"
         - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ReachabilityDataSmsDisconnected"
 
     EventReachabilitySms:
       description: event structure for reachability SMS usage
       allOf:
         - $ref: "#/components/schemas/CloudEvent"
         - type: object
-
+          properties:
+            data:
+              $ref: "#/components/schemas/ReachabilityDataSmsDisconnected"
 
     EventReachabilityDisconnected:
       description: event structure for disconnection
       allOf:
         - $ref: "#/components/schemas/CloudEvent"
         - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ReachabilityDataSmsDisconnected"
+
+    ReachabilityDataSmsDisconnected:
+      required:
+        - subscriptionId
+      properties:
+        device:
+          $ref: "#/components/schemas/Device"
+        subscriptionId:
+          $ref: "#/components/schemas/SubscriptionId"
 
     EventSubscriptionEnds:
       description: event structure for event subscription ends
@@ -841,6 +886,8 @@ components:
         - terminationReason
         - subscriptionId
       properties:
+        device:
+          $ref: "#/components/schemas/Device"
         terminationReason:
           $ref: "#/components/schemas/TerminationReason"
         subscriptionId:
@@ -1014,6 +1061,7 @@ components:
           type: string
       required:
         - subject
+
   responses:
     CreateSubscriptionBadRequest400:
       description: Problem with the client request
@@ -1068,6 +1116,7 @@ components:
                 status: 400
                 code: INVALID_TOKEN
                 message: Only bearer token is supported
+
     Generic400:
       description: Problem with the client request
       headers:
@@ -1093,6 +1142,7 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: Client specified an invalid argument, request body or query param.
+
     SubscriptionIdRequired400:
       description: Problem with the client request
       headers:
@@ -1124,6 +1174,7 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: "Expected property is missing: subscriptionId"
+
     Generic401:
       description: Authentication problem with the client request
       headers:
@@ -1156,6 +1207,7 @@ components:
                 status: 401
                 code: AUTHENTICATION_REQUIRED
                 message: New authentication is required.
+
     Generic403:
       description: Client does not have sufficient permission
       headers:
@@ -1181,6 +1233,7 @@ components:
                 status: 403
                 code: PERMISSION_DENIED
                 message: Client does not have sufficient permissions to perform this action.
+
     SubscriptionPermissionDenied403:
       description: Client does not have sufficient permission
       headers:
@@ -1220,6 +1273,7 @@ components:
                 status: 403
                 code: "SUBSCRIPTION_MISMATCH"
                 message: "Inconsistent access token for requested events subscription"
+
     Generic404:
       description: Resource Not Found
       headers:
@@ -1245,6 +1299,7 @@ components:
                 status: 404
                 code: NOT_FOUND
                 message: The specified resource is not found.
+
     Generic409:
       description: Conflict
       headers:
@@ -1277,6 +1332,7 @@ components:
                 status: 409
                 code: ALREADY_EXISTS
                 message: The resource that a client tried to create already exists.
+
     Generic410:
       description: Gone
       headers:
@@ -1302,6 +1358,7 @@ components:
                 status: 410
                 code: GONE
                 message: Access to the target resource is no longer available.
+
     CreateSubscriptionUnprocessableEntity422:
       description: Unprocessable Entity
       headers:
@@ -1362,6 +1419,7 @@ components:
                 status: 422
                 code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
                 message: Multi event types subscription not managed
+
     Generic429:
       description: Too Many Requests
       headers:
@@ -1387,13 +1445,13 @@ components:
               value:
                 status: 429
                 code: QUOTA_EXCEEDED
-                message: Either out of resource quota or reaching rate limiting.
+                message: Out of resource quota.
             GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
+              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
               value:
                 status: 429
-                code: TOO_MANY_REQUESTS
-                message: Either out of resource quota or reaching rate limiting.
+                message: Rate limit reached.
+
   examples:
     REACHABILITY_DATA:
       value:
@@ -1404,7 +1462,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456787
+            phoneNumber: "+123456789"
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-19T13:18:23.682Z"
 
@@ -1417,7 +1475,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456787
+            phoneNumber: "+123456789"
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-19T13:18:23.682Z"
 
@@ -1430,7 +1488,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456787
+            phoneNumber: "+123456789"
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-19T13:18:23.682Z"
 
@@ -1443,9 +1501,10 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: qs15-h556-rt89-1298
+          terminationDescription: Subscription expiry time has been reached
         time: "2024-03-22T05:40:23.682Z"
 
     SUBSCRIPTION_ACTIVE:
@@ -1501,3 +1560,26 @@ components:
         startsAt: "2024-07-03T21:12:02.871Z"
         expiresAt: "2024-07-03T21:12:02.871Z"
         status: DELETED
+
+    CREATE_SUBSCRIPTION:
+      value:
+        sink: "https://endpoint.example.com/sink"
+        sinkCredential: {
+          "credentialType": "ACCESSTOKEN",
+          "accessToken": "JhbGciOiJSUzI1NiIsImtpZCI6Imk2bEdrM0ZaenhSY1ViMkMzbkVRN3N5SEpsW",
+          "accessTokenExpiresUtc": "2024-02-17T16:23:45Z",
+          "accessTokenType": "bearer"
+        }
+        types: [
+          "org.camaraproject.connected-network-type-subscriptions.v0.reachability-data"
+        ]
+        config: {
+          "subscriptionDetail": {
+            "device": {
+              "phoneNumber": "+123456789",
+            }
+          },
+          "subscriptionExpireTime": "2023-01-17T13:18:23.682Z",
+          "subscriptionMaxEvents": 5,
+          "initialEvent": true
+        }
