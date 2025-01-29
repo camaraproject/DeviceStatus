@@ -1450,7 +1450,6 @@ components:
         startsAt: "2024-07-03T21:12:02.871Z"
         expiresAt: "2024-07-03T21:12:02.871Z"
         status: ACTIVE
-        
     CREATE_SUBSCRIPTION:
       value:
         sink: "https://endpoint.example.com/sink"
