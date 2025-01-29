@@ -520,6 +520,9 @@ components:
     CreateSubscriptionDetail:
       description: The detail of the requested event subscription.
       type: object
+      properties:
+        device:
+          $ref: "#/components/schemas/Device"
     ConnectedNetworkType:
       type: string
       description: Network Type is intended to provide insight to connected network's capabilities from standards perspective. Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
