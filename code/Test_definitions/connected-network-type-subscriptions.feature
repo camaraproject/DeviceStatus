@@ -200,19 +200,41 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_19_invalid_inconsistent_access_token
+  @connected_network_type_subscriptions_19_permission_denied
   Scenario: subscription creation with inconsistent access token for requested events subscription
-   # To test this, a token have to be obtained for a different device
+    # To test this, a token does not have the required scope
+    Given a valid subscription request body
+    And the request body property "$.device" is set to a valid testing device supported by the service
+    And header "Authorization" set to access token referring different scope
+    When the request "createDeviceReachabilityStatusSubscription" is sent
+    Then the response property "$.status" is 403
+    And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
+
+  @connected_network_type_subscriptions_20_invalid_token_context
+  Scenario: subscription creation with invalid access token context for requested events subscription
+    # To test this, a token does not have the required device identifier
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
     And header "Authorization" set to access token referring different device
-    When the request "createSubscription" is sent
-    Then the response code is 403
-    And the response property "$.status" is 403
+    When the request "createDeviceReachabilityStatusSubscription" is sent
+    Then the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    And the response property "$.message" contains a user friendly text
+
+  @connected_network_type_subscriptions_21_inconsistent_access_token_for_requested_events_subscription
+  Scenario: subscription creation with invalid access token for requested events subscription
+    # To test this, use a event type in the request which cannot be managed in this API
+    Given a valid subscription request body
+    And the request body property "$.device" is set to a valid testing device supported by the service
+    And header "Authorization" set to access token referring different device
+    And the request body property "$.types" contains an unsupported event type in this API
+    When the request "createDeviceReachabilityStatusSubscription" is sent
+    Then the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_20_unknown_subscription_id
+  @connected_network_type_subscriptions_22_unknown_subscription_id
   Scenario: Get subscription when subscription-id is unknown to the system
     Given the path parameter property "$.subscriptionId" is unknown to the system
     When the request "retrieveSubscription" is sent
@@ -221,7 +243,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_21_delete_unknown_subscription_id
+  @connected_network_type_subscriptions_23_delete_unknown_subscription_id
   Scenario: Delete subscription with subscription-id unknown to the system
     Given the path parameter "subscriptionId" is set to the value unknown to system
     When the request "deleteSubscription" is sent
@@ -230,7 +252,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_22_create_with_identifier_mismatch
+  @connected_network_type_subscriptions_24_create_with_identifier_mismatch
   Scenario: Create subscription with identifier mismatch
     Given the request body includes inconsistent identifiers
     When the HTTP "POST" request is sent
@@ -239,7 +261,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "IDENTIFIER_MISMATCH"
     And the response property "$.message" contains "Identifiers are not consistent."
 
-  @connected_network_type_subscriptions_23_create_with_service_not_applicable
+  @connected_network_type_subscriptions_25_create_with_service_not_applicable
   Scenario: Create subscription for a device not supported by the service
     Given the request body includes a device identifier not applicable for this service
     When the HTTP "POST" request is sent
@@ -248,7 +270,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains "Service is not available for the provided device identifier."
 
-  @connected_network_type_subscriptions_24_create_with_unnecessary_identifier
+  @connected_network_type_subscriptions_26_create_with_unnecessary_identifier
   Scenario: Create subscription with an unnecessary identifier
     Given the request body explicitly includes a device identifier when it is not required
     When the HTTP "POST" request is sent
@@ -257,7 +279,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
     And the response property "$.message" contains "Device is already identified by the access token."
 
-  @connected_network_type_subscriptions_25_create_with_unsupported_identifier
+  @connected_network_type_subscriptions_27_create_with_unsupported_identifier
   Scenario: Create subscription with an unsupported identifier
     Given the request body includes an identifier type not supported by the implementation
     When the HTTP "POST" request is sent
@@ -266,7 +288,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
     And the response property "$.message" contains "The identifier provided is not supported."
 
-  @connected_network_type_subscriptions_26_missing_identifier
+  @connected_network_type_subscriptions_28_missing_identifier
   Scenario: Create subscription and identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
     Given the request body and identifier is not included and missing in the access token
     When the HTTP "POST" request is sent

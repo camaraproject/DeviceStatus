@@ -204,18 +204,41 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_19_invalid_inconsistent_access_token
+  @reachability_status_subscription_19_permission_denied
   Scenario: subscription creation with inconsistent access token for requested events subscription
-    # To test this, a token have to be obtained for a different device
+    # To test this, a token does not have the required scope
     Given a valid subscription request body 
     And the request body property "$.device" is set to a valid testing device supported by the service
+    And header "Authorization" set to access token referring different scope
+    When the request "createDeviceReachabilityStatusSubscription" is sent
+    Then the response property "$.status" is 403
+    And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
+
+  @reachability_status_subscription_20_invalid_token_context
+  Scenario: subscription creation with invalid access token context for requested events subscription
+    # To test this, a token does not have the required device identifier
+    Given a valid subscription request body
+    And the request body property "$.device" is set to a valid testing device supported by the service
     And header "Authorization" set to access token referring different device
+    When the request "createDeviceReachabilityStatusSubscription" is sent
+    Then the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    And the response property "$.message" contains a user friendly text
+
+  @reachability_status_subscription_21_inconsistent_access_token_for_requested_events_subscription
+  Scenario: subscription creation with invalid access token for requested events subscription
+    # To test this, use a event type in the request which cannot be managed in this API
+    Given a valid subscription request body
+    And the request body property "$.device" is set to a valid testing device supported by the service
+    And header "Authorization" set to access token referring different device
+    And the request body property "$.types" contains an unsupported event type in this API
     When the request "createDeviceReachabilityStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_20_unknown_subscription_id
+  @reachability_status_subscription_22_unknown_subscription_id
   Scenario: Get subscription when subscription-id is unknown to the system
     Given the path parameter property "$.subscriptionId" is unknown to the system
     When the request "retrieveSubscription" is sent
