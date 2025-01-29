@@ -550,6 +550,9 @@ components:
     CreateSubscriptionDetail:
       description: The detail of the requested event subscription.
       type: object
+      properties:
+        device:
+          $ref: "#/components/schemas/Device"
 
     EventTypeNotification:
       type: string
