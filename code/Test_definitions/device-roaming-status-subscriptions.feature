@@ -244,7 +244,6 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     # To test this, use a event type in the request which cannot be managed in this API
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
-    And header "Authorization" set to access token referring different device
     And the request body property "$.types" contains an unsupported event type in this API
     When the request "createDeviceReachabilityStatusSubscription" is sent
     Then the response property "$.status" is 403
