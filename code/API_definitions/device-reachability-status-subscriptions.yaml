@@ -1572,7 +1572,7 @@ components:
         }
         protocol: HTTP
         types: [
-          "org.camaraproject.connected-network-type-subscriptions.v0.reachability-data"
+          "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
         ]
         config: {
           "subscriptionDetail": {
