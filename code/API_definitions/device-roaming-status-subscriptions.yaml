@@ -165,11 +165,14 @@ paths:
             - device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off:create
             - device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country:create
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/SubscriptionRequest"
-        required: true
+            examples:
+              Create Subscription:
+                $ref: "#/components/examples/CREATE_SUBSCRIPTION"
       callbacks:
         notifications:
           "{$request.body#/sink}":
@@ -252,6 +255,7 @@ paths:
           $ref: "#/components/responses/CreateSubscriptionUnprocessableEntity422"
         "429":
           $ref: "#/components/responses/Generic429"
+
     get:
       tags:
         - Device roaming status subscription
@@ -282,6 +286,7 @@ paths:
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
+
   /subscriptions/{subscriptionId}:
     get:
       tags:
@@ -320,6 +325,7 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+
     delete:
       tags:
         - Device roaming status subscription
@@ -355,6 +361,7 @@ paths:
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
+
 components:
   securitySchemes:
     openId:
@@ -364,6 +371,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: "{$request.body#/sinkCredential.credentialType}"
+
   parameters:
     SubscriptionId:
       name: subscriptionId
@@ -380,12 +388,15 @@ components:
         type: string
         pattern: ^[a-zA-Z0-9-]{0,55}$
         example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         type: string
         pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
   schemas:
     ErrorInfo:
       type: object
@@ -497,6 +508,7 @@ components:
           REFRESHTOKEN: "#/components/schemas/RefreshTokenCredential"
       required:
         - credentialType
+
     PlainCredential:
       type: object
       description: A plain credential as a combination of an identifier and a secret.
@@ -513,6 +525,7 @@ components:
             secret:
               description: The secret might be a password or passphrase.
               type: string
+
     AccessTokenCredential:
       type: object
       description: An access token credential.
@@ -536,6 +549,7 @@ components:
             - accessToken
             - accessTokenExpiresUtc
             - accessTokenType
+
     RefreshTokenCredential:
       type: object
       description: An access token credential with a refresh token.
@@ -640,7 +654,7 @@ components:
           minItems: 1
           maxItems: 1
           items:
-            type: string
+            $ref: "#/components/schemas/SubscriptionEventType"
         config:
           $ref: '#/components/schemas/Config'
         id:
@@ -677,6 +691,22 @@ components:
           AMQP: "#/components/schemas/AMQPSubscriptionResponse"
           NATS: "#/components/schemas/NATSSubscriptionResponse"
           KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
+      example:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: "+123456789"
+          subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: "2024-07-03T21:12:02.871Z"
+        expiresAt: "2024-07-03T21:12:02.871Z"
+        status: ACTIVE
 
     Device:
       description: |
@@ -784,7 +814,6 @@ components:
         - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off
         - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country
         - org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends
-
 
     SubscriptionAsync:
       description: Response for a device reachability status operation managed asynchronously (Creation or Deletion)
@@ -909,7 +938,7 @@ components:
       description: Event detail structure for basic device events
       type: object
       required:
-        - device
+        - subscriptionId
       properties:
         device:
           $ref: "#/components/schemas/Device"
@@ -918,49 +947,46 @@ components:
 
     RoamingStatus:
       description: Event detail structure for org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status event
-      type: object
-      required:
-        - device
-        - roaming
-      properties:
-        device:
-          $ref: "#/components/schemas/Device"
-        roaming:
-          type: boolean
-          description: Roaming status. True, if it is roaming.
-        countryCode:
-          $ref: "#/components/schemas/CountryCode"
-        countryName:
-          $ref: "#/components/schemas/CountryName"
-        subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
+      allOf:
+        - $ref: "#/components/schemas/BasicDeviceEventData"
+        - type: object
+          required:
+            - roaming
+          properties:
+            roaming:
+              type: boolean
+              description: Roaming status. True, if it is roaming.
+            countryCode:
+              $ref: "#/components/schemas/CountryCode"
+            countryName:
+              $ref: "#/components/schemas/CountryName"
 
     RoamingChangeCountry:
       description: Event detail structure for org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on event
-      type: object
-      required:
-        - device
-      properties:
-        device:
-          $ref: "#/components/schemas/Device"
-        countryCode:
-          $ref: "#/components/schemas/CountryCode"
-        countryName:
-          $ref: "#/components/schemas/CountryName"
-        subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
+      allOf:
+        - $ref: "#/components/schemas/BasicDeviceEventData"
+        - type: object
+          required:
+            - countryCode
+            - countryName
+          properties:
+            countryCode:
+              $ref: "#/components/schemas/CountryCode"
+            countryName:
+              $ref: "#/components/schemas/CountryName"
 
     SubscriptionEnds:
       description: Event detail structure for org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends event
-      type: object
+      allOf:
+        - $ref: "#/components/schemas/BasicDeviceEventData"
+        - type: object
+          required:
+            - countryCode
       required:
         - terminationReason
-        - subscriptionId
       properties:
         terminationReason:
           $ref: "#/components/schemas/TerminationReason"
-        subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
         terminationDescription:
           type: string
 
@@ -1130,6 +1156,7 @@ components:
           type: string
       required:
         - subject
+
   responses:
     CreateSubscriptionBadRequest400:
       description: Problem with the client request
@@ -1184,6 +1211,7 @@ components:
                 status: 400
                 code: INVALID_TOKEN
                 message: Only bearer token is supported
+
     Generic400:
       description: Bad Request
       headers:
@@ -1209,6 +1237,7 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: Client specified an invalid argument, request body or query param.
+
     SubscriptionIdRequired400:
       description: Problem with the client request
       headers:
@@ -1240,6 +1269,7 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: "Expected property is missing: subscriptionId"
+
     Generic401:
       description: Authentication problem with the client request
       headers:
@@ -1272,6 +1302,7 @@ components:
                 status: 401
                 code: AUTHENTICATION_REQUIRED
                 message: New authentication is required.
+
     Generic403:
       description: Client does not have sufficient permission
       headers:
@@ -1297,6 +1328,7 @@ components:
                 status: 403
                 code: PERMISSION_DENIED
                 message: Client does not have sufficient permissions to perform this action.
+
     SubscriptionPermissionDenied403:
       description: Client does not have sufficient permission
       headers:
@@ -1336,6 +1368,7 @@ components:
                 status: 403
                 code: "SUBSCRIPTION_MISMATCH"
                 message: "Inconsistent access token for requested events subscription"
+
     Generic404:
       description: Resource Not Found
       headers:
@@ -1361,6 +1394,7 @@ components:
                 status: 404
                 code: NOT_FOUND
                 message: The specified resource is not found.
+
     Generic409:
       description: Conflict
       headers:
@@ -1393,6 +1427,7 @@ components:
                 status: 409
                 code: ALREADY_EXISTS
                 message: The resource that a client tried to create already exists.
+
     Generic410:
       description: Gone
       headers:
@@ -1418,6 +1453,7 @@ components:
                 status: 410
                 code: GONE
                 message: Access to the target resource is no longer available.
+
     CreateSubscriptionUnprocessableEntity422:
       description: Unprocessable Entity
       headers:
@@ -1478,6 +1514,7 @@ components:
                 status: 422
                 code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
                 message: Multi event types subscription not managed
+
     Generic429:
       description: Too Many Requests
       headers:
@@ -1503,13 +1540,13 @@ components:
               value:
                 status: 429
                 code: QUOTA_EXCEEDED
-                message: Either out of resource quota or reaching rate limiting.
+                message: Out of resource quota.
             GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
+              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
               value:
                 status: 429
                 code: TOO_MANY_REQUESTS
-                message: Either out of resource quota or reaching rate limiting.
+                message: Rate limit reached.
 
   examples:
     ROAMING_STATUS:
@@ -1521,10 +1558,8 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           roaming: true
-          countryCode: 208
-          countryName: FR
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-17T13:18:23.682Z"
 
@@ -1537,7 +1572,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456788
+            phoneNumber: "+123456789"
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-18T13:18:23.682Z"
 
@@ -1550,7 +1585,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456787
+            phoneNumber: "+123456789"
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-19T13:18:23.682Z"
 
@@ -1563,7 +1598,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           countryCode: 214
           countryName: ["ES"]
           subscriptionId: qs15-h556-rt89-1298
@@ -1578,7 +1613,7 @@ components:
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-19T13:18:23.682Z"
@@ -1636,3 +1671,27 @@ components:
         startsAt: "2024-07-03T21:12:02.871Z"
         expiresAt: "2024-07-03T21:12:02.871Z"
         status: DELETED
+
+    CREATE_SUBSCRIPTION:
+      value:
+        sink: "https://endpoint.example.com/sink"
+        sinkCredential: {
+          "credentialType": "ACCESSTOKEN",
+          "accessToken": "JhbGciOiJSUzI1NiIsImtpZCI6Imk2bEdrM0ZaenhSY1ViMkMzbkVRN3N5SEpsW",
+          "accessTokenExpiresUtc": "2024-02-17T16:23:45Z",
+          "accessTokenType": "bearer"
+        }
+        protocol: HTTP
+        types: [
+          "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
+        ]
+        config: {
+          "subscriptionDetail": {
+            "device": {
+              "phoneNumber": "+123456789",
+            }
+          },
+          "subscriptionExpireTime": "2023-01-17T13:18:23.682Z",
+          "subscriptionMaxEvents": 5,
+          "initialEvent": true
+        }
