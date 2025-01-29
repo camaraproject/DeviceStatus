@@ -1450,6 +1450,7 @@ components:
               description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
               value:
                 status: 429
+                code: TOO_MANY_REQUESTS
                 message: Rate limit reached.
 
   examples:
