@@ -374,7 +374,7 @@ components:
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
-            Note: for the current Commonalities version (v0.5) only one event type per subscription is allowed, yet in the following releases use of array of event types SHALL be specified without changing this definition.
+            Note: For the current Commonalities API design guidelines, only one event type per subscription is allowed, yet in the following releases use of array of event types SHALL be specified without changing this definition.
           type: array
           minItems: 1
           maxItems: 1
@@ -580,13 +580,12 @@ components:
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
-            Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
-             at API project level.
+            Note: For the current Commonalities API design guidelines, only one event type per subscription is allowed
           type: array
           minItems: 1
           maxItems: 1
           items:
-            type: string
+            $ref: "#/components/schemas/SubscriptionEventType"
         config:
           $ref: '#/components/schemas/Config'
         id:
