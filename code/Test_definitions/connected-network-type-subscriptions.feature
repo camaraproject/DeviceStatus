@@ -224,10 +224,10 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
 
   @connected_network_type_subscriptions_21_inconsistent_access_token_for_requested_events_subscription
   Scenario: subscription creation with invalid access token for requested events subscription
-    # To test this, use a event type in the request which cannot be managed in this API
+    # To test this, a token contains an unsupported event type for this API
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
-    And the request body property "$.types" contains an unsupported event type in this API
+    And the request body property "$.types" contains the supported event type in this API
     When the request "createDeviceReachabilityStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
