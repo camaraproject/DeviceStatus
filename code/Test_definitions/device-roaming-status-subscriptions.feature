@@ -35,7 +35,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   @roaming_status_subscriptions_03_Operation_to_retrieve_list_of_subscriptions_when_no_records
   Scenario: Get a list of subscriptions when no subscriptions 
     Given a client without subscriptions created
-    When the request "retrieveSubscriptionList" is sent 
+    When the request "retrieveDeviceRoamingStatusSubscriptionList" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -44,7 +44,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   @roaming_status_subscriptions_04_Operation_to_retrieve_list_of_subscriptions
   Scenario: Get a list of subscriptions.
     Given a client with subscriptions created
-    When the request "retrieveSubscriptionList" is sent 
+    When the request "retrieveDeviceRoamingStatusSubscriptionList" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -53,7 +53,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   @roaming_status_subscriptions_05_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id
   Scenario: Get a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the request "retrieveSubscription" is sent
+    When the request "retrieveDeviceRoamingStatusSubscription" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -62,7 +62,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   @roaming_status_subscriptions_06_Operation_to_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the request "deleteSubscription" is sent
+    When the request "deleteDeviceRoamingStatusSubscription" is sent
     Then the response code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And if the response property $.status is 204 then response body is not available
@@ -223,7 +223,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
     And header "Authorization" set to access token referring different scope
-    When the request "createDeviceReachabilityStatusSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
@@ -234,7 +234,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
     And header "Authorization" set to access token referring different device
-    When the request "createDeviceReachabilityStatusSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
@@ -245,7 +245,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
     And the request body property "$.types" contains the supported event type in this API
-    When the request "createDeviceReachabilityStatusSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
@@ -253,7 +253,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
   @roaming_status_subscription_23_unknown_subscription_id
   Scenario: Get subscription when subscription-id is unknown to the system
     Given the path parameter property "$.subscriptionId" is unknown to the system
-    When the request "retrieveSubscription" is sent
+    When the request "retrieveDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text

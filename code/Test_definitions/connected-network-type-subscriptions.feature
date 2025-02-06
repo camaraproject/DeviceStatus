@@ -15,7 +15,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: Create connected network type subscription synchronously
     Given that subscriptions are created synchronously
     And a valid subscription request body
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -25,7 +25,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: Create connected network type subscription asynchronously
     Given that subscriptions are created asynchronously
     And a valid subscription request body
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 202
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -34,7 +34,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_03_operation_to_retrieve_list_of_subscriptions_when_no_records
   Scenario: Get a list of subscriptions when no subscriptions available
     Given a client without subscriptions created
-    When the request "retrieveSubscriptionList" is sent
+    When the request "retrieveConnectedNetworkTypeSubscriptionList" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -43,7 +43,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_04_operation_to_retrieve_list_of_subscriptions
   Scenario: Get a list of subscriptions
     Given a client with subscriptions created
-    When the request "retrieveSubscriptionList" is sent
+    When the request "retrieveConnectedNetworkTypeSubscriptionList" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -52,7 +52,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_05_operation_to_retrieve_subscription_based_on_an_existing_subscription-id
   Scenario: Get a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the request "retrieveSubscription" is sent
+    When the request "retrieveConnectedNetworkTypeSubscription" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -61,7 +61,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_06_operation_to_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the request "deleteSubscription" is sent
+    When the request "deleteConnectedNetworkTypeSubscription" is sent
     Then the response code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And if the response property $.status is 204 then response body is not available
@@ -72,7 +72,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Given that subscriptions are created synchronously
     And a valid subscription request body
     And the request body property "$.types" contains the element "network-type-changed"
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 201
     And if the device network type changed
     Then event notification "network-type-changed" is received on callback-url
@@ -85,7 +85,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Given that subscriptions are created synchronously
     And a valid subscription request body
     And the request body property "$.subscriptionExpireTime" is set to a value in the near future
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 201
     Then the subscription is expired
     Then event notification "subscription-ends" is received on callback-url
@@ -99,7 +99,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And a valid subscription request body
     And the request body property "$.types" contains the element "network-type-changed"
     And the request body property "$.subscriptionMaxEvents" is set to 1
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 201
     Then event notification "network-type-changed" is received on callback-url
     Then event notification "subscription-ends" is received on callback-url
@@ -111,7 +111,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: Receive notification for subscription-ends event on deletion
     Given that subscriptions are created synchronously
     And a valid subscription request body
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 201
     When the request "deleteSubscription" is sent
     Then the response code is 202 or 204
@@ -125,7 +125,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_11_create_network_type_subscription_with_invalid_parameter
   Scenario: Create subscription with invalid parameter
     Given the request body is not compliant with the schema "/components/schemas/SubscriptionRequest"
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -135,7 +135,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: Expiry time in past
     Given a valid subscription request body
     And request body property "$.subscriptionexpiretime" in past
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -145,7 +145,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: Subscription creation with invalid event type
     Given a valid subscription request body
     And the request body property "$.types" is set to invalid value
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 400
     and the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -155,7 +155,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: subscription creation with invalid protocol
     Given a valid subscription request body
     And the request property "$.protocol" is not set to "HTTP"
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_PROTOCOL"
@@ -165,7 +165,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: subscription creation with invalid credential type
     Given a valid subscription request body
     And the request property "$.credentialType" is not "ACCESSTOKEN"
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_CREDENTIAL"
@@ -175,7 +175,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: subscription creation with invalid access token type
     Given a valid subscription request body
     And the request property "$.accessTokenType" is not "bearer"
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_TOKEN" or "INVALID_ARGUMENT"
@@ -185,7 +185,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   Scenario: subscription creation with invalid credentials
     Given a valid subscription request body
     And header "Authorization" token is set to invalid credentials
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -194,7 +194,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_18_expired_access_token_for_create_subscription
   Scenario: Expired access token for create subscription
     Given a valid subscription request body and header "Authorization" is expired
-    When the request "createSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -206,7 +206,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
     And header "Authorization" set to access token referring different scope
-    When the request "createDeviceReachabilityStatusSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
@@ -217,7 +217,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
     And header "Authorization" set to access token referring different device
-    When the request "createDeviceReachabilityStatusSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
@@ -228,7 +228,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
     And the request body property "$.types" contains the supported event type in this API
-    When the request "createDeviceReachabilityStatusSubscription" is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
@@ -236,7 +236,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_22_unknown_subscription_id
   Scenario: Get subscription when subscription-id is unknown to the system
     Given the path parameter property "$.subscriptionId" is unknown to the system
-    When the request "retrieveSubscription" is sent
+    When the request "retrieveConnectedNetworkTypeSubscription" is sent
     Then the response code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
@@ -245,7 +245,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_23_delete_unknown_subscription_id
   Scenario: Delete subscription with subscription-id unknown to the system
     Given the path parameter "subscriptionId" is set to the value unknown to system
-    When the request "deleteSubscription" is sent
+    When the request "deleteConnectedNetworkTypeSubscription" is sent
     Then the response code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
@@ -254,7 +254,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_24_create_with_identifier_mismatch
   Scenario: Create subscription with identifier mismatch
     Given the request body includes inconsistent identifiers
-    When the HTTP "POST" request is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "IDENTIFIER_MISMATCH"
@@ -263,7 +263,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_25_create_with_service_not_applicable
   Scenario: Create subscription for a device not supported by the service
     Given the request body includes a device identifier not applicable for this service
-    When the HTTP "POST" request is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
@@ -272,7 +272,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_26_create_with_unnecessary_identifier
   Scenario: Create subscription with an unnecessary identifier
     Given the request body explicitly includes a device identifier when it is not required
-    When the HTTP "POST" request is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
@@ -281,7 +281,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_27_create_with_unsupported_identifier
   Scenario: Create subscription with an unsupported identifier
     Given the request body includes an identifier type not supported by the implementation
-    When the HTTP "POST" request is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
@@ -290,7 +290,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   @connected_network_type_subscriptions_28_missing_identifier
   Scenario: Create subscription and identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
     Given the request body and identifier is not included and missing in the access token
-    When the HTTP "POST" request is sent
+    When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
