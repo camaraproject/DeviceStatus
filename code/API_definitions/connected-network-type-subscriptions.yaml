@@ -117,7 +117,7 @@ servers:
     variables:
       apiRoot:
         default: http://localhost:9091
-        description: API root
+        description: API root, defined by the service provider, e.g. api.example.com or api.example.com/somepath
 
 tags:
   - name: Connected Network Type Subscription
@@ -130,18 +130,22 @@ paths:
         - Connected Network Type Subscription
       summary: "Create a subscription for receiving notifications on changes to the connected network type of a device"
       description: Create a subscription for receiving notifications on changes to the connected network type of a device.
-      operationId: createSubscription
+      operationId: createConnectedNetworkTypeSubscription
       parameters:
         - $ref: "#/components/parameters/x-correlator"
       security:
         - openId:
             - connected-network-type-subscriptions:org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed:create
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/SubscriptionRequest"
-        required: true
+            examples:
+              Create Subscription:
+                $ref: "#/components/examples/CREATE_SUBSCRIPTION"
+
       callbacks:
         notifications:
           "{$request.body#/sink}":
@@ -180,13 +184,10 @@ paths:
                   $ref: "#/components/responses/Generic410"
                 "429":
                   $ref: "#/components/responses/Generic429"
-                "500":
-                  $ref: "#/components/responses/Generic500"
-                "503":
-                  $ref: "#/components/responses/Generic503"
               security:
                 - {}
                 - notificationsBearerAuth: []
+
       responses:
         "201":
           description: Created (Successful creation of subscription)
@@ -214,19 +215,14 @@ paths:
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
-          $ref: "#/components/responses/CreateSubscription403"
+          $ref: "#/components/responses/SubscriptionPermissionDenied403"
         "409":
           $ref: "#/components/responses/Generic409"
-        "415":
-          $ref: "#/components/responses/Generic415"
         "422":
-          $ref: "#/components/responses/CreateSubscription422"
+          $ref: "#/components/responses/CreateSubscriptionUnprocessableEntity422"
         "429":
           $ref: "#/components/responses/Generic429"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
+
     get:
       tags:
         - Connected Network Type Subscription
@@ -250,17 +246,13 @@ paths:
                 type: array
                 minItems: 0
                 items:
-                  $ref: "#/components/schemas/Subscription"
+                  $ref: '#/components/schemas/Subscription'
         "400":
           $ref: "#/components/responses/Generic400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
   /subscriptions/{subscriptionId}:
     get:
       tags:
@@ -284,20 +276,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Subscription"
+              examples:
+                Subscription Details:
+                  $ref: "#/components/examples/SUBSCRIPTION_ACTIVE"
         "400":
-          $ref: "#/components/responses/SubscriptionIdRequired"
+          $ref: "#/components/responses/SubscriptionIdRequired400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
-        "429":
-          $ref: "#/components/responses/Generic429"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
+
     delete:
       tags:
         - Connected Network Type Subscription
@@ -326,24 +316,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
         "400":
-          $ref: "#/components/responses/SubscriptionIdRequired"
+          $ref: "#/components/responses/SubscriptionIdRequired400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
-        "429":
-          $ref: "#/components/responses/Generic429"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
+
 components:
+
   securitySchemes:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    notificationsBearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: "{$request.body#/sinkCredential.credentialType}"
+
   parameters:
     SubscriptionId:
       name: subscriptionId
@@ -358,11 +349,17 @@ components:
       description: Correlation id for the different services
       schema:
         type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
   schemas:
     ErrorInfo:
       description: The error info object for possible error cases
@@ -403,7 +400,7 @@ components:
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
-            Note: As of now we enforce to have only event type per subscription.
+            Note: For the current Commonalities API design guidelines, only one event type per subscription is allowed, yet in the following releases use of array of event types SHALL be specified without changing this definition.
           type: array
           minItems: 1
           maxItems: 1
@@ -438,21 +435,21 @@ components:
         - subscriptionDetail
       properties:
         subscriptionDetail:
-          $ref: "#/components/schemas/SubscriptionDetail"
+          $ref: "#/components/schemas/CreateSubscriptionDetail"
         subscriptionExpireTime:
           type: string
           format: date-time
-          example: "2023-01-17T13:18:23.682Z"
-          description: The subscription expiration time (in date-time format) requested by the API consumer.
+          example: 2023-01-17T13:18:23.682Z
+          description: The subscription expiration time (in date-time format) requested by the API consumer. Up to API project decision to keep it.
         subscriptionMaxEvents:
           type: integer
-          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
+          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends. Up to API project decision to keep it.
           minimum: 1
           example: 5
         initialEvent:
           type: boolean
           description: |
-            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
+            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.Up to API project decision to keep it.
             Example: Consumer request area entered event. If consumer sets initialEvent to true and device is already in the geofence, an event is triggered
 
     SinkCredential:
@@ -474,6 +471,7 @@ components:
           REFRESHTOKEN: "#/components/schemas/RefreshTokenCredential"
       required:
         - credentialType
+
     PlainCredential:
       type: object
       description: A plain credential as a combination of an identifier and a secret.
@@ -490,6 +488,7 @@ components:
             secret:
               description: The secret might be a password or passphrase.
               type: string
+
     AccessTokenCredential:
       type: object
       description: An access token credential.
@@ -503,7 +502,7 @@ components:
             accessTokenExpiresUtc:
               type: string
               format: date-time
-              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+              description: REQUIRED. An absolute (UTC) timestamp at which the token shall be considered expired. In the case of an ACCESS_TOKEN_EXPIRED termination reason, implementation should notify the client before the expiration date.
             accessTokenType:
               description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
               type: string
@@ -513,6 +512,7 @@ components:
             - accessToken
             - accessTokenExpiresUtc
             - accessTokenType
+
     RefreshTokenCredential:
       type: object
       description: An access token credential with a refresh token.
@@ -546,6 +546,13 @@ components:
         - refreshToken
         - refreshTokenEndpoint
 
+    CreateSubscriptionDetail:
+      description: The detail of the requested event subscription.
+      type: object
+      properties:
+        device:
+          $ref: "#/components/schemas/Device"
+
     ConnectedNetworkType:
       type: string
       description: Network Type is intended to provide insight to connected network's capabilities from standards perspective. Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
@@ -562,8 +569,15 @@ components:
       properties:
         device:
           $ref: "#/components/schemas/Device"
-      required:
-        - device
+
+    EventTypeNotification:
+      type: string
+      description: |
+        network-type-changed - Event triggered when the connected network type of the device changes.
+        subscription-ends - Event triggered when the subscription is terminated
+      enum:
+        - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
+        - org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends
 
     SubscriptionEventType:
       type: string
@@ -571,15 +585,6 @@ components:
         network-type-changed - Event triggered when the connected network type of the device changes.
       enum:
         - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
-
-    NotificationEventType:
-      type: string
-      description: |
-        network-type-changed - Event triggered when the connected network type of the device changes.
-        subscription-ends - Event triggered when the subscription is terminated.
-      enum:
-        - org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
-        - org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends
 
     Subscription:
       description: Represents a event-type subscription.
@@ -590,7 +595,6 @@ components:
         - config
         - types
         - id
-        - startsAt
       properties:
         protocol:
           $ref: "#/components/schemas/Protocol"
@@ -599,20 +603,19 @@ components:
           format: url
           description: The address to which events shall be delivered using the selected protocol.
           example: "https://endpoint.example.com/sink"
-        sinkCredential:
-          $ref: "#/components/schemas/SinkCredential"
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
+            Note: For the current Commonalities API design guidelines, only one event type per subscription is allowed
           type: array
+          minItems: 1
+          maxItems: 1
           items:
-            type: string
+            $ref: "#/components/schemas/SubscriptionEventType"
         config:
-          $ref: "#/components/schemas/Config"
+          $ref: '#/components/schemas/Config'
         id:
-          type: string
-          description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as `subscriptionId` as per [Commonalities Event Notification Model](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md#122-event-notification).
-          example: "1119920371"
+          $ref: '#/components/schemas/SubscriptionId'
         startsAt:
           type: string
           format: date-time
@@ -639,12 +642,28 @@ components:
       discriminator:
         propertyName: protocol
         mapping:
-          HTTP: "#/components/schemas/HTTPSubscriptionResponse"
-          MQTT3: "#/components/schemas/MQTTSubscriptionResponse"
-          MQTT5: "#/components/schemas/MQTTSubscriptionResponse"
-          AMQP: "#/components/schemas/AMQPSubscriptionResponse"
-          NATS: "#/components/schemas/NATSSubscriptionResponse"
-          KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
+          HTTP: '#/components/schemas/HTTPSubscriptionResponse'
+          MQTT3: '#/components/schemas/MQTTSubscriptionResponse'
+          MQTT5: '#/components/schemas/MQTTSubscriptionResponse'
+          AMQP: '#/components/schemas/AMQPSubscriptionResponse'
+          NATS: '#/components/schemas/NATSSubscriptionResponse'
+          KAFKA: '#/components/schemas/ApacheKafkaSubscriptionResponse'
+      example:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: "+123456789"
+          subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: "2024-07-03T21:12:02.871Z"
+        expiresAt: "2024-07-03T21:12:02.871Z"
+        status: ACTIVE
 
     SubscriptionAsync:
       description: Response for a event-type subscription request managed asynchronously (Creation or Deletion)
@@ -743,7 +762,6 @@ components:
         - source
         - specversion
         - type
-        - data
         - time
       properties:
         id:
@@ -752,7 +770,7 @@ components:
         source:
           $ref: "#/components/schemas/Source"
         type:
-          $ref: "#/components/schemas/NotificationEventType"
+          $ref: "#/components/schemas/EventTypeNotification"
         specversion:
           type: string
           description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
@@ -809,7 +827,6 @@ components:
       description: Event detail structure for network type changed data events
       type: object
       required:
-        - device
         - connectedNetworkType
         - subscriptionId
       properties:
@@ -821,10 +838,18 @@ components:
           $ref: "#/components/schemas/SubscriptionId"
 
     EventSubscriptionEnds:
-      description: Event detail structure for org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends event
+      description: event structure for event subscription ends
+      allOf:
+        - $ref: "#/components/schemas/CloudEvent"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SubscriptionEnds"
+
+    SubscriptionEnds:
+      description: Event detail structure for SUBSCRIPTION_ENDS event
       type: object
       required:
-        - device
         - terminationReason
         - subscriptionId
       properties:
@@ -834,21 +859,23 @@ components:
           $ref: "#/components/schemas/TerminationReason"
         subscriptionId:
           $ref: "#/components/schemas/SubscriptionId"
+        terminationDescription:
+          type: string
 
     TerminationReason:
       type: string
       description: |
         - NETWORK_TERMINATED - API server stopped sending notification
         - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
-        - SUBSCRIPTION_DELETED - Subscription was deleted by the requester
         - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
         - ACCESS_TOKEN_EXPIRED - Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+        - SUBSCRIPTION_DELETED - Subscription was deleted by the requester
       enum:
         - MAX_EVENTS_REACHED
         - NETWORK_TERMINATED
         - SUBSCRIPTION_EXPIRED
-        - SUBSCRIPTION_DELETED
         - ACCESS_TOKEN_EXPIRED
+        - SUBSCRIPTION_DELETED
 
     HTTPSubscriptionRequest:
       allOf:
@@ -1001,6 +1028,7 @@ components:
           type: string
       required:
         - subject
+
   responses:
     CreateSubscriptionBadRequest400:
       description: Problem with the client request
@@ -1010,41 +1038,109 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+                      - OUT_OF_RANGE
+                      - INVALID_PROTOCOL
+                      - INVALID_CREDENTIAL
+                      - INVALID_TOKEN
           examples:
-            InvalidArgument:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
               value:
                 status: 400
-                code: "INVALID_ARGUMENT"
-                message: "Client specified an invalid argument, request body or query param"
-            InvalidProtocol:
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_OUT_OF_RANGE:
+              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
               value:
                 status: 400
-                code: "INVALID_PROTOCOL"
-                message: "Only HTTP is supported"
-            InvalidCredential:
+                code: OUT_OF_RANGE
+                message: Client specified an invalid range.
+            GENERIC_400_INVALID_PROTOCOL:
+              description: Invalid protocol for events subscription management
               value:
                 status: 400
-                code: "INVALID_CREDENTIAL"
-                message: "Only Access token is supported"
-            InvalidToken:
+                code: INVALID_PROTOCOL
+                message: Only HTTP is supported
+            GENERIC_400_INVALID_CREDENTIAL:
+              description: Invalid sink credential type
               value:
                 status: 400
-                code: "INVALID_TOKEN"
-                message: "Only bearer token is supported"
+                code: INVALID_CREDENTIAL
+                message: Only Access token is supported
+            GENERIC_400_INVALID_TOKEN:
+              description: Invalid token type for sink credential of type ACCESSTOKEN
+              value:
+                status: 400
+                code: INVALID_TOKEN
+                message: Only bearer token is supported
+
     Generic400:
-      description: Bad Request
+      description: Problem with the client request
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 400
-            code: "INVALID_ARGUMENT"
-            message: "Client specified an invalid argument, request body or query param"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+
+    SubscriptionIdRequired400:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_SUBSCRIPTION_ID_REQUIRED:
+              description: subscription id is required
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Expected property is missing: subscriptionId"
     Generic401:
       description: Authentication problem with the client request
       headers:
@@ -1053,32 +1149,31 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 401
-            code: "UNAUTHENTICATED"
-            message: "Request not authenticated due to missing, invalid, or expired credentials"
-
-    CreateSubscription403:
-      description: Client does not have sufficient permission
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 401
+                  code:
+                    enum:
+                      - UNAUTHENTICATED
+                      - AUTHENTICATION_REQUIRED
           examples:
-            PermissionDenied:
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated
               value:
-                status: 403
-                code: "PERMISSION_DENIED"
-                message: "Client does not have sufficient permissions to perform this action"
-            TokenMismatch:
+                status: 401
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials.
+            GENERIC_401_AUTHENTICATION_REQUIRED:
+              description: New authentication is needed, authentication is no longer valid
               value:
-                status: 403
-                code: "SUBSCRIPTION_MISMATCH"
-                message: "Inconsistent access token for requested events subscription"
+                status: 401
+                code: AUTHENTICATION_REQUIRED
+                message: New authentication is required.
+
     Generic403:
       description: Client does not have sufficient permission
       headers:
@@ -1087,11 +1182,64 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 403
-            code: "PERMISSION_DENIED"
-            message: "Client does not have sufficient permissions to perform this action"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+
+    SubscriptionPermissionDenied403:
+      description: Client does not have sufficient permission
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+                      - INVALID_TOKEN_CONTEXT
+                      - SUBSCRIPTION_MISMATCH
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+            GENERIC_403_INVALID_TOKEN_CONTEXT:
+              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
+              value:
+                status: 403
+                code: INVALID_TOKEN_CONTEXT
+                message: "{{field}} is not consistent with access token."
+            GENERIC_403_SUBSCRIPTION_MISMATCH:
+              description: Inconsistent access token for requested subscription
+              value:
+                status: 403
+                code: "SUBSCRIPTION_MISMATCH"
+                message: "Inconsistent access token for requested events subscription"
+
     Generic404:
       description: Resource Not Found
       headers:
@@ -1100,11 +1248,24 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 404
-            code: NOT_FOUND
-            message: "The specified resource is not found"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 404
+                  code:
+                    enum:
+                      - NOT_FOUND
+          examples:
+            GENERIC_404_NOT_FOUND:
+              description: Resource is not found
+              value:
+                status: 404
+                code: NOT_FOUND
+                message: The specified resource is not found.
+
     Generic409:
       description: Conflict
       headers:
@@ -1113,11 +1274,31 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 409
-            code: CONFLICT
-            message: "The specified resource is in a conflict"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 409
+                  code:
+                    enum:
+                      - ABORTED
+                      - ALREADY_EXISTS
+          examples:
+            GENERIC_409_ABORTED:
+              description: Concurreny of processes of the same nature/scope
+              value:
+                status: 409
+                code: ABORTED
+                message: Concurrency conflict.
+            GENERIC_409_ALREADY_EXISTS:
+              description: Trying to create an existing resource
+              value:
+                status: 409
+                code: ALREADY_EXISTS
+                message: The resource that a client tried to create already exists.
+
     Generic410:
       description: Gone
       headers:
@@ -1126,25 +1307,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 410
-            code: GONE
-            message: "The specified resource is no longer available at the requested address"
-    Generic415:
-      description: Unsupported Media Type
-      headers:
-        X-Correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 415
-            code: UNSUPPORTED_MEDIA_TYPE
-            message: "The specified media type is not supported"
-    CreateSubscription422:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 410
+                  code:
+                    enum:
+                      - GONE
+          examples:
+            GENERIC_410_GONE:
+              description: Use in notifications flow to allow API Consumer to indicate that its callback is no longer available
+              value:
+                status: 410
+                code: GONE
+                message: Access to the target resource is no longer available.
+
+    CreateSubscriptionUnprocessableEntity422:
       description: Unprocessable Entity
       headers:
         x-correlator:
@@ -1152,13 +1333,53 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - IDENTIFIER_MISMATCH
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNSUPPORTED_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+                      - MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
           examples:
-            PermissionDenied:
+            GENERIC_422_IDENTIFIER_MISMATCH:
+              description: Inconsistency between identifiers not pointing to the same device
               value:
                 status: 422
-                code: "MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED"
-                message: "Multi event types subscription not managed"
+                code: IDENTIFIER_MISMATCH
+                message: Provided identifiers are not consistent.
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service not applicable for the provided identifier
+              value:
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not available for the provided identifier.
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: An identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
+              value:
+                status: 422
+                code: MISSING_IDENTIFIER
+                message: The device cannot be identified.
+            GENERIC_422_UNSUPPORTED_IDENTIFIER:
+              description: None of the provided identifiers is supported by the implementation
+              value:
+                status: 422
+                code: UNSUPPORTED_IDENTIFIER
+                message: The identifier provided is not supported.
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
+              value:
+                status: 422
+                code: UNNECESSARY_IDENTIFIER
+                message: The device is already identified by the access token.
+
     Generic429:
       description: Too Many Requests
       headers:
@@ -1167,72 +1388,44 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 429
-            code: TOO_MANY_REQUESTS
-            message: "Endpoint does not support as many requests per time slot"
-    Generic500:
-      description: Server error
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 500
-            code: "INTERNAL"
-            message: "Server error"
-    Generic503:
-      description: Service unavailable. Typically the server is down.
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 503
-            code: "UNAVAILABLE"
-            message: "Service unavailable"
-    SubscriptionIdRequired:
-      description: Problem with the client request
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 429
+                  code:
+                    enum:
+                      - QUOTA_EXCEEDED
+                      - TOO_MANY_REQUESTS
           examples:
-            Generic400:
-              summary: Schema validation failed
+            GENERIC_429_QUOTA_EXCEEDED:
+              description: Request is rejected due to exceeding a business quota limit
               value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Client specified an invalid argument, request body or query param"
-            subscriptionIdRequired:
-              summary: subscription id is required
+                status: 429
+                code: QUOTA_EXCEEDED
+                message: Out of resource quota.
+            GENERIC_429_TOO_MANY_REQUESTS:
+              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
               value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Expected property is missing: subscriptionId"
+                status: 429
+                code: TOO_MANY_REQUESTS
+                message: Rate limit reached.
+
   examples:
     NETWORK_TYPE_CHANGED:
       description: The cloud event when a connected network type changed
       value:
         id: "123655"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed
+        type: "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
         specversion: "1.0"
         datacontenttype: application/json
         data:
-          subscriptionId: 987654321
+          subscriptionId: "987654321"
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           connectedNetworkType: 5G
         time: "2023-03-22T05:40:23.682Z"
 
@@ -1240,14 +1433,15 @@ components:
       value:
         id: "124003"
         source: https://dataUsageServer.supertelco.com
-        type: org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends
+        type: "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
         specversion: "1.0"
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: dv10-h556-rt89-1403
+          terminationDescription: Subscription expiry time has been reached
         time: "2024-03-05T15:00:23.682Z"
 
     SUBSCRIPTION_ACTIVE:
@@ -1267,3 +1461,26 @@ components:
         startsAt: "2024-07-03T21:12:02.871Z"
         expiresAt: "2024-07-03T21:12:02.871Z"
         status: ACTIVE
+    CREATE_SUBSCRIPTION:
+      value:
+        sink: "https://endpoint.example.com/sink"
+        sinkCredential: {
+          "credentialType": "ACCESSTOKEN",
+          "accessToken": "JhbGciOiJSUzI1NiIsImtpZCI6Imk2bEdrM0ZaenhSY1ViMkMzbkVRN3N5SEpsW",
+          "accessTokenExpiresUtc": "2024-02-17T16:23:45Z",
+          "accessTokenType": "bearer"
+        }
+        protocol: HTTP
+        types: [
+          "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+        ]
+        config: {
+          "subscriptionDetail": {
+            "device": {
+              "phoneNumber": "+123456789",
+            }
+          },
+          "subscriptionExpireTime": "2023-01-17T13:18:23.682Z",
+          "subscriptionMaxEvents": 5,
+          "initialEvent": true
+        }
