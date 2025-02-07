@@ -18,7 +18,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the header "x-correlator" is set to a UUID value
     And the request body is set by default to a request body compliant with the schema
 
-  #############Happy Path Scenarios##################
+  ############# Happy Path Scenarios ##################
 
   @device_roaming_status_01_roaming_status_true
   Scenario: Check the roaming status when device is in the roaming mode
