@@ -10,7 +10,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
   #
   # References to OAS spec schemas refer to schemas specifies in device-reachability-status.yaml
 
-  Background: Common Device reachability status setup
+  Background: Common getReachabilityStatus setup
     Given the resource "{api-root}/device-reachability-status/vwip/retrieve" set as base-url
 
     And the header "Content-Type" is set to "application/json"
