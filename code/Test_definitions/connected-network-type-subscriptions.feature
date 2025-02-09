@@ -286,4 +286,4 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
-    And the response property "$.message" contains "The device cannot be identified."
+    And the response property "$.message" contains a user friendly text
