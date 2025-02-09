@@ -27,6 +27,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
   @connected_network_type_02_retrieval_undetermined_network
   Scenario: The connected network type of the user device can not be determined
     Given a valid testing device supported by the service, identified by the token or provided in the request body
+    And the testing device is not connected to a mobile network (e.g. connected only to WiFi, or not connected to any network)
     And the request body is set to a valid request body
     When the HTTP "POST" request is sent
     Then the response code is 200
