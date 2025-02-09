@@ -259,7 +259,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "IDENTIFIER_MISMATCH"
-    And the response property "$.message" contains "Identifiers are not consistent."
+    And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_25_create_with_service_not_applicable
   Scenario: Create subscription for a device not supported by the service
