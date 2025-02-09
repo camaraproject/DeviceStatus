@@ -211,15 +211,16 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_20_invalid_token_context
-  Scenario: subscription creation with invalid access token context for requested events subscription
-    # To test this, a token does not have the required device identifier
+  @connected_network_type_subscriptions_20_unnecessary_identifier
+  Scenario: subscription creation with both a 3-legged token and explicit device identifier
+    # This test applies whether the device associated with the access token matches the explicit device identifier or not
+    # For 3-legged access tokens, an explicit device identifier MUST NOT be provided
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
-    And header "Authorization" set to access token referring different device
+    And header "Authorization" set to access token also referring to a device (which may or may not be the same device)
     When the request "createConnectedNetworkTypeSubscription" is sent
-    Then the response property "$.status" is 403
-    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    Then the response property "$.status" is 422
+    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_21_inconsistent_access_token_for_requested_events_subscription
