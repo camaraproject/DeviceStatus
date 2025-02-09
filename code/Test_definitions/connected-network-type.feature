@@ -15,6 +15,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
   @connected_network_type_01_generic_success_scenario
   Scenario: Check the connected network type to which the user device is connected
     Given a valid testing device supported by the service, identified by the token or provided in the request body
+    And the testing device is connected to a mobile network
     And the request body is set to a valid request body
     When the HTTP "POST" request is sent
     Then the response code is 200
