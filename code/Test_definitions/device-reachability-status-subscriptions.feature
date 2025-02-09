@@ -3,7 +3,7 @@
 Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reachability Status Subscription
 
 # Input to be provided by the implementation to the tests
-# References to OAS spec schemas refer to schemas specified in device-reachability-status-subscriptions.yaml, version v0.6.0
+# References to OAS spec schemas refer to schemas specified in device-reachability-status-subscriptions.yaml, version vwip
 
   Background: Common Device Reachability Status Subscriptions setup
     Given the resource "{apiroot}/device-reachability-status-subscriptions/vwip" as base-url
