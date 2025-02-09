@@ -277,7 +277,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
-    And the response property "$.message" contains "The identifier provided is not supported."
+    And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_28_missing_identifier
   Scenario: Create subscription and identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
