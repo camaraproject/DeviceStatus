@@ -1,6 +1,6 @@
 
 @DeviceReachabilityStatusSubscription
-Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reachability Status Subscription
+Feature: Device Reachability Status Subscriptions API, vwip - Operations Reachability Status Subscription
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in device-reachability-status-subscriptions.yaml, version vwip
@@ -32,7 +32,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/SubscriptionAsync"
 	
-  @reachability_status_subscriptions_03_Operation_to_retrieve_list_of_subscriptions_when_no_records
+  @reachability_status_subscriptions_03_operation_to_retrieve_list_of_subscriptions_when_no_records
   Scenario: Get a list of subscriptions when no subscriptions available
     Given a client without subscriptions created
     When the request "retrieveDeviceReachabilityStatusSubscriptionList" is sent
@@ -41,7 +41,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body is an empty array
 
-  @reachability_status_subscriptions_04_Operation_to_retrieve_list_of_subscriptions
+  @reachability_status_subscriptions_04_operation_to_retrieve_list_of_subscriptions
   Scenario: Get a list of subscriptions
     Given a client with subscriptions created
     When the request "retrieveDeviceReachabilityStatusSubscriptionList" is sent
@@ -50,7 +50,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body has an array of items and each item complies with the OAS schema at "/components/schemas/Subscription"
 
-  @reachability_status_subscriptions_05_Operation_to_retrieve_subscription_based_on_an_existing_subscription-id
+  @reachability_status_subscriptions_05_operation_to_retrieve_subscription_based_on_an_existing_subscription-id
   Scenario: Get a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
     When the request "retrieveDeviceReachabilityStatusSubscription" is sent
@@ -59,7 +59,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/Subscription"
 
-  @reachability_status_subscriptions_06_Operation_to_delete_subscription_based_on_an_existing_subscription-id
+  @reachability_status_subscriptions_06_operation_to_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
     When the request "deleteDeviceReachabilityStatusSubscription" is sent
@@ -68,7 +68,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And if the response property $.status is 204 then response body is not available
     And if the response property $.status is 202 then response body complies with the OAS schema at "/components/schemas/SubscriptionAsync"
 
-  @reachability_status_subscriptions_07_Receive_notification_when_device_reachability_changed_to_data_usage
+  @reachability_status_subscriptions_07_receive_notification_when_device_reachability_changed_to_data_usage
   Scenario: Receive notification for reachability-data event
     Given that subscriptions are created synchronously
     And a valid subscription request body 
@@ -81,7 +81,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And notification body complies with the OAS schema at "##/components/schemas/EventReachabilityData"
     And type="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
 
-  @reachability_status_subscriptions_08_Receive_notification_when_device_reachability_changed_to_sms_usage
+  @reachability_status_subscriptions_08_receive_notification_when_device_reachability_changed_to_sms_usage
   Scenario: Receive notification for reachability-sms event
     Given that subscriptions are created synchronously
     And a valid subscription request body
@@ -94,7 +94,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
     And notification body complies with the OAS schema at "##/components/schemas/EventReachabilitySms"
     And type="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
 
-  @reachability_status_subscriptions_09_Receive_notification_when_device_reachability_changed_to_disconnected
+  @reachability_status_subscriptions_09_receive_notification_when_device_reachability_changed_to_disconnected
   Scenario: Receive notification for reachability-disconnected event
     Given that subscriptions are created synchronously
     And a valid subscription request body
@@ -149,7 +149,7 @@ Feature: Device Reachability Status Subscriptions API, v0.6.0 - Operations Reach
 
 ############### Error response scenarios ###########################
 
-  @reachability_status_subscriptions_13_Create_reachability_status_subscription_with_invalid_parameter
+  @reachability_status_subscriptions_13_create_reachability_status_subscription_with_invalid_parameter
   Scenario: Create subscription with invalid parameter
     Given the request body is not compliant with the schema "/components/schemas/SubscriptionRequest"
     When the request "createDeviceReachabilityStatusSubscription" is sent

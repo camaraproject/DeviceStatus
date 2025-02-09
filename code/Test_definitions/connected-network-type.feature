@@ -176,7 +176,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
 
   # Generic 401 errors
 
-  @connected_network_type_15_no_authorization_header
+  @connected_network_type_14_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     And the request body is set to a valid request body
@@ -186,7 +186,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_16_expired_access_token
+  @connected_network_type_15_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     And the request body is set to a valid request body
@@ -196,7 +196,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_17_invalid_access_token
+  @connected_network_type_16_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And the request body is set to a valid request body
@@ -209,7 +209,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
 
   # Generic 403 error
 
-  @connected_network_type_18_permissions_denied
+  @connected_network_type_17_permissions_denied
   Scenario: Client does not have sufficient permissions to perform this action
     Given the header "Authorization" is set to an invalid access token
     And the request body is set to a valid request body

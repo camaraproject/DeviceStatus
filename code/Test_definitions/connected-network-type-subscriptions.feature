@@ -270,7 +270,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_27_create_with_unsupported_identifier
+  @connected_network_type_subscriptions_26_create_with_unsupported_identifier
   Scenario: Create subscription with an unsupported identifier
     Given the request body includes an identifier type not supported by the implementation
     When the request "createConnectedNetworkTypeSubscription" is sent
@@ -279,7 +279,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_28_missing_identifier
+  @connected_network_type_subscriptions_27_missing_identifier
   Scenario: Create subscription and identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
     Given the request body and identifier is not included and missing in the access token
     When the request "createConnectedNetworkTypeSubscription" is sent
