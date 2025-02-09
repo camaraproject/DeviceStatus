@@ -228,15 +228,16 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
 
-  @roaming_status_subscription_21_invalid_token_context
-  Scenario: subscription creation with invalid access token context for requested events subscription
-    # To test this, a token does not have the required device identifier
+  @roaming_status_subscription_21_unnecessary_identifier
+  Scenario: subscription creation with both a 3-legged token and explicit device identifier
+    # This test applies whether the device associated with the access token matches the explicit device identifier or not
+    # For 3-legged access tokens, an explicit device identifier MUST NOT be provided
     Given a valid subscription request body
     And the request body property "$.device" is set to a valid testing device supported by the service
-    And header "Authorization" set to access token referring different device
+    And header "Authorization" set to access token also referring to a device (which may or may not be the same device)
     When the request "createDeviceRoamingStatusSubscription" is sent
-    Then the response property "$.status" is 403
-    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    Then the response property "$.status" is 422
+    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscription_22_inconsistent_access_token_for_requested_events_subscription
