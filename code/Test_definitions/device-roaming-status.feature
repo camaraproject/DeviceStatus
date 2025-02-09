@@ -111,7 +111,7 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
     When the request "getRoamingStatus" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
-    And the response property "$.code" is "DEVICE_NOT_APPLICABLE"
+    And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text
 
   @device_roaming_status_10_deviceStatus_unable_to_provide_reachability_status
