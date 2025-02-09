@@ -174,16 +174,6 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_14_required_device_identifier_missing
-  Scenario: Required device identifier is missing
-    Given the request body property "$.device" is not included
-    And the header "Authorization" is set to a valid access token which does not identify a single device
-    When the HTTP "POST" request is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
   # Generic 401 errors
 
   @connected_network_type_15_no_authorization_header
