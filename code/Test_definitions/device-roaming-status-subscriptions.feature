@@ -6,7 +6,7 @@ Feature: Device Roaming Status Subscriptions API, v0.6.0 - Operations RoamingSta
 # References to OAS spec schemas refer to schemas specified in device-roaming-status-subscriptions.yaml, version v0.6.0
 
   Background: Common Device Roaming Status setup
-    Given the resource "{apiroot}/device-roaming-status-subscriptions/v0.6" as base-url
+    Given the resource "{apiroot}/device-roaming-status-subscriptions/vwip" as base-url
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
 
