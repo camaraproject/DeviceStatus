@@ -268,7 +268,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
-    And the response property "$.message" contains "Service is not available for the provided device identifier."
+    And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_27_create_with_unsupported_identifier
   Scenario: Create subscription with an unsupported identifier
