@@ -110,7 +110,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
   @connected_network_type_8_device_identifiers_mismatch
   Scenario: Device identifiers mismatch
     # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
-    Given that config_var "identifier_types_unsupported" contains at least 2 items
+    Given that the implementation supports multiple device identifiers
     And the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
     When the HTTP "POST" request is sent
