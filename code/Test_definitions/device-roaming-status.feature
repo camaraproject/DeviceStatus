@@ -107,7 +107,7 @@ Feature: CAMARA Device Roaming Status API, v0.6.0 - Operations for Roaming Statu
   @device_roaming_status_09_deviceStatus_not_applicable
   Scenario: Device roaming not applicable
     Given a valid devicestatus request body 
-    And the request body property "$.device" refers to an unknown device
+    And the request body property "$.device" refers to a device for which the service is not applicable
     When the request "getRoamingStatus" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
