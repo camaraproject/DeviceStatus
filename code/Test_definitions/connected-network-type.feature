@@ -88,7 +88,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
 
   @connected_network_type_6_device_not_found
   Scenario: Some identifier cannot be matched to a device
-    Given the request body property "$.device" is set to a value compliant to the OAS schema at "/components/schemas/Device" but does not identify a valid device
+    Given the request body property "$.device" is set to a value compliant to the OAS schema at "/components/schemas/Device" but does not identify a device managed by the API provider
     And the header "Authorization" is set to a valid access token which does not identify a single device
     When the HTTP "POST" request is sent
     Then the response status code is 404
