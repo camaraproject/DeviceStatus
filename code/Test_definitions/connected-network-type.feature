@@ -148,7 +148,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     When the HTTP "POST" request is sent
     Then the response status code is 422
     And the response property "$.status" is 422
-    And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
+    And the response property "$.code" is "MISSING_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
   # Generic 400 errors
