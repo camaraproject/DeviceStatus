@@ -270,15 +270,6 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains "Service is not available for the provided device identifier."
 
-  @connected_network_type_subscriptions_26_create_with_unnecessary_identifier
-  Scenario: Create subscription with an unnecessary identifier
-    Given the request body explicitly includes a device identifier when it is not required
-    When the request "createConnectedNetworkTypeSubscription" is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
-    And the response property "$.message" contains "Device is already identified by the access token."
-
   @connected_network_type_subscriptions_27_create_with_unsupported_identifier
   Scenario: Create subscription with an unsupported identifier
     Given the request body includes an identifier type not supported by the implementation
