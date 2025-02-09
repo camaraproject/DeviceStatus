@@ -121,8 +121,10 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
 
   @connected_network_type_9_unnecessary_device
   Scenario: Device not to be included when it can be deduced from the access token
+    # This test applies whether the device associated with the access token matches the explicit device identifier or not
+    # For 3-legged access tokens, an explicit device identifier MUST NOT be provided
     Given the header "Authorization" is set to a valid access token identifying a device
-    And the request body property "$.device" is set to a valid device
+    And the request body property "$.device" is set to a valid device (which may or may not be the same device)
     When the HTTP "POST" request is sent
     Then the response status code is 422
     And the response property "$.status" is 422
