@@ -147,7 +147,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the request body property "$.types" is set to invalid value
     When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response code is 400
-    and the response property "$.status" is 400
+    And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
