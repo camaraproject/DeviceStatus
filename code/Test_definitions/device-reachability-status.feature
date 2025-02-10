@@ -87,7 +87,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-
   @device_reachability_status_C01.02_device_identifiers_not_schema_compliant
   Scenario Outline: Some device identifier value does not comply with the schema
     Given the header "Authorization" is set to a valid access token which does not identify a single device
@@ -105,7 +104,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
       | $.device.ipv6Address       | /components/schemas/DeviceIpv6Address       |
       | $.device.networkIdentifier | /components/schemas/NetworkAccessIdentifier |
 
-
   # This scenario may happen e.g. with 2-legged access tokens, which do not identify a single device.
   @device_reachability_status_C01.03_device_not_found
   Scenario: Some identifier cannot be matched to a device
@@ -117,7 +115,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
-
   @device_reachability_status_C01.04_unnecessary_device
   Scenario: Device not to be included when it can be deduced from the access token
     Given the header "Authorization" is set to a valid access token identifying a device
@@ -128,7 +125,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
     And the response property "$.message" contains a user-friendly text
 
-
   @device_reachability_status_C01.05_missing_device
   Scenario: Device not included and cannot be deduced from the access token
     Given the header "Authorization" is set to a valid access token which does not identify a single device
@@ -138,7 +134,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     And the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
     And the response property "$.message" contains a user-friendly text
-
 
   @device_reachability_status_C01.06_unsupported_device
   Scenario: None of the provided device identifiers is supported by the implementation
@@ -151,7 +146,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
     And the response property "$.message" contains a user-friendly text
 
-
   # When the service is only offered to certain types of devices or subscriptions, e.g. IoT, B2C, etc.
   @device_reachability_status_C01.07_device_not_supported
   Scenario: Service not available for the device
@@ -162,7 +156,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     And the response property "$.status" is 422
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user-friendly text
-
 
   # Several identifiers provided but they do not identify the same device
   # This scenario may happen with 2-legged access tokens, which do not identify a device
@@ -176,49 +169,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     And the response property "$.status" is 422
     And the response property "$.code" is "IDENTIFIER_MISMATCH"
     And the response property "$.message" contains a user friendly text
-
-#################
-# Error code 400
-#################
-
-
-  @device_reachability_status_400.1_device_identifiers_not_schema_compliant
-  Scenario Outline: Some device identifier value does not comply with the schema
-    Given the header "Authorization" is set to a valid access token which does not identify a single device
-    And the request body property "<device_identifier>" does not comply with the OAS schema at "<oas_spec_schema>"
-    When the HTTP "POST" request is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-    Examples:
-      | device_identifier          | oas_spec_schema                             |
-      | $.device.phoneNumber       | /components/schemas/PhoneNumber             |
-      | $.device.ipv4Address       | /components/schemas/NetworkAccessIdentifier |
-      | $.device.ipv6Address       | /components/schemas/DeviceIpv4Addr          |
-      | $.device.networkIdentifier | /components/schemas/DeviceIpv6Address       |
-
-  @device_reachability_status_400.2_device_phoneNumber_schema_compliant
-  # Example of the scenario above with a higher level of specification
-  # TBD if test plan has to provide specific testing values to provoke an error
-  Scenario Outline: Device identifier phoneNumber value does not comply with the schema
-    Given the header "Authorization" is set to a valid access token which does not identify a single device
-    And the request body property "$.device.phoneNumber" is set to: <phone_number_value>
-    When the HTTP "POST" request is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-    Examples:
-      | phone_number_value |
-      | string_value       |
-      | 1234567890         |
-      | +12334foo22222     |
-      | +00012230304913849 |
-      | 123                |
-      | ++49565456787      |
 
 #################
 # Error code 401
