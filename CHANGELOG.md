@@ -32,8 +32,8 @@ This patch release contains the definition and documentation of
 * connected-network-type-subsscriptions 0.1.0-rc.1
 
 The API definition(s) are based on
-* Commonalities v0.5.0
-* Identity and Consent Management v0.2.1
+* Commonalities v0.5.0-rc.1
+* Identity and Consent Management v0.3.0-rc.1
 
 ## device-roaming-status v1.0.0-rc.1
 
