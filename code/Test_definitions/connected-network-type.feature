@@ -1,5 +1,5 @@
 @Connected_network_type
-Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve network type
+Feature: CAMARA Connected Network Type API, v0.1.0-rc.1 - Operations for retrieve network type
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specifies in connected-network-type.yaml, version vwip
