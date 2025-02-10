@@ -240,7 +240,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the response property "$.message" contains a user friendly text
 
   # Generic 403 errors
-	
+
   @device_roaming_status_403_permission_denied
    Scenario: OAuth2 token access does not have the required scope
     # To test this, a token has to be obtained for a different device
@@ -255,7 +255,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
   # Generic 422 errors
 
   @device_roaming_status_422.1_device_identifiers_mismatch
-    Scenario: Device identifiers mismatch
+  Scenario: Device identifiers mismatch
     # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a device associated to a different phoneNumber
     Given that config_var "identifier_types_unsupported" contains at least 2 items
     And the header "Authorization" is set to a valid access token which does not identify a single device
@@ -277,7 +277,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
 
     @device_roaming_status_422.3_unsupported_device_identifier
     Scenario: Unsupported device identifier
-    Given a valid devicestatus request body 
+    Given a valid devicestatus request body
     And the request body property "$.device" set to unsupported identifier value for the service
     When the HTTP "POST" request is sent
     Then the response status code is 422
