@@ -18,7 +18,9 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the header "x-correlator" is set to a UUID value
     And the request body is set by default to a request body compliant with the schema
 
-  ############# Happy Path Scenarios ##################
+##########################
+# Happy path scenarios
+##########################
 
   @device_roaming_status_01_roaming_status_true
   Scenario: Check the roaming status when device is in the roaming mode
@@ -63,8 +65,9 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the response property "$.countryName" does not exist
     And if the response property "$.lastStatusTime" exists then this property is in a valid date-time format
 
-
-  # Error scenarios for management of input parameter device
+#################
+# Error scenarios for management of input parameter device
+##################
 
   @device_roaming_status_C01.01_device_empty
   Scenario: The device value is an empty object
@@ -166,7 +169,9 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the response property "$.code" is "IDENTIFIER_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-  # Generic 400 errors
+#################
+# Error code 400
+#################
 
   @device_roaming_status_400.1_device_identifiers_not_schema_compliant
   Scenario Outline: Some device identifier value does not comply with the schema
@@ -206,7 +211,9 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
       | 123                |
       | ++49565456787      |
 
-  # Generic 401 errors
+#################
+# Error code 401
+#################
 
   @device_roaming_status_401.1_expired_access_token
   Scenario: Expired access token
@@ -239,7 +246,9 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  # Generic 403 errors
+#################
+# Error code 403
+#################
 
   @device_roaming_status_403_permission_denied
    Scenario: OAuth2 token access does not have the required scope
@@ -252,7 +261,9 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
 
-  # Generic 422 errors
+#################
+# Error code 422
+#################
 
   @device_roaming_status_422.1_device_identifiers_mismatch
   Scenario: Device identifiers mismatch
