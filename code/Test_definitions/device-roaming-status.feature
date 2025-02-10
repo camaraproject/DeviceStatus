@@ -1,6 +1,6 @@
 
 @Device_Roaming_Status
-Feature: CAMARA Device Roaming Status API, vwip - Operations for Roaming Status
+Feature: CAMARA Device Roaming Status API, v1.0.0-rc.1 - Operations for Roaming Status
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specifies in device-roaming-status.yaml, version vwip
