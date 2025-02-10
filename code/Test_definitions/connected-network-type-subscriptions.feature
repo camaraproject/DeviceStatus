@@ -1,4 +1,4 @@
-Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on subscriptions
+Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to manage connected network type subscriptions
 
   # Input to be provided by the implementation to the tester
   #
@@ -14,9 +14,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
   # References to OAS spec schemas refer to schemas specifies in connected-network-type-subscriptions.yaml
 
   Background: Connected Network Type Subscriptions setup
-
     Given the resource "{apiroot}/connected-network-type-subscriptions/vwip/subscriptions" as base-url
-
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
 
@@ -465,7 +463,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_create_403.3_inconsistent_access_token_for_requested_events_subscription
+  @connected_network_type_subscriptions_create_403.3_subscription_mismatch_for_requested_events_subscription
   Scenario: subscription creation with invalid access token for requested events subscription
     # To test this, a token contains an unsupported event type for this API
     Given a valid subscription request body

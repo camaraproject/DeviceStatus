@@ -15,7 +15,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
 
   Background: Common Device Reachability Status Subscriptions setup
     Given the resource "{apiroot}/device-reachability-status-subscriptions/vwip/subscriptions" as base-url
-
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
 
@@ -177,7 +176,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the request body property "$.subscriptionMaxEvents" is set to 1 
     Then the response code is 201
     And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data" is received on callback-url
-    And event notification "rg.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends" is received on callback-url
+    And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
     And type="org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
@@ -195,24 +194,11 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And type="org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
     And the response property "$.terminationReason" is "SUBSCRIPTION_DELETED"
 
-
 ##################
 # Error code 400
 ##################
 
-  @reachability_status_subscriptions_400.1_create_subscription_invalid_protocol
-  Scenario: subscription creation with invalid protocol
-    Given use BaseURL
-    When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
-    And "$.protocol" <> "HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
-    And "$.sink" is set to provided callbackUrl
-    Then the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_PROTOCOL"
-    And the response property "$.message" contains a user friendly text
-
-  @reachability_status_subscriptions_400.2_create_subscription_with_invalid_parameter
+  @reachability_status_subscriptions_400.1_create_subscription_with_invalid_parameter
   Scenario: Create subscription with invalid parameter
     Given use BaseURL
     When the request body is not compliant with the schema "#/components/schemas/SubscriptionRequest"
@@ -222,7 +208,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscriptions_400.3_create_subscription_with_invalid_subscription_expire_time
+  @reachability_status_subscriptions_400.2_create_subscription_with_invalid_subscription_expire_time
   Scenario: Expiry time in past
     Given use BaseURL
     When a valid subscription request body
@@ -233,13 +219,32 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_400.4_create_subscription_with_invalid_credential_type
+  @reachability_status_subscriptions_400.3_invalid_eventType
+  Scenario: Subscription creation with invalid event type
+    Given use BaseURL
+    When a valid subscription request body
+    And the HTTP "POST" request is sent
+    And the request body property "$.types" is set to invalid value
+    Then the response code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @reachability_status_subscriptions_400.4_invalid_protocol
+  Scenario: subscription creation with invalid protocol
+    Given use BaseURL
+    When the HTTP "POST" request is sent
+    And a valid subscription request body
+    And "$.protocol" <> "HTTP"
+    Then the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_PROTOCOL"
+    And the response property "$.message" contains a user friendly text
+
+  @reachability_status_subscriptions_400.5_create_subscription_with_invalid_credential_type
   Scenario: subscription creation with invalid credential type
     Given use BaseURL
     When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
+    And a valid subscription request body
     And "$.sink" is set to provided callbackUrl
     And "$.sinkCredential.credentialType" <> "ACCESSTOKEN"
     And "$.sinkCredential.accessTokenType" = "bearer"
@@ -248,14 +253,12 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_CREDENTIAL"
     And the response property "$.message" contains a user friendly text
-	
-  @reachability_status_subscription_400.5_create_subscription_with_invalid_access_token_type
+
+  @reachability_status_subscriptions_400.6_create_subscription_with_invalid_access_token_type
   Scenario: subscription creation with invalid token
     Given use BaseURL
     When the HTTP "POST" request is sent
-    And "$.types"="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
-    And "$.protocol"="HTTP"
-    And "$.config.subscriptionDetail.phoneNumber" is set with with provided phoneNumber
+    And a valid subscription request body
     And "$.sink" is set to provided callbackUrl
     And "$.sinkCredential.credentialType" = "ACCESSTOKEN"
     And "$.sinkCredential.accessTokenType" <> "bearer"
@@ -269,7 +272,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
 # Error code 401
 ##################
 
-  @reachability_status_subscription_creation_401.1_no_authorization_header
+  @reachability_status_subscriptions_creation_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     And use BaseUrL
@@ -279,7 +282,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_creation_401.2_expired_access_token
+  @reachability_status_subscriptions_creation_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     And use BaseUrL
@@ -289,7 +292,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_creation_401.3_invalid_access_token
+  @reachability_status_subscriptions_creation_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And use BaseUrL
@@ -300,7 +303,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_retrieve_401.4_no_authorization_header
+  @reachability_status_subscriptions_retrieve_401.4_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     And use BaseUrL
@@ -309,7 +312,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_retrieve_401.5_expired_access_token
+  @reachability_status_subscriptions_retrieve_401.5_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     And use BaseUrL
@@ -318,7 +321,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_retrieve_401.6_invalid_access_token
+  @reachability_status_subscriptions_retrieve_401.6_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And use BaseUrL
@@ -328,7 +331,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_delete_401.7_no_authorization_header
+  @reachability_status_subscriptions_delete_401.7_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     And use BaseUrL
@@ -337,7 +340,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_delete_401.8_expired_access_token
+  @reachability_status_subscriptions_delete_401.8_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     And use BaseUrL
@@ -346,7 +349,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_delete_401.9_invalid_access_token
+  @reachability_status_subscriptions_delete_401.9_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And use BaseUrL
@@ -356,11 +359,12 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
+  
 ##################
 # Error code 403
 ##################
 
-  @reachability_status_subscription_create_403.1_permission_denied
+  @reachability_status_subscriptions_create_403.1_permission_denied
   Scenario: subscription creation without having the required scope
     # To test this, a token does not have the required scope
     Given header "Authorization" set to access token referring different scope
@@ -370,7 +374,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_create_403.2_invalid_token_context
+  @reachability_status_subscriptions_create_403.2_invalid_token_context
   Scenario: subscription creation with invalid access token context for requested events subscription
     # To test this, a token does not have the required device identifier
     Given a valid subscription request body
@@ -382,7 +386,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
 
-  @reachability_status_subscription_create_403.3_inconsistent_access_token_for_requested_events_subscription
+  @reachability_status_subscriptions_create_403.3_subscription_mismatch_for_requested_events_subscription
   Scenario: subscription creation with invalid access token for requested events subscription
     # To test this, a token contains an unsupported event type for this API
     Given a valid subscription request body
@@ -398,11 +402,20 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
 # Error code 404
 ##################
 
-  @reachability_status_subscription_retrieve_404_unknown_subscription_id
+  @reachability_status_subscriptions_404.1_retrieve_unknown_subscription_id
   Scenario: Get subscription when subscription-id is unknown to the system
     Given the path parameter property "$.subscriptionId" is unknown to the system
     And use BaseUrL
     When the HTTP "GET" request is sent with subscriptionId="id"
     Then the response property "$.status" is 404
+    And the response property "$.code" is "NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
+
+  @reachability_status_subscriptions_404.2_delete_unknown_subscription_id
+  Scenario: Delete subscription with subscription-id unknown to the system
+    Given the path parameter "subscriptionId" is set to the value unknown to system
+    When the HTTP "DELETE" request is sent
+    Then the response code is 404
+    And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text

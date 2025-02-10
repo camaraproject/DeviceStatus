@@ -14,7 +14,6 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getConnectedNet
 
   Background: Common Connected Network Type setup
     Given the resource "{api-root}/connected-network-type/vwip/retrieve" set as base-url
-
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value

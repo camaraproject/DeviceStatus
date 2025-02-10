@@ -12,7 +12,6 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
 
   Background: Common getRoamingStatus setup
     Given the resource "/device-roaming-status/vwip/retrieve"
-
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
