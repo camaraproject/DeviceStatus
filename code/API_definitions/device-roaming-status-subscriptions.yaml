@@ -10,7 +10,6 @@ info:
     API consumer is able to be notified whether the roaming status of a certain user device has changed.
     This capability is provided via a subscription  request - in this case the roaming situation is not in the response but event notification is sent back to the event subscriber when roaming situation has changed.
 
-
     # Relevant terms and definitions
 
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
@@ -28,15 +27,15 @@ info:
     When subscribing, it is mandatory to provide the event `type` you are subscribing to, as multiple subscription-types are managed by this API.
 
     Following event ``type`` are managed for this API:
-      - ``org.camaraproject.roaming-status-subscriptions.v0.roaming-status`` - Event triggered when the device switch from roaming ON to roaming OFF and conversely
+      - ``org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status`` - Event triggered when the device switch from roaming ON to roaming OFF and conversely
 
-      - ``org.camaraproject.roaming-status-subscriptions.v0.roaming-on`` - Event triggered when the device switch from roaming OFF to roaming ON
+      - ``org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on`` - Event triggered when the device switch from roaming OFF to roaming ON
 
-      - ``org.camaraproject.roaming-status-subscriptions.v0.roaming-off``: Event triggered when the device switch from roaming ON to roaming OFF
+      - ``org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off``: Event triggered when the device switch from roaming ON to roaming OFF
 
-      - ``org.camaraproject.roaming-status-subscriptions.v0.roaming-change-country``: Event triggered when the device in roaming change country code
+      - ``org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country``: Event triggered when the device in roaming change country code
 
-    Note: Additionally to these list, ``org.camaraproject.roaming-status-subscriptions.v0.subscription-ends`` notification `type` is sent when the subscription ends.
+    Note: Additionally to these list, ``org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends`` notification `type` is sent when the subscription ends.
     This notification does not require dedicated subscription.
 
     It is used in following cases:
@@ -45,6 +44,44 @@ info:
       - the subscription was deleted by the requester
       - the Access Token `sinkCredential` (optionally set by the requester) expiration time has been reached
       - the API server has to stop sending notification prematurely
+
+    **Note on combined usage of ``initialEvent`` and ``subscriptionMaxEvents``**:
+
+    If an event is triggered following ``initialEvent`` set to true,
+    this event will be counted towards ``subscriptionMaxEvents`` (if provided).
+
+    **Clarification on ``initialEvent`` & ``event-type`` behaviour:**
+
+    Following table illustrate behaviour regarding event triggering depending on **initial** roaming state of the device:
+
+    | subscribed event-type | device roaming status at subscription time | event sent if ``initialEvent`` set to true |
+    | ----------------------| ------------- | --------------- |
+    | roaming-status  | Roaming On |   Yes |
+    | roaming-status  | Roaming Off | Yes |
+    | roaming-on  | Roaming On | Yes |
+    | roaming-on  | Roaming Off | No |
+    | roaming-off  | Roaming On | No |
+    | roaming-off  | Roaming Off | Yes |
+    | roaming-change-country  | Roaming Off | No(*) |
+    | roaming-change-country  | Roaming On | No(*) |
+
+    (*) Use of ``initialEvent`` has no impact on roaming-change-country event-type.
+
+    **Clarification on ``roaming-change-country`` event-type:**
+
+    ``roaming-change-country`` event is sent only when the device stays in roaming situation and change country.
+    Suppose a device from Germany & all event types subscribed:
+
+    - Device moves from Germany to France:
+        - triggered: roaming-status & roaming-on
+        - not triggered: roaming-change-country & roaming-off
+    - Device moves from France to Belgium:
+        - triggered: roaming-change-country
+        - not triggered: roaming-status,  roaming-on & roaming-off
+    - Device moves from Belgium back to Germany
+        - triggered: roaming-status & roaming-off
+        - not triggered: roaming-on & roaming-change-country
+
 
     ### Notifications callback
 
@@ -55,11 +92,9 @@ info:
       Developers may provide a callback URL on which notifications regarding reachability-status can be received from the service provider.
       If an event occurs the application will send events to the provided webhook - `sink`._
 
-    ## Further info and support
+    # Further info and support
 
-    (FAQs will be added in a later version of the documentation)
-
-    ### Authorization and authentication
+    ## Authorization and authentication
 
     The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
 
@@ -67,11 +102,37 @@ info:
 
     It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
+    ## Identifying the device from the access token
+
+    This API requires the API consumer to identify a device as the subject of the API as follows:
+    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `device` object, which therefore MUST be provided.
+
+    - When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
+
+    This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
+
+    ### Error handling:
+    - If the subject cannot be identified from the access token and the optional `device` object is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
+
+    - If the subject can be identified from the access token and the optional `device` object is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
+
+    ## Multi-SIM scenario handling
+
+    In multi-SIM scenarios where more than one mobile device is associated with a phone number (e.g. a smartphone with an associated smartwatch), it might not be possible to uniquely identify from that phone number the device for which roaming status notifications should be provided. If the phone number is used as the device identifier when creating a subscription for a multi-SIM scenario, the API may:
+    - respond with an error, or
+    - provide roaming status update notifications for the multi-SIM group as a whole, or
+    - provide roaming status update notifications only for a single device in the multi-SIM group, which may not be the intended device.
+
+    Possible solutions in such a scenario include:
+    - Using the authorisation code flow to obtain an access token, which will automatically identify the intended device
+    - Identifying the intended device from a unique identifier for that device, such as its source IP address and port
+    - Check with the SIM provider whether a unique "secondary" phone number is already associated with each device, and use the secondary phone number to identify the intended device if available.
+
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.7.0-rc.1
-  x-camara-commonalities: 0.4.0
+  x-camara-commonalities: 0.5
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/DeviceStatus
@@ -81,8 +142,7 @@ servers:
     variables:
       apiRoot:
         default: http://localhost:9091
-        description: API root
-
+        description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
   - name: Device roaming status subscription
     description: Operation to manage event subscription on device roaming status event.
@@ -92,23 +152,26 @@ paths:
     post:
       tags:
         - Device roaming status subscription
-      summary: "Create a roaming status event subscription for a device"
-      description: Create a roaming status event subscription for a device
+      summary: "Create a device roaming status event subscription for a device"
+      description: Create a device roaming status event subscription for a device
       operationId: createDeviceRoamingStatusSubscription
       parameters:
         - $ref: '#/components/parameters/x-correlator'
       security:
         - openId:
-            - device-roaming-status-subscriptions:org.camaraproject.roaming-status-subscriptions.v0.roaming-status:create
-            - device-roaming-status-subscriptions:org.camaraproject.roaming-status-subscriptions.v0.roaming-on:create
-            - device-roaming-status-subscriptions:org.camaraproject.roaming-status-subscriptions.v0.roaming-off:create
-            - device-roaming-status-subscriptions:org.camaraproject.roaming-status-subscriptions.v0.roaming-change-country:create
+            - device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status:create
+            - device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on:create
+            - device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off:create
+            - device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country:create
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/SubscriptionRequest"
-        required: true
+            examples:
+              Create Subscription:
+                $ref: "#/components/examples/CREATE_SUBSCRIPTION"
       callbacks:
         notifications:
           "{$request.body#/sink}":
@@ -149,10 +212,10 @@ paths:
                   $ref: "#/components/responses/Generic401"
                 "403":
                   $ref: "#/components/responses/Generic403"
-                "500":
-                  $ref: "#/components/responses/Generic500"
-                "503":
-                  $ref: "#/components/responses/Generic503"
+                "410":
+                  $ref: "#/components/responses/Generic410"
+                "429":
+                  $ref: "#/components/responses/Generic429"
               security:
                 - {}
                 - notificationsBearerAuth: []
@@ -184,25 +247,22 @@ paths:
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
-          $ref: "#/components/responses/CreateSubscription403"
+          $ref: "#/components/responses/SubscriptionPermissionDenied403"
         "409":
           $ref: "#/components/responses/Generic409"
         "422":
           $ref: "#/components/responses/CreateSubscriptionUnprocessableEntity422"
         "429":
           $ref: "#/components/responses/Generic429"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
+
     get:
       tags:
         - Device roaming status subscription
       summary: "Retrieve a list of device roaming status event subscription"
       description: Retrieve a list of device roaming status event subscription(s)
-      operationId: retrieveSubscriptionList
+      operationId: retrieveDeviceRoamingStatusSubscriptionList
       parameters:
-        - $ref: '#/components/parameters/x-correlator'
+        - $ref: "#/components/parameters/x-correlator"
       security:
         - openId:
             - device-roaming-status-subscriptions:read
@@ -211,43 +271,40 @@ paths:
           description: List of event subscription details
           headers:
             x-correlator:
-              $ref: '#/components/headers/x-correlator'
+              $ref: "#/components/headers/x-correlator"
           content:
             application/json:
               schema:
                 type: array
                 minItems: 0
                 items:
-                  $ref: "#/components/schemas/Subscription"
+                  $ref: '#/components/schemas/Subscription'
         "400":
           $ref: "#/components/responses/Generic400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
+
   /subscriptions/{subscriptionId}:
     get:
       tags:
         - Device roaming status subscription
       summary: "Retrieve a roaming status event subscription for a device"
-      operationId: retrieveSubscription
-      description: Retrieve a given subscription by ID
+      description: retrieve device roaming status subscription information for a given subscription.
+      operationId: retrieveDeviceRoamingStatusSubscription
       security:
         - openId:
             - device-roaming-status-subscriptions:read
       parameters:
         - $ref: "#/components/parameters/SubscriptionId"
-        - $ref: '#/components/parameters/x-correlator'
+        - $ref: "#/components/parameters/x-correlator"
       responses:
         "200":
           description: OK
           headers:
             x-correlator:
-              $ref: '#/components/headers/x-correlator'
+              $ref: "#/components/headers/x-correlator"
           content:
             application/json:
               schema:
@@ -260,65 +317,60 @@ paths:
                 subscription-deleted:
                   $ref: "#/components/examples/SUBSCRIPTION_DELETED"
         "400":
-          $ref: "#/components/responses/SubscriptionIdRequired"
+          $ref: "#/components/responses/SubscriptionIdRequired400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
-        "429":
-          $ref: "#/components/responses/Generic429"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
+
     delete:
       tags:
         - Device roaming status subscription
-      summary: "Delete a roaming status event subscription for a device"
-      operationId: deleteSubscription
-      description: Delete a given subscription by ID
+      summary: "Delete a device-roaming-status event subscription for a device"
+      operationId: deleteDeviceRoamingStatusSubscription
+      description: Delete a given device-roaming-status subscription by ID
       security:
         - openId:
             - device-roaming-status-subscriptions:delete
       parameters:
         - $ref: "#/components/parameters/SubscriptionId"
-        - $ref: '#/components/parameters/x-correlator'
+        - $ref: "#/components/parameters/x-correlator"
       responses:
         "204":
-          description: event subscription deleted
+          description: device-roaming-status subscription deleted
           headers:
             x-correlator:
-              $ref: '#/components/headers/x-correlator'
+              $ref: "#/components/headers/x-correlator"
         "202":
           description: Request accepted to be processed. It applies for async deletion process.
           headers:
             x-correlator:
-              $ref: '#/components/headers/x-correlator'
+              $ref: "#/components/headers/x-correlator"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriptionAsync"
         "400":
-          $ref: "#/components/responses/SubscriptionIdRequired"
+          $ref: "#/components/responses/SubscriptionIdRequired400"
         "401":
           $ref: "#/components/responses/Generic401"
         "403":
           $ref: "#/components/responses/Generic403"
         "404":
           $ref: "#/components/responses/Generic404"
-        "429":
-          $ref: "#/components/responses/Generic429"
-        "500":
-          $ref: "#/components/responses/Generic500"
-        "503":
-          $ref: "#/components/responses/Generic503"
+
 components:
   securitySchemes:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    notificationsBearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: "{$request.body#/sinkCredential.credentialType}"
+
   parameters:
     SubscriptionId:
       name: subscriptionId
@@ -333,12 +385,34 @@ components:
       description: Correlation id for the different services
       schema:
         type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
   schemas:
+    ErrorInfo:
+      type: object
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          description: HTTP response status code
+        code:
+          type: string
+          description: Code given to this error
+        message:
+          type: string
+          description: Detailed error description
 
     SubscriptionRequest:
       description: The request for creating a event-type event subscription
@@ -361,7 +435,7 @@ components:
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
-            Note: As of now we enforce to have only event type per subscription.
+            Note: for the current Commonalities version (v0.5) only one event type per subscription is allowed, yet in the following releases use of array of event types SHALL be specified without changing this definition.
           type: array
           minItems: 1
           maxItems: 1
@@ -396,22 +470,23 @@ components:
         - subscriptionDetail
       properties:
         subscriptionDetail:
-          $ref: "#/components/schemas/SubscriptionDetail"
+          $ref: "#/components/schemas/CreateSubscriptionDetail"
         subscriptionExpireTime:
           type: string
           format: date-time
-          example: "2023-01-17T13:18:23.682Z"
-          description: The subscription expiration time (in date-time format) requested by the API consumer.
+          example: 2023-01-17T13:18:23.682Z
+          description: The subscription expiration time (in date-time format) requested by the API consumer. Up to API project decision to keep it.
         subscriptionMaxEvents:
           type: integer
-          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
+          description: Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends. Up to API project decision to keep it.
           minimum: 1
           example: 5
         initialEvent:
           type: boolean
           description: |
-            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
-            Example: Consumer subscribes to roaming-on. If consumer sets initialEvent to true and the device is already roaming-on, an event is triggered.
+            Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.Up to API project decision to keep it.
+            Example: Consumer request Roaming event. If consumer sets initialEvent to true and device is in roaming situation, an event is triggered
+            Up to API project decision to keep it.
 
     SinkCredential:
       description: A sink credential provides authentication or authorization information necessary to enable delivery of events to a target.
@@ -463,7 +538,7 @@ components:
             accessTokenExpiresUtc:
               type: string
               format: date-time
-              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+              description: REQUIRED. An absolute (UTC) timestamp at which the token shall be considered expired. In the case of an ACCESS_TOKEN_EXPIRED termination reason, implementation should notify the client before the expiration date.
             accessTokenType:
               description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
               type: string
@@ -507,14 +582,48 @@ components:
         - refreshToken
         - refreshTokenEndpoint
 
-    SubscriptionDetail:
-      description: The detail of the requested event subscription
+    CreateSubscriptionDetail:
+      description: The detail of the requested event subscription.
       type: object
       properties:
         device:
           $ref: "#/components/schemas/Device"
-      required:
-        - device
+
+    EventTypeNotification:
+      type: string
+      description: |
+        roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
+
+        roaming-on - Event triggered when the device switch from roaming OFF to roaming ON
+
+        roaming-off - Event triggered when the device switch from roaming ON to roaming OFF
+
+        roaming-change-country - Event triggered when the device in roaming change country code
+
+        subscription-ends - Event triggered when the subscription is terminated
+      enum:
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country
+        - org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends
+
+    SubscriptionEventType:
+      type: string
+      description: |
+        roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
+
+        roaming-on - Event triggered when the device switch from roaming OFF to roaming ON
+
+        roaming-off - Event triggered when the device switch from roaming ON to roaming OFF
+
+        roaming-change-country - Event triggered when the device in roaming change country code
+
+      enum:
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country
 
     Subscription:
       description: Represents a event-type subscription.
@@ -525,7 +634,6 @@ components:
         - config
         - types
         - id
-        - startsAt
       properties:
         protocol:
           $ref: "#/components/schemas/Protocol"
@@ -534,18 +642,20 @@ components:
           format: url
           description: The address to which events shall be delivered using the selected protocol.
           example: "https://endpoint.example.com/sink"
-        sinkCredential:
-          $ref: "#/components/schemas/SinkCredential"
         types:
           description: |
             Camara Event types eligible to be delivered by this subscription.
+            Note: for the Commonalities meta-release v0.4 we enforce to have only event type per subscription then for following meta-release use of array MUST be decided
+             at API project level.
           type: array
+          minItems: 1
+          maxItems: 1
           items:
-            type: string
+            $ref: "#/components/schemas/SubscriptionEventType"
         config:
-          $ref: "#/components/schemas/Config"
+          $ref: '#/components/schemas/Config'
         id:
-          $ref: "#/components/schemas/SubscriptionId"
+          $ref: '#/components/schemas/SubscriptionId'
         startsAt:
           type: string
           format: date-time
@@ -578,6 +688,22 @@ components:
           AMQP: "#/components/schemas/AMQPSubscriptionResponse"
           NATS: "#/components/schemas/NATSSubscriptionResponse"
           KAFKA: "#/components/schemas/ApacheKafkaSubscriptionResponse"
+      example:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        sink: https://endpoint.example.com/sink
+        protocol: HTTP
+        types:
+          - "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
+        config:
+          subscriptionDetail:
+            device:
+              phoneNumber: "+123456789"
+          subscriptionExpireTime: "2024-07-17T13:18:23.682Z"
+          subscriptionMaxEvents: 5
+          initialEvent: true
+        startsAt: "2024-07-03T21:12:02.871Z"
+        expiresAt: "2024-07-03T21:12:02.871Z"
+        status: ACTIVE
 
     Device:
       description: |
@@ -667,23 +793,6 @@ components:
       items:
         type: string
 
-    ErrorInfo:
-      type: object
-      required:
-        - status
-        - code
-        - message
-      properties:
-        status:
-          type: integer
-          description: HTTP response status code
-        code:
-          type: string
-          description: Code given to this error
-        message:
-          type: string
-          description: Detailed error description
-
     NotificationEventType:
       type: string
       description: |
@@ -697,41 +806,23 @@ components:
 
         subscription-ends - Event triggered when the subscription is terminated
       enum:
-        - org.camaraproject.roaming-status-subscriptions.v0.roaming-status
-        - org.camaraproject.roaming-status-subscriptions.v0.roaming-on
-        - org.camaraproject.roaming-status-subscriptions.v0.roaming-off
-        - org.camaraproject.roaming-status-subscriptions.v0.roaming-change-country
-        - org.camaraproject.roaming-status-subscriptions.v0.subscription-ends
-
-    SubscriptionEventType:
-      type: string
-      description: |
-        roaming-status - Event triggered when the device switch from roaming ON to roaming OFF and conversely
-
-        roaming-on - Event triggered when the device switch from roaming OFF to roaming ON
-
-        roaming-off - Event triggered when the device switch from roaming ON to roaming OFF
-
-        roaming-change-country - Event triggered when the device in roaming change country code
-
-      enum:
-        - org.camaraproject.roaming-status-subscriptions.v0.roaming-status
-        - org.camaraproject.roaming-status-subscriptions.v0.roaming-on
-        - org.camaraproject.roaming-status-subscriptions.v0.roaming-off
-        - org.camaraproject.roaming-status-subscriptions.v0.roaming-change-country
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off
+        - org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country
+        - org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends
 
     SubscriptionAsync:
       description: Response for a device reachability status operation managed asynchronously (Creation or Deletion)
       type: object
       properties:
-        subscriptionId:
+        id:
           $ref: "#/components/schemas/SubscriptionId"
 
     SubscriptionId:
       type: string
-      format: uuid
-      description: Identifier of the event subscription - This attribute must not be present in the POST request as it is provided by API server
-      example: 550e8400-e29b-41d4-a716-446655440000
+      description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as `subscriptionId` as per [Commonalities Event Notification Model](https://github.com/camaraproject/Commonalities/blob/main/documentation/API-design-guidelines.md#122-event-notification).
+      example: qs15-h556-rt89-1298
 
     CloudEvent:
       description: The notification callback
@@ -741,44 +832,44 @@ components:
         - specversion
         - type
         - time
-        - data
       properties:
         id:
           type: string
           description: identifier of this event, that must be unique in the source context.
-          example: sd5e-uy52-88t4-za66
         source:
           $ref: "#/components/schemas/Source"
         type:
-          $ref: "#/components/schemas/NotificationEventType"
+          $ref: "#/components/schemas/EventTypeNotification"
         specversion:
           type: string
           description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
-          example: "1.0"
+          enum:
+            - "1.0"
         datacontenttype:
           type: string
           description: 'media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs'
-          example: application/json
+          enum:
+            - application/json
         data:
           type: object
           description: Event details payload described in each CAMARA API and referenced by its type
         time:
-          $ref: "#/components/schemas/EventTime"
+          $ref: "#/components/schemas/DateTime"
       discriminator:
         propertyName: "type"
         mapping:
-          org.camaraproject.roaming-status-subscriptions.v0.roaming-status: "#/components/schemas/EventRoamingStatus"
-          org.camaraproject.roaming-status-subscriptions.v0.roaming-change-country: "#/components/schemas/EventRoamingChangeCountry"
-          org.camaraproject.roaming-status-subscriptions.v0.roaming-off: "#/components/schemas/EventRoamingOff"
-          org.camaraproject.roaming-status-subscriptions.v0.roaming-on: "#/components/schemas/EventRoamingOn"
-          org.camaraproject.roaming-status-subscriptions.v0.subscription-ends: "#/components/schemas/EventSubscriptionEnds"
+          org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status: "#/components/schemas/EventRoamingStatus"
+          org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country: "#/components/schemas/EventRoamingChangeCountry"
+          org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off: "#/components/schemas/EventRoamingOff"
+          org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on: "#/components/schemas/EventRoamingOn"
+          org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends: "#/components/schemas/EventSubscriptionEnds"
 
     Source:
       type: string
       format: uri-reference
       minLength: 1
       description: |
-        Identifies the context in which an event happened, as a non-empty `URI-reference` like:
+        Identifies the context in which an event happened - be a non-empty `URI-reference` like:
         - URI with a DNS authority:
           * https://github.com/cloudevents
           * mailto:cncf-wg-serverless@lists.cncf.io
@@ -789,16 +880,10 @@ components:
           * 1-555-123-4567
       example: "https://notificationSendServer12.supertelco.com"
 
-    EventTime:
+    DateTime:
       type: string
       format: date-time
-      description: |
-        Timestamp of when the occurrence happened.
-        If the time of the occurrence cannot be determined then this attribute MAY be set to some other time (such as the current time) by the CloudEvents producer,
-        however all producers for the same source MUST be consistent in this respect. In other words,
-        either they all use the actual time of the occurrence or they all use the same algorithm to determine the value used.
-        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-        Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+      description: Timestamp of when the occurrence happened. Must adhere to RFC 3339.
       example: "2018-04-05T17:31:00Z"
 
     EventRoamingStatus:
@@ -850,7 +935,7 @@ components:
       description: Event detail structure for basic device events
       type: object
       required:
-        - device
+        - subscriptionId
       properties:
         device:
           $ref: "#/components/schemas/Device"
@@ -858,68 +943,64 @@ components:
           $ref: "#/components/schemas/SubscriptionId"
 
     RoamingStatus:
-      description: Event detail structure for org.camaraproject.roaming-status-subscriptions.v0.roaming-status event
-      type: object
-      required:
-        - device
-        - roaming
-      properties:
-        device:
-          $ref: "#/components/schemas/Device"
-        roaming:
-          type: boolean
-          description: Roaming status. True, if it is roaming.
-        countryCode:
-          $ref: "#/components/schemas/CountryCode"
-        countryName:
-          $ref: "#/components/schemas/CountryName"
-        subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
+      description: Event detail structure for org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status event
+      allOf:
+        - $ref: "#/components/schemas/BasicDeviceEventData"
+        - type: object
+          required:
+            - roaming
+          properties:
+            roaming:
+              type: boolean
+              description: Roaming status. True, if it is roaming.
+            countryCode:
+              $ref: "#/components/schemas/CountryCode"
+            countryName:
+              $ref: "#/components/schemas/CountryName"
 
     RoamingChangeCountry:
-      description: Event detail structure for org.camaraproject.roaming-status-subscriptions.v0.roaming-on event
-      type: object
-      required:
-        - device
-      properties:
-        device:
-          $ref: "#/components/schemas/Device"
-        countryCode:
-          $ref: "#/components/schemas/CountryCode"
-        countryName:
-          $ref: "#/components/schemas/CountryName"
-        subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
+      description: Event detail structure for org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on event
+      allOf:
+        - $ref: "#/components/schemas/BasicDeviceEventData"
+        - type: object
+          required:
+            - countryCode
+            - countryName
+          properties:
+            countryCode:
+              $ref: "#/components/schemas/CountryCode"
+            countryName:
+              $ref: "#/components/schemas/CountryName"
 
     SubscriptionEnds:
-      description: Event detail structure for org.camaraproject.roaming-status-subscriptions.v0.subscription-ends event
-      type: object
+      description: Event detail structure for org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends event
+      allOf:
+        - $ref: "#/components/schemas/BasicDeviceEventData"
+        - type: object
+          required:
+            - countryCode
       required:
-        - device
         - terminationReason
-        - subscriptionId
       properties:
-        device:
-          $ref: "#/components/schemas/Device"
         terminationReason:
           $ref: "#/components/schemas/TerminationReason"
-        subscriptionId:
-          $ref: "#/components/schemas/SubscriptionId"
+        terminationDescription:
+          type: string
 
     TerminationReason:
       type: string
       description: |
         - NETWORK_TERMINATED - API server stopped sending notification
         - SUBSCRIPTION_EXPIRED - Subscription expire time (optionally set by the requester) has been reached
-        - SUBSCRIPTION_DELETED - Subscription was deleted by the requester
         - MAX_EVENTS_REACHED - Maximum number of events (optionally set by the requester) has been reached
         - ACCESS_TOKEN_EXPIRED - Access Token sinkCredential (optionally set by the requester) expiration time has been reached
+        - SUBSCRIPTION_DELETED - Subscription was deleted by the requester
       enum:
+        - MAX_EVENTS_REACHED
         - NETWORK_TERMINATED
         - SUBSCRIPTION_EXPIRED
-        - SUBSCRIPTION_DELETED
-        - MAX_EVENTS_REACHED
         - ACCESS_TOKEN_EXPIRED
+        - SUBSCRIPTION_DELETED
 
     HTTPSubscriptionRequest:
       allOf:
@@ -1082,28 +1163,52 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+                      - OUT_OF_RANGE
+                      - INVALID_PROTOCOL
+                      - INVALID_CREDENTIAL
+                      - INVALID_TOKEN
           examples:
-            InvalidArgument:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
               value:
                 status: 400
                 code: INVALID_ARGUMENT
-                message: Client specified an invalid argument, request body or query param
-            InvalidProtocol:
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_OUT_OF_RANGE:
+              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
+              value:
+                status: 400
+                code: OUT_OF_RANGE
+                message: Client specified an invalid range.
+            GENERIC_400_INVALID_PROTOCOL:
+              description: Invalid protocol for events subscription management
               value:
                 status: 400
                 code: INVALID_PROTOCOL
                 message: Only HTTP is supported
-            InvalidCredential:
+            GENERIC_400_INVALID_CREDENTIAL:
+              description: Invalid sink credential type
               value:
                 status: 400
                 code: INVALID_CREDENTIAL
                 message: Only Access token is supported
-            InvalidToken:
+            GENERIC_400_INVALID_TOKEN:
+              description: Invalid token type for sink credential of type ACCESSTOKEN
               value:
                 status: 400
                 code: INVALID_TOKEN
                 message: Only bearer token is supported
+
     Generic400:
       description: Bad Request
       headers:
@@ -1112,11 +1217,56 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 400
-            code: INVALID_ARGUMENT
-            message: Client specified an invalid argument, request body or query param
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+
+    SubscriptionIdRequired400:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_SUBSCRIPTION_ID_REQUIRED:
+              description: subscription id is required
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: "Expected property is missing: subscriptionId"
+
     Generic401:
       description: Authentication problem with the client request
       headers:
@@ -1125,12 +1275,32 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 401
-            code: UNAUTHENTICATED
-            message: Request not authenticated due to missing, invalid, or expired credentials.
-    CreateSubscription403:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 401
+                  code:
+                    enum:
+                      - UNAUTHENTICATED
+                      - AUTHENTICATION_REQUIRED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated
+              value:
+                status: 401
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials.
+            GENERIC_401_AUTHENTICATION_REQUIRED:
+              description: New authentication is needed, authentication is no longer valid
+              value:
+                status: 401
+                code: AUTHENTICATION_REQUIRED
+                message: New authentication is required.
+
+    Generic403:
       description: Client does not have sufficient permission
       headers:
         x-correlator:
@@ -1138,40 +1308,82 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
           examples:
-            PermissionDenied:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
               value:
                 status: 403
                 code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action
-            TokenMismatch:
+                message: Client does not have sufficient permissions to perform this action.
+
+    SubscriptionPermissionDenied403:
+      description: Client does not have sufficient permission
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+                      - INVALID_TOKEN_CONTEXT
+                      - SUBSCRIPTION_MISMATCH
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
               value:
                 status: 403
-                code: SUBSCRIPTION_MISMATCH
-                message: Inconsistent access token for requested events subscription
-    Generic403:
-      description: Forbidden
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 403
-            code: PERMISSION_DENIED
-            message: Client does not have sufficient permissions to perform this action
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+            GENERIC_403_INVALID_TOKEN_CONTEXT:
+              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
+              value:
+                status: 403
+                code: INVALID_TOKEN_CONTEXT
+                message: "{{field}} is not consistent with access token."
+            GENERIC_403_SUBSCRIPTION_MISMATCH:
+              description: Inconsistent access token for requested subscription
+              value:
+                status: 403
+                code: "SUBSCRIPTION_MISMATCH"
+                message: "Inconsistent access token for requested events subscription"
+
     Generic404:
-      description: Not found
+      description: Resource Not Found
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 404
+                  code:
+                    enum:
+                      - NOT_FOUND
           examples:
             GENERIC_404_NOT_FOUND:
               description: Resource is not found
@@ -1179,6 +1391,7 @@ components:
                 status: 404
                 code: NOT_FOUND
                 message: The specified resource is not found.
+
     Generic409:
       description: Conflict
       headers:
@@ -1187,11 +1400,57 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 409
-            code: CONFLICT
-            message: The specified resource is in a conflict
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 409
+                  code:
+                    enum:
+                      - ABORTED
+                      - ALREADY_EXISTS
+          examples:
+            GENERIC_409_ABORTED:
+              description: Concurreny of processes of the same nature/scope
+              value:
+                status: 409
+                code: ABORTED
+                message: Concurrency conflict.
+            GENERIC_409_ALREADY_EXISTS:
+              description: Trying to create an existing resource
+              value:
+                status: 409
+                code: ALREADY_EXISTS
+                message: The resource that a client tried to create already exists.
+
+    Generic410:
+      description: Gone
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 410
+                  code:
+                    enum:
+                      - GONE
+          examples:
+            GENERIC_410_GONE:
+              description: Use in notifications flow to allow API Consumer to indicate that its callback is no longer available
+              value:
+                status: 410
+                code: GONE
+                message: Access to the target resource is no longer available.
+
     CreateSubscriptionUnprocessableEntity422:
       description: Unprocessable Entity
       headers:
@@ -1200,25 +1459,59 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - IDENTIFIER_MISMATCH
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNSUPPORTED_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+                      - MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
           examples:
-            MultieventSubscriptionNotSupported:
+            GENERIC_422_IDENTIFIER_MISMATCH:
+              description: Inconsistency between identifiers not pointing to the same device
+              value:
+                status: 422
+                code: IDENTIFIER_MISMATCH
+                message: Provided identifiers are not consistent.
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service not applicable for the provided identifier
+              value:
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not available for the provided identifier.
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: An identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
+              value:
+                status: 422
+                code: MISSING_IDENTIFIER
+                message: The device cannot be identified.
+            GENERIC_422_UNSUPPORTED_IDENTIFIER:
+              description: None of the provided identifiers is supported by the implementation
+              value:
+                status: 422
+                code: UNSUPPORTED_IDENTIFIER
+                message: The identifier provided is not supported.
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
+              value:
+                status: 422
+                code: UNNECESSARY_IDENTIFIER
+                message: The device is already identified by the access token.
+            GENERIC_422_MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED:
+              description: Multi event types subscription is not supported
               value:
                 status: 422
                 code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
                 message: Multi event types subscription not managed
-            DeviceIdentifierMismatch:
-              description: Inconsistency between device identifiers not pointing to the same device
-              value:
-                status: 422
-                code: DEVICE_IDENTIFIERS_MISMATCH
-                message: Provided device identifiers are not consistent.
-            DeviceNotApplicable:
-              description: Service is not available for the provided device
-              value:
-                status: 422
-                code: DEVICE_NOT_APPLICABLE
-                message: The service is not available for the provided device.
+
     Generic429:
       description: Too Many Requests
       headers:
@@ -1227,85 +1520,43 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 429
+                  code:
+                    enum:
+                      - QUOTA_EXCEEDED
+                      - TOO_MANY_REQUESTS
           examples:
             GENERIC_429_QUOTA_EXCEEDED:
               description: Request is rejected due to exceeding a business quota limit
               value:
                 status: 429
                 code: QUOTA_EXCEEDED
-                message: Either out of resource quota or reaching rate limiting.
+                message: Out of resource quota.
             GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
+              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
               value:
                 status: 429
                 code: TOO_MANY_REQUESTS
-                message: Either out of resource quota or reaching rate limiting.
-    Generic500:
-      description: Server error
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          example:
-            status: 500
-            code: INTERNAL
-            message: Server error
-    Generic503:
-      description: Service unavailable. Typically the server is down.
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_503_UNAVAILABLE:
-              description: Service is not available. Temporary situation usually related to maintenance process in the server side
-              value:
-                status: 503
-                code: UNAVAILABLE
-                message: Service Unavailable.
-    SubscriptionIdRequired:
-      description: Problem with the client request
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            Generic400:
-              summary: Schema validation failed
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Client specified an invalid argument, request body or query param"
-            subscriptionIdRequired:
-              summary: subscription id is required
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: "Expected property is missing: subscriptionId"
+                message: Rate limit reached.
+
   examples:
     ROAMING_STATUS:
       value:
         id: "123654"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.roaming-status-subscriptions.v0.roaming-status
+        type: org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status
         specversion: "1.0"
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           roaming: true
-          countryCode: 208
-          countryName: FR
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-17T13:18:23.682Z"
 
@@ -1313,12 +1564,12 @@ components:
       value:
         id: "123655"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.roaming-status-subscriptions.v0.roaming-off
+        type: org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off
         specversion: "1.0"
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456788
+            phoneNumber: "+123456789"
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-18T13:18:23.682Z"
 
@@ -1326,12 +1577,12 @@ components:
       value:
         id: "123656"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.roaming-status-subscriptions.v0.roaming-on
+        type: org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on
         specversion: "1.0"
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456787
+            phoneNumber: "+123456789"
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-19T13:18:23.682Z"
 
@@ -1339,12 +1590,12 @@ components:
       value:
         id: "123657"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.roaming-status-subscriptions.v0.roaming-change-country
+        type: org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country
         specversion: "1.0"
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           countryCode: 214
           countryName: ["ES"]
           subscriptionId: qs15-h556-rt89-1298
@@ -1354,12 +1605,12 @@ components:
       value:
         id: "123658"
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.roaming-status-subscriptions.v0.subscription-ends
+        type: org.camaraproject.device-roaming-status-subscriptions.v0.subscription-ends
         specversion: "1.0"
         datacontenttype: application/json
         data:
           device:
-            phoneNumber: +123456789
+            phoneNumber: "+123456789"
           terminationReason: SUBSCRIPTION_EXPIRED
           subscriptionId: qs15-h556-rt89-1298
         time: "2023-01-19T13:18:23.682Z"
@@ -1370,7 +1621,7 @@ components:
         sink: https://endpoint.example.com/sink
         protocol: HTTP
         types:
-          - "org.camaraproject.roaming-status-subscriptions.v0.roaming-on"
+          - "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on"
         config:
           subscriptionDetail:
             device:
@@ -1388,7 +1639,7 @@ components:
         sink: https://endpoint.example.com/sink
         protocol: HTTP
         types:
-          - "org.camaraproject.roaming-status-subscriptions.v0.roaming-on"
+          - "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on"
         config:
           subscriptionDetail:
             device:
@@ -1406,7 +1657,7 @@ components:
         sink: https://endpoint.example.com/sink
         protocol: HTTP
         types:
-          - "org.camaraproject.roaming-status-subscriptions.v0.roaming-on"
+          - "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on"
         config:
           subscriptionDetail:
             device:
@@ -1417,3 +1668,27 @@ components:
         startsAt: "2024-07-03T21:12:02.871Z"
         expiresAt: "2024-07-03T21:12:02.871Z"
         status: DELETED
+
+    CREATE_SUBSCRIPTION:
+      value:
+        sink: "https://endpoint.example.com/sink"
+        sinkCredential: {
+          "credentialType": "ACCESSTOKEN",
+          "accessToken": "JhbGciOiJSUzI1NiIsImtpZCI6Imk2bEdrM0ZaenhSY1ViMkMzbkVRN3N5SEpsW",
+          "accessTokenExpiresUtc": "2024-02-17T16:23:45Z",
+          "accessTokenType": "bearer"
+        }
+        protocol: HTTP
+        types: [
+          "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
+        ]
+        config: {
+          "subscriptionDetail": {
+            "device": {
+              "phoneNumber": "+123456789",
+            }
+          },
+          "subscriptionExpireTime": "2023-01-17T13:18:23.682Z",
+          "subscriptionMaxEvents": 5,
+          "initialEvent": true
+        }
