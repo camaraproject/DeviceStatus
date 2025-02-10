@@ -1,6 +1,6 @@
  
 @DeviceStatusRoamingSubscription
-Feature: Device Roaming Status Subscriptions API, vwip - Operations RoamingStatus
+Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - Operations RoamingStatus
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in device-roaming-status-subscriptions.yaml, version vwip
