@@ -1,12 +1,12 @@
 
 @Device_reachability_status
-Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachability status
+Feature: CAMARA Device reachability status API, vwip - Operations for reachability status
 
 # Input to be provided by the implementation to the tests
-# References to OAS spec schemas refer to schemas specifies in device-reachability-status.yaml, version v0.6.0
+# References to OAS spec schemas refer to schemas specifies in device-reachability-status.yaml, version vwip
 
   Background: Common Device reachability status setup
-    Given the resource "{api-root}/device-reachability-status/v0.6/retrieve" set as base-url                                                             |
+    Given the resource "{api-root}/device-reachability-status/vwip/retrieve" set as base-url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -26,8 +26,8 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     And the response property "$.connectivity" includes "SMS"
 
   @device_reachability_status_02_reachableAndConnectedData
-  Scenario: Check the reachability status if device is connected with DATA  
-    Given a valid device reachability status request body 
+  Scenario: Check the reachability status if device is connected with DATA
+    Given a valid device reachability status request body
     And the request body property "$.device" is set to a valid testing device which is connected with data and supported by the service
     When the request "getReachabilityStatus" is sent
     Then the response code is 200
@@ -104,7 +104,7 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     And the response property "$.message" contains a user friendly text
 	
   @device_reachability_status_09_deviceStatus_inconsistent_access_token
-   Scenario: Inconsistent access token context for the device
+  Scenario: Inconsistent access token context for the device
     # To test this, a token has to be obtained for a different device
     Given a valid device reachability status request body
     And the request body property "$.device" is set to a valid testing device supported by the service
@@ -116,7 +116,7 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     And the response property "$.message" contains a user friendly text
 	
   @device_reachability_status_10_deviceStatusWithIdentifiersMismatch
-    Scenario: Device reachabilityidentifiers mismatch
+  Scenario: Device reachabilityidentifiers mismatch
     # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a Device reachability associated to a different phoneNumber
     Given a valid device reachability status request body 
     And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
@@ -126,8 +126,8 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     And the response property "$.code" is "DEVICE_IDENTIFIERS_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-    @device_reachability_status_11_deviceStatus_NotApplicable
-    Scenario: Device reachability not applicable
+  @device_reachability_status_11_deviceStatus_NotApplicable
+  Scenario: Device reachability not applicable
     Given a valid device reachability status request body 
     And the request body property "$.device" refers to an unknown device
     When the request "getReachabilityStatus" is sent
@@ -136,8 +136,8 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     And the response property "$.code" is "DEVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text
 
-    @device_reachability_status_12_unable_to_provide_reachability_status
-    Scenario: Unable to provide reachability status for a device
+  @device_reachability_status_12_unable_to_provide_reachability_status
+  Scenario: Unable to provide reachability status for a device
     Given a valid device reachability status request body 
     And the request body property "$.device" refers to a device having network issue
     When the request "getReachabilityStatus" is sent
@@ -146,8 +146,8 @@ Feature: CAMARA Device reachability status API, v0.6.0 - Operations for reachabi
     And the response property "$.code" is "UNABLE_TO_PROVIDE_REACHABILITY_STATUS"
     And the response property "$.message" contains a user friendly text
 
-    @device_reachability_status_13_unsupported_device_identifiers
-    Scenario: Unsupported device identifiers
+  @device_reachability_status_13_unsupported_device_identifiers
+  Scenario: Unsupported device identifiers
     Given a valid device reachability status request body
     And the request body property "$.device" set to unsupported identifiers value for the service
     When the request "getReachabilityStatus" is sent
