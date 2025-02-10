@@ -106,7 +106,7 @@ info:
   x-camara-commonalities: 0.5
 externalDocs:
   description: Product documentation at Camara
-  url: https://github.com/camaraproject/
+  url: https://github.com/camaraproject/DeviceStatus
 
 servers:
   - url: "{apiRoot}/connected-network-type-subscriptions/v0.1rc1"
