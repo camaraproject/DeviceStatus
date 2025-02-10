@@ -5,10 +5,8 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getConnectedNet
   # * List of device identifier types which are not supported, among: phoneNumber, networkAccessIdentifier, ipv4Address, ipv6Address
   #
   # Testing assets:
-  # * A device object which is connected to 2G.
-  # * A device object which is connected to 3G.
-  # * A device object which is connected to 4G.
-  # * A device object which is connected to 5G.
+  # * A device object where the tester can select between multiple network types.
+  # * (optional: Additional devices object which supports 2G, 3G, 4G and/or 5G)
   # * The known connected Generation of Mobile Communication Technology.
   #
   # References to OAS spec schemas refer to schemas specifies in connected-network-type.yaml

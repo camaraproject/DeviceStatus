@@ -59,7 +59,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - Operations RoamingStatu
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/Subscription"
 
-  @roaming_status_subscriptions_06_Operation_to_delete_subscription_based_on_an_existing_subscription-id
+  @roaming_status_subscriptions_06_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
     When the request "deleteDeviceRoamingStatusSubscription" is sent

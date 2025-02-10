@@ -74,7 +74,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
 
   @reachability_status_subscriptions_04_retrieve_list_2legs
-  Scenario: Check existing subscription(s) is/are retreived in list
+  Scenario: Check existing subscription(s) is/are retrieved in list
     Given at least one subscription is existing for the API client making this request
     And use BaseURL
     When the HTTP "GET" request is sent
@@ -107,7 +107,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body is an empty list
 
-  @reachability_status_subscriptions_07_operation_to_delete_subscription_based_on_an_existing_subscription-id
+  @reachability_status_subscriptions_07_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
     When the HTTP "DELETE" request is sent with subscriptionId="id"
