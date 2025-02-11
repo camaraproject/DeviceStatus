@@ -142,7 +142,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     Given that subscriptions are created synchronously
     When the HTTP "POST" request is sent
     And a valid subscription request body
-    And the request body property "$.types" is "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+    And the request body property "$.types" contains the element "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
     And the request body property "$.subscriptionMaxEvents" is set to 1
     Then the response code is 201
     And event notification "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed" is received on callback-url
