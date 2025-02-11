@@ -1,4 +1,4 @@
-Feature: CAMARA Device Reachability Status API, vwip - Operation getConnectedNetworkType
+Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkType
   # Input to be provided by the implementation to the tester
   #
   # Implementation indications:
