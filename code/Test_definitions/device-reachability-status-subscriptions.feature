@@ -25,7 +25,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_01_sync_creation
   Scenario Outline: Check sync subscription creation - This scenario could be bypass if async creation is provided (following scenario)
     Given use BaseURL
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And "$.types" is one of the allowed values "<subscription-creation-types>"
     And "$.protocol"="HTTP"
     And a valid phone number identified by the token or provided in the request body
@@ -46,7 +46,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_02_async_creation
   Scenario Outline: Check async subscription creation - This scenario could be bypass if previous scenario is provided
     Given use BaseURL
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And "$.types" is one of the allowed values "<subscription-creation-types>"
     And "$.protocol"="HTTP"
     And a valid phone number identified by the token or provided in the request body
@@ -66,7 +66,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: Check existing subscription is retrieved by id
     Given a subscription is existing and identified by an "id"
     And use BaseURL
-    When the HTTP "GET" request is sent with subscriptionId="id"
+    When the request "retrieveDeviceRoamingStatusSubscription" is sent with subscriptionId="id"
     Then the response code is is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -76,7 +76,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: Check existing subscription(s) is/are retrieved in list
     Given at least one subscription is existing for the API client making this request
     And use BaseURL
-    When the HTTP "GET" request is sent
+    When the request "retrieveDeviceRoamingStatusSubscriptionList" is sent
     Then the response code is is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -88,7 +88,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given a subscription is existing for the device
     And this device is identified by the token
     And use BaseURL
-    When the HTTP "GET" request is sent
+    When the request "retrieveDeviceRoamingStatusSubscriptionList" is sent
     Then the response code is is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -100,7 +100,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given no subscription is existing for the device
     And this device is identified by the token
     And use BaseURL
-    When the HTTP "GET" request is sent
+    When the request "retrieveDeviceRoamingStatusSubscriptionList" is sent
     Then the response code is is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -109,7 +109,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_07_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
     Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the HTTP "DELETE" request is sent with subscriptionId="id"
+    When the request "deleteDeviceRoamingStatusSubscription" is sent with subscriptionId="id"
     Then the response code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And if the response property $.status is 204 then response body is not available
@@ -118,7 +118,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_08_receive_notification_when_device_reachability_changed_to_data_usage
   Scenario: Receive notification for reachability-data event
     Given that subscriptions are created synchronously
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     And the request body property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
     Then the response code is 201
@@ -131,7 +131,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_09_receive_notification_when_device_reachability_changed_to_sms_usage
   Scenario: Receive notification for reachability-sms event
     Given that subscriptions are created synchronously
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     And the request body property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
     Then the response code is 201
@@ -144,7 +144,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_10_receive_notification_when_device_reachability_changed_to_disconnected
   Scenario: Receive notification for reachability-disconnected event
     Given that subscriptions are created synchronously
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     And the request body property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
     Then the response code is 201
@@ -157,7 +157,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_11_subscription_expiry
   Scenario: Receive notification for subscription-ends event on expiry
     Given that subscriptions are created synchronously
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     And the request body property "$.subscriptionExpireTime" is set to a value in the near future
     Then the response code is 201
@@ -170,7 +170,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_12_subscription_end_when_max_events
   Scenario: Receive notification for subscription-ends event on max events reached
     Given that subscriptions are created synchronously
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     And the request body property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
     And the request body property "$.subscriptionMaxEvents" is set to 1 
@@ -184,10 +184,10 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_13_subscription_delete_event_validation
   Scenario: Receive notification for subscription-ends event on deletion
     Given that subscriptions are created synchronously
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     Then the response code is 201
-    When the HTTP "DELETE" request is sent with subscriptionId="id"
+    When the request "deleteDeviceRoamingStatusSubscription" is sent with subscriptionId="id"
     Then the response code is 202 or 204
     And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
@@ -233,7 +233,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_400.4_invalid_protocol
   Scenario: subscription creation with invalid protocol
     Given use BaseURL
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     And "$.protocol" <> "HTTP"
     Then the response property "$.status" is 400
@@ -243,7 +243,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_400.5_create_subscription_with_invalid_credential_type
   Scenario: subscription creation with invalid credential type
     Given use BaseURL
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     And "$.sink" is set to provided callbackUrl
     And "$.sinkCredential.credentialType" <> "ACCESSTOKEN"
@@ -257,7 +257,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_400.6_create_subscription_with_invalid_access_token_type
   Scenario: subscription creation with invalid token
     Given use BaseURL
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     And a valid subscription request body
     And "$.sink" is set to provided callbackUrl
     And "$.sinkCredential.credentialType" = "ACCESSTOKEN"
@@ -277,7 +277,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given the header "Authorization" is removed
     And use BaseUrL
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
@@ -287,7 +287,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given the header "Authorization" is set to an expired access token
     And use BaseUrL
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
@@ -297,7 +297,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given the header "Authorization" is set to an invalid access token
     And use BaseUrL
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -307,7 +307,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     And use BaseUrL
-    When the HTTP "GET" request is sent
+    When the request "retrieveDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
@@ -316,7 +316,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     And use BaseUrL
-    When the HTTP "GET" request is sent
+    When the request "retrieveDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
@@ -325,7 +325,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And use BaseUrL
-    When the HTTP "GET" request is sent
+    When the request "retrieveDeviceRoamingStatusSubscription" is sent
     Then the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -335,7 +335,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     And use BaseUrL
-    When the HTTP "DELETE" request is sent
+    When the request "deleteDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
@@ -344,7 +344,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     And use BaseUrL
-    When the HTTP "DELETE" request is sent
+    When the request "deleteDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
@@ -353,7 +353,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And use BaseUrL
-    When the HTTP "DELETE" request is sent
+    When the request "deleteDeviceRoamingStatusSubscription" is sent
     Then the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -369,7 +369,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     # To test this, a token does not have the required scope
     Given header "Authorization" set to access token referring different scope
     And use BaseUrL
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
@@ -381,7 +381,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And use BaseUrL
     And the request body property "$.device" is set to a valid testing device supported by the service
     And header "Authorization" set to access token referring different device
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" contains a user friendly text
@@ -393,7 +393,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And use BaseUrL
     And the request body property "$.device" is set to a valid testing device supported by the service
     And the request body property "$.types" contains the supported event type in this API
-    When the HTTP "POST" request is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
@@ -406,7 +406,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   Scenario: Get subscription when subscription-id is unknown to the system
     Given the path parameter property "$.subscriptionId" is unknown to the system
     And use BaseUrL
-    When the HTTP "GET" request is sent with subscriptionId="id"
+    When the request "retrieveDeviceRoamingStatusSubscription" is sent with subscriptionId="id"
     Then the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
@@ -414,7 +414,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
   @reachability_status_subscriptions_404.2_delete_unknown_subscription_id
   Scenario: Delete subscription with subscription-id unknown to the system
     Given the path parameter "subscriptionId" is set to the value unknown to system
-    When the HTTP "DELETE" request is sent
+    When the request "deleteDeviceRoamingStatusSubscription" is sent
     Then the response code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"

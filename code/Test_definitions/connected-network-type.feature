@@ -28,7 +28,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
     Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the testing device is connected to a mobile network
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -40,7 +40,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
     Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the testing device is not connected to a mobile network (e.g. connected only to WiFi, or not connected to any network)
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -55,7 +55,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: The device value is an empty object
     Given the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "$.device" is set to: {}
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -65,7 +65,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario Outline: Some device identifier value does not comply with the schema
     Given the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "<device_identifier>" does not comply with the OAS schema at "<oas_spec_schema>"
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -83,7 +83,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: Some identifier cannot be matched to a device
     Given the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "$.device" is compliant with the schema but does not identify a valid device
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
@@ -93,7 +93,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: Device not to be included when it can be deduced from the access token
     Given the header "Authorization" is set to a valid access token identifying a device
     And the request body property "$.device" is set to a valid device
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
@@ -103,7 +103,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: Device not included and cannot be deduced from the access token
     Given the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "$.device" is not included
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
@@ -114,7 +114,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
     Given that some types of device identifiers are not supported by the implementation
     And the header "Authorization" is set to a valid access token which does not identify a single device
     And the request body property "$.device" only includes device identifiers not supported by the implementation
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
@@ -125,7 +125,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: Service not available for the device
     Given that the service is not available for all devices commercialized by the operator
     And a valid device, identified by the token or provided in the request body, for which the service is not applicable
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
@@ -138,7 +138,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
     Given the header "Authorization" is set to a valid access token which does not identify a single device
     And at least 2 types of device identifiers are supported by the implementation
     And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "IDENTIFIER_MISMATCH"
@@ -152,7 +152,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: Input property values doe not comply with the schema
     Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the "maxAge" is set to 6a0
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -166,7 +166,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -176,7 +176,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -186,7 +186,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 401
     And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
@@ -202,7 +202,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
     # To test this, a token has to be obtained for a different device
     Given the header "Authorization" is set to a valid access token, but without the required scope
     And the request body is set to a valid request body
-    When the HTTP "POST" request is sent
+    When the request "getConnectedNetworkType" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
