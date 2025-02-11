@@ -30,7 +30,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is true
     And the response property "$.connectivity" includes "SMS"
 
@@ -43,7 +43,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is true
     And the response property "$.connectivity" includes "DATA"
 
@@ -56,7 +56,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is true
     And the response property "$.connectivity" includes both "DATA" and "SMS"
 
@@ -68,7 +68,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation getReachability
     When the request "getReachabilityStatus" is sent
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/ReachabilityStatusResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is false
     And the response property "$.connectivity" is not returned
 

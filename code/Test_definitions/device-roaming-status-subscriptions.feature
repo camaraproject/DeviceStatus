@@ -29,7 +29,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     And "$.protocol"="HTTP"
     And a valid phone number identified by the token or provided in the request body
     And "$.sink" is set to provided callbackUrl
-    Then the response code is is 201
+    Then the response code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
@@ -51,7 +51,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     And "$.protocol"="HTTP"
     And a valid phone number identified by the token or provided in the request body
     And "$.sink" is set to provided callbackUrl
-    Then the response code is is 202
+    Then the response code is 202
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
@@ -68,7 +68,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     Given a subscription is existing and identified by an "id"
     And use BaseURL
     When the request "retrieveDeviceReachabilityStatusSubscription" is sent with subscriptionId="id"
-    Then the response code is is 200
+    Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
@@ -78,7 +78,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     Given at least one subscription is existing for the API client making this request
     And use BaseURL
     When the request "retrieveDeviceReachabilityStatusSubscriptionList" is sent
-    Then the response code is is 200
+    Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
@@ -90,7 +90,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     And this device is identified by the token
     And use BaseURL
     When the request "retrieveDeviceReachabilityStatusSubscriptionList" is sent
-    Then the response code is is 200
+    Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
@@ -102,7 +102,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     And this device is identified by the token
     And use BaseURL
     When the request "retrieveDeviceReachabilityStatusSubscriptionList" is sent
-    Then the response code is is 200
+    Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body is an empty list
@@ -114,7 +114,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     Then the response code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And if the response property $.status is 204 then response body is not available
-    And if the response property $.status is 202 then response body complies with the OAS schema at "/components/schemas/SubscriptionAsync"
+    And if the response property $.status is 202 then response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
 
   @roaming_status_subscriptions_08_receive_notification_when_roaming_status_changed_to_on
   Scenario: Receive notification for roaming-on event

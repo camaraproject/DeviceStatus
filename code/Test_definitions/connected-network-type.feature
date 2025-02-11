@@ -1,4 +1,4 @@
-Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkType
+Feature: CAMARA Connected Network Type API, vwip - Operation getConnectedNetworkType
   # Input to be provided by the implementation to the tester
   #
   # Implementation indications:
@@ -32,7 +32,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/ConnectedNetworkTypeResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/ConnectedNetworkTypeResponse"
     And the response property "$.connectedNetworkType" is "2G" or "3G" or "4G" or "5G"
 
   @connected_network_type_02_retrieval_undetermined_network
@@ -44,7 +44,7 @@ Feature: CAMARA Device Network Type API, vwip - Operation getConnectedNetworkTyp
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/ConnectedNetworkTypeResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/ConnectedNetworkTypeResponse"
     And the response property "$.connectedNetworkType" is "UNKNOWN"
 
 #################

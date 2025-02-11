@@ -30,7 +30,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/RoamingStatusResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/RoamingStatusResponse"
     And the response property "$.roaming" is "true"
     And if the response property "$.lastStatusTime" exists then this property is in a valid date-time format
 
@@ -43,7 +43,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/RoamingStatusResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/RoamingStatusResponse"
     And the response property "$.roaming" is "true"
     And if the response property "$.lastStatusTime" exists then this property is in a valid date-time format
     And if the response property "$.countryCode" exists and has the value "262" as the Mobile Country Code (MCC) for Germany
@@ -58,7 +58,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body complies with the OAS schema at "/components/schemas/RoamingStatusResponse"
+    And the response body complies with the OAS schema at "#/components/schemas/RoamingStatusResponse"
     And the response property "$.roaming" is "false"
     And the response property "$.countryCode" does not exist
     And the response property "$.countryName" does not exist
