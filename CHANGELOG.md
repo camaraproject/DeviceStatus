@@ -46,6 +46,7 @@ The API definition(s) are based on
 
 ### Changed
 * Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update device error model by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/232
 
 ### Fixed
 
@@ -63,6 +64,7 @@ The API definition(s) are based on
 ### Changed
 * Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
 * Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/237
+* Alignment with Commonalities Subscription Model - APIs Subscription by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/250
 
 ### Fixed
 * Fix example for SUBSCRIPTION_ACTIVE by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/231
@@ -83,6 +85,7 @@ The API definition(s) are based on
 ### Changed
 * rework reachability-status to support reachability with multiple connectivity-types by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/221
 * Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update device error model by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/232
 
 ### Fixed
 
@@ -100,6 +103,7 @@ The API definition(s) are based on
 ### Changed
 * Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
 * Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/237
+* Alignment with Commonalities Subscription Model - APIs Subscription by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/250
 
 ### Fixed
 * Fix example for SUBSCRIPTION_ACTIVE by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/231
@@ -120,6 +124,7 @@ The API definition(s) are based on
 
 ### Changed
 * Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update device error model by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/232
  
 ### Fixed 
 
@@ -138,6 +143,7 @@ The API definition(s) are based on
 ### Changed
 * Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
 * Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/247
+* Alignment with Commonalities Subscription Model - APIs Subscription by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/250
 
 ### Fixed
 * Fix dateTime literals by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/240
