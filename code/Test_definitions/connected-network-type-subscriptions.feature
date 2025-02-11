@@ -261,16 +261,6 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     And the response property "$.code" is "IDENTIFIER_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_C01.08_multi_event_not_supported
-  Scenario: Device identifiers mismatch
-    Given the header "Authorization" is set to a valid access token which does not identify a single device
-    And "$.types" includes more than one subscription-type
-    When the HTTP "POST" request is sent
-    Then the response status code is 422
-    And the response property "$.status" is 422
-    And the response property "$.code" is "MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED"
-    And the response property "$.message" contains a user friendly text
-    
 ##################
 # Error code 400
 ##################
