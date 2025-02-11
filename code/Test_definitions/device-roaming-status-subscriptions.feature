@@ -120,7 +120,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
   Scenario: Receive notification for roaming-on event
     Given that subscriptions are created synchronously
     And a valid subscription request body
-    And the request body property "$.type" is "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on"
+    And the request body property "$.types" is "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on"
     When the HTTP "POST" request is sent
     Then the response code is 201
     And if the device switch from roaming "OFF" to roaming "ON"
@@ -133,7 +133,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
   Scenario: Receive notification for roaming-off event
     Given that subscriptions are created synchronously
     And a valid subscription request body
-    And the request body property "$.type" is "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off"
+    And the request body property "$.types" is "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off"
     When the HTTP "POST" request is sent
     Then the response code is 201
     And if the device switch from roaming "ON" to roaming "OFF"
@@ -146,7 +146,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
   Scenario: Receive notification for roaming-status changes
     Given that subscriptions are created synchronously
     And a valid subscription request body
-    And the request body property "$.type" is "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
+    And the request body property "$.types" is "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
     When the HTTP "POST" request is sent
     Then the response code is 201
     And if the device roaming-status changes
@@ -159,7 +159,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
   Scenario: Receive notification for roaming-change-country
     Given that subscriptions are created synchronously
     And a valid subscription request body
-    And the request body property "$.type" is "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country"
+    And the request body property "$.types" is "org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country"
     When the HTTP "POST" request is sent
     Then the response code is 201
     And if the device roaming country changes
@@ -186,7 +186,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     Given that subscriptions are created synchronously
     When the HTTP "POST" request is sent
     And a valid subscription request body
-    And the request body property "$.type" is " org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
+    And the request body property "$.types" is " org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
     And the request body property "$.subscriptionMaxEvents" is set to 1
     Then the response code is 201
     And event notification " org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status" is received on callback-url

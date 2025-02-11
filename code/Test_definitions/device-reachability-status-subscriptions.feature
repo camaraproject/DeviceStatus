@@ -120,7 +120,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given that subscriptions are created synchronously
     When the HTTP "POST" request is sent
     And a valid subscription request body
-    And the request body property "$.type" is "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+    And the request body property "$.types" is "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
     Then the response code is 201
     And if the device reachability is changed to data usage
     And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data" is received on callback-url
@@ -133,7 +133,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given that subscriptions are created synchronously
     When the HTTP "POST" request is sent
     And a valid subscription request body
-    And the request body property "$.type" is "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
+    And the request body property "$.types" is "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
     Then the response code is 201
     And if the device reachability is changed to sms usage
     And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms" is received on callback-url
@@ -146,7 +146,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given that subscriptions are created synchronously
     When the HTTP "POST" request is sent
     And a valid subscription request body
-    And the request body property "$.type" is "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
+    And the request body property "$.types" is "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
     Then the response code is 201
     And if the device reachability is changed to disconnected
     And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected" is received on callback-url
@@ -172,7 +172,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     Given that subscriptions are created synchronously
     When the HTTP "POST" request is sent
     And a valid subscription request body
-    And the request body property "$.type" is "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+    And the request body property "$.types" is "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
     And the request body property "$.subscriptionMaxEvents" is set to 1 
     Then the response code is 201
     And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data" is received on callback-url
