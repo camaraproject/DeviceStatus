@@ -359,7 +359,7 @@ Feature: CAMARA Device Reachability Status API, vwip - Operation to manage reach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  
+
 ##################
 # Error code 403
 ##################
