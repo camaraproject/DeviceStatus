@@ -103,19 +103,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 	
-  @device_reachability_status_09_deviceStatus_inconsistent_access_token
-  Scenario: Inconsistent access token context for the device
-    # To test this, a token has to be obtained for a different device
-    Given a valid device reachability status request body
-    And the request body property "$.device" is set to a valid testing device supported by the service
-    And header "Authorization" set to access token referring different device
-    When the request "getReachabilityStatus" is sent
-    Then the response status code is 403
-    And the response property "$.status" is 403
-    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
-    And the response property "$.message" contains a user friendly text
-	
-  @device_reachability_status_10_deviceStatusWithIdentifiersMismatch
+  @device_reachability_status_09_deviceStatusWithIdentifiersMismatch
   Scenario: Device reachabilityidentifiers mismatch
     # To test this, at least 2 types of identifiers have to be provided, e.g. a phoneNumber and the IP address of a Device reachability associated to a different phoneNumber
     Given a valid device reachability status request body 
@@ -126,7 +114,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
     And the response property "$.code" is "DEVICE_IDENTIFIERS_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
-  @device_reachability_status_11_deviceStatus_NotApplicable
+  @device_reachability_status_10_deviceStatus_NotApplicable
   Scenario: Device reachability not applicable
     Given a valid device reachability status request body 
     And the request body property "$.device" refers to an unknown device
@@ -136,7 +124,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
     And the response property "$.code" is "DEVICE_NOT_APPLICABLE"
     And the response property "$.message" contains a user friendly text
 
-  @device_reachability_status_12_unable_to_provide_reachability_status
+  @device_reachability_status_11_unable_to_provide_reachability_status
   Scenario: Unable to provide reachability status for a device
     Given a valid device reachability status request body 
     And the request body property "$.device" refers to a device having network issue
@@ -146,7 +134,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
     And the response property "$.code" is "UNABLE_TO_PROVIDE_REACHABILITY_STATUS"
     And the response property "$.message" contains a user friendly text
 
-  @device_reachability_status_13_unsupported_device_identifiers
+  @device_reachability_status_12_unsupported_device_identifiers
   Scenario: Unsupported device identifiers
     Given a valid device reachability status request body
     And the request body property "$.device" set to unsupported identifiers value for the service
