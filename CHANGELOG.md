@@ -23,7 +23,7 @@ The below sections record the changes for each API version in each release as fo
 # r2.1
 ## Release Notes
 
-This patch release contains the definition and documentation of
+This public release contains the definition and documentation of
 * device-roaming-status v1.0.0-rc.1
 * device-roaming-status-subscriptions v0.7.0-rc.1
 * device-reachability-status v1.0.0-rc.1
