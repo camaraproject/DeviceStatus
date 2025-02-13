@@ -2,7 +2,7 @@
 Feature: CAMARA Device Roaming Status API, v1.0.0-rc.1 - Operations for Roaming Status
 
 # Input to be provided by the implementation to the tests
-# References to OAS spec schemas refer to schemas specifies in device-roaming-status.yaml, version vwip
+# References to OAS spec schemas refer to schemas specifies in device-roaming-status.yaml
 
   Background: Common Device Roaming status setup
     Given the resource "{api-root}/device-roaming-status/v1rc1/retrieve" set as base-url
