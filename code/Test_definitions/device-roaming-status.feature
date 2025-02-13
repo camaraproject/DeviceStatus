@@ -6,7 +6,7 @@ Feature: CAMARA Device Roaming Status API, v1.0.0-rc.1 - Operations for Roaming 
 # References to OAS spec schemas refer to schemas specifies in device-roaming-status.yaml, version vwip
 
   Background: Common Device Roaming status setup
-    Given the resource "{api-root}/device-roaming-status/vwip/retrieve" set as base-url
+    Given the resource "{api-root}/device-roaming-status/v1rc1/retrieve" set as base-url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
