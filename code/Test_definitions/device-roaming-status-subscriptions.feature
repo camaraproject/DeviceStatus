@@ -1,4 +1,3 @@
- 
 @DeviceStatusRoamingSubscription
 Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - Operations RoamingStatus
 
