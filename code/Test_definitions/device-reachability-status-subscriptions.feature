@@ -6,7 +6,7 @@ Feature: Device Reachability Status Subscriptions API, v0.7.0-rc.1 - Operations 
 # References to OAS spec schemas refer to schemas specified in device-reachability-status-subscriptions.yaml, version vwip
 
   Background: Common Device Reachability Status Subscriptions setup
-    Given the resource "{apiroot}/device-reachability-status-subscriptions/vwip" as base-url
+    Given the resource "{apiroot}/device-reachability-status-subscriptions/v0.7rc1" as base-url
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
 
