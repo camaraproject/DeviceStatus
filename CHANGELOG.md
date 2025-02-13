@@ -29,7 +29,7 @@ This patch release contains the definition and documentation of
 * device-reachability-status v1.0.0-rc.1
 * device-reachability-status-subscriptions v0.7.0-rc.1
 * connected-network-type 0.1.0-rc.1
-* connected-network-type-subsscriptions 0.1.0-rc.1
+* connected-network-type-subscriptions 0.1.0-rc.1
 
 The API definition(s) are based on
 * Commonalities v0.5.0-rc.1
