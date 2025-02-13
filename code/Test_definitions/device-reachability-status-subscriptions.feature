@@ -1,4 +1,3 @@
-
 @DeviceReachabilityStatusSubscription
 Feature: Device Reachability Status Subscriptions API, v0.7.0-rc.1 - Operations Reachability Status Subscription
 
