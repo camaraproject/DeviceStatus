@@ -1,4 +1,3 @@
-
 @Device_Roaming_Status
 Feature: CAMARA Device Roaming Status API, v1.0.0-rc.1 - Operations for Roaming Status
 
