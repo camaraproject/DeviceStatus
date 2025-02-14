@@ -302,7 +302,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     Given use BaseURL
     When the request "createConnectedNetworkTypeSubscription" is sent
     And a valid subscription request body
-    And "$.protocol" <> "HTTP"
+    And the request property "$.protocol" is not equal to "HTTP"
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_PROTOCOL"
     And the response property "$.message" contains a user friendly text
