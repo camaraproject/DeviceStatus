@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Connected Network Type Subscriptions
   description: |
-    This API provides the customer with the ability to subscribe to notifications on changes to the connected network type of a device.
+    This API provides the API consumer with the ability to subscribe to notifications on changes to the connected network type of a device.
 
     # Introduction
 
@@ -12,9 +12,9 @@ info:
     # Relevant terms and definitions
 
     * **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.
-      At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier assigned by the mobile network operator for the device.
+      At least one identifier for the device (user equipment) out of four options: IPv4 address, IPv6 address, Phone number, or Network Access Identifier (not supported for this API version) assigned by the mobile network operator for the device.
 
-    * **Connected Network Type**: Network Type is intended to provide insight into connected network's capabilities from standards perspective, and to reflect the mobile technology that would be displayed by the device to the end user where applicable.  Actual network capabilities may differ based on implementation and MUST be checked with the connected network provider.
+    * **Connected Network Type**: This Type identifies the mobile technology of the network that the device is connected to (e.g. 4G, 5G, etc). It is the same as what is displayed on the device (e.g. on mobile phones). When the device moves across different areas of the network, the technology may change. As each technology is different, network capabilities may differ and MUST be checked with the API provider.
        - `2G`: if device is connected to the 2G network technology (alternative indicators such as "G" or "E" may be displayed on the device)
        - `3G`: if device is connected to the 3G network technology (alternative indicators such as "H" or "H+" may be displayed on the device)
        - `4G`: if device is connected to the 4G network technology (alternative indicators such as "LTE" or "LTE+" may be displayed on the device)
@@ -99,21 +99,17 @@ info:
     - Identifying the intended device from a unique identifier for that device, such as its source IP address and port
     - Check with the SIM provider whether a unique "secondary" phone number is already associated with each device, and use the secondary phone number to identify the intended device if available.
 
-  termsOfService: https://swagger.io/terms/
-  contact:
-    email: project-email@sample.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 0.1.0-rc.1
   x-camara-commonalities: 0.5
-
 externalDocs:
   description: Product documentation at Camara
-  url: https://github.com/camaraproject/
+  url: https://github.com/camaraproject/DeviceStatus
 
 servers:
-  - url: "{apiRoot}/connected-network-type-subscriptions/vwip"
+  - url: "{apiRoot}/connected-network-type-subscriptions/v0.1rc1"
     variables:
       apiRoot:
         default: http://localhost:9091
