@@ -209,7 +209,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
   @connected_network_type_subscriptions_C01.04_unnecessary_device
   Scenario: Device not to be included when it can be deduced from the access token
     Given the header "Authorization" is set to a valid access token identifying a device
-    And the request body property "$.device" is set to a valid device
+    And the request body property "$.device" is also set to a valid device, which may or may not be the same device
     When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
