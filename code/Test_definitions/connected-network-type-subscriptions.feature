@@ -312,11 +312,11 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     Given use BaseURL
     When the request "createConnectedNetworkTypeSubscription" is sent
     And a valid subscription request body
-    And "$.sink" is set to provided callbackUrl
-    And "$.sinkCredential.credentialType" <> "ACCESSTOKEN"
-    And "$.sinkCredential.accessTokenType" = "bearer"
-    And "$.sinkCredential.accessToken" is valued with a valid value
-    And "$.sinkCredential.accessTokenExpiresUtc" is valued with a valid value
+    And the request property "$.sink" is set to a valid callbackUrl
+    And the request property "$.sinkCredential.credentialType" is not equal to "ACCESSTOKEN"
+    And the request property "$.sinkCredential.accessTokenType" is equal to "bearer"
+    And the request property "$.sinkCredential.accessToken" is set to a valid value
+    And the request property "$.sinkCredential.accessTokenExpiresUtc" is set to a valid value
     Then the response property "$.status" is 400
     And the response property "$.code" is "INVALID_CREDENTIAL"
     And the response property "$.message" contains a user friendly text
