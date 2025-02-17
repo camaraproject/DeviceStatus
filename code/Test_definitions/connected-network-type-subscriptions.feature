@@ -162,8 +162,8 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     Then the response code is 202 or 204
     And event notification "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
-    And the response property "$.terminationReason" is "SUBSCRIPTION_DELETED"
+    And the notification request property $.type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
+    And the notification request property $.data.terminationReason is "SUBSCRIPTION_DELETED"
 
 ################
 # Error scenarios for management of input parameter device
