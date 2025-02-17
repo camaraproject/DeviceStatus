@@ -82,7 +82,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
 
   @connected_network_type_subscriptions_05_retrieve_list_3legs
   Scenario: Check existing subscription(s) is/are retrieved in list
-    Given a subscription is existing for the device
+    Given the API consumer has at least one active subscription for the device
     And this device is identified by the token
     And use BaseURL
     When the request "retrieveConnectedNetworkTypeSubscriptionList" is sent
