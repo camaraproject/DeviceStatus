@@ -67,6 +67,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response property $.id is equal to "id"
 
   @connected_network_type_subscriptions_04_retrieve_list_2legs
   Scenario: Check existing subscription(s) is/are retrieved in list
