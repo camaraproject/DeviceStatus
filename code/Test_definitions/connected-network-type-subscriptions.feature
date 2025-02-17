@@ -149,8 +149,8 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     And event notification "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed" is received on callback-url
     And event notification "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
-    And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
+    And the notification request property $.type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
+    And the notification request property $.data.terminationReason is "MAX_EVENTS_REACHED"
 
   @connected_network_type_subscriptions_11_subscription_delete_event_validation
   Scenario: Receive notification for subscription-ends event on deletion
