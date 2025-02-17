@@ -342,7 +342,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
 
   @connected_network_type_subscriptions_creation_401.1_no_authorization_header
   Scenario: No Authorization header
-    Given the header "Authorization" is removed
+    Given the request header "Authorization" is removed
     And use BaseUrL
     And the request body is set to a valid request body
     When the request "createConnectedNetworkTypeSubscription" is sent
