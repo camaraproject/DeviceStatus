@@ -135,8 +135,8 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     And the subscription is expired
     And event notification "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends" is received on callback-url
     And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
-    And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
+    And the notification request property $.type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
+    And the notification request property $.data.terminationReason is "SUBSCRIPTION_EXPIRED"
 
   @connected_network_type_subscriptions_10_subscription_end_when_max_events
   Scenario: Receive notification for subscription-ends event on max events reached
