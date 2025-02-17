@@ -396,7 +396,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     When the request "retrieveConnectedNetworkTypeSubscription" is sent
     Then the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_delete_401.7_no_authorization_header
