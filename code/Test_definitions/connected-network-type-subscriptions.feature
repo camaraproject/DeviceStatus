@@ -123,7 +123,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     Then event notification "network-type-changed" is received on callback-url
     And sink credentials are received as expected
     And notification body complies with the OAS schema at "#/components/schemas/EventNetworkTypeChange"
-    And type="org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+    And the notification request property $.type="org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
 
   @connected_network_type_subscriptions_09_subscription_expiry
   Scenario: Receive notification for subscription-ends event on expiry
