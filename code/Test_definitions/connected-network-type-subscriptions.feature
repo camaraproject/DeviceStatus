@@ -94,7 +94,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
 
   @connected_network_type_subscriptions_06_retrieve_empty_list_3legs
   Scenario: Check no existing subscription is retrieved in list
-    Given no subscription is existing for the device
+    Given the API consumer has no active subscriptions for the device
     And this device is identified by the token
     And use BaseURL
     When the request "retrieveConnectedNetworkTypeSubscriptionList" is sent
