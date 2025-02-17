@@ -405,7 +405,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     And use BaseUrL
     When the request "deleteConnectedNetworkTypeSubscription" is sent
     Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_delete_401.8_expired_access_token
