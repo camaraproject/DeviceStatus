@@ -110,7 +110,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     Then the response code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And if the response property $.status is 204 then response body is not available
-    And if the response property $.status is 202 then response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
+    And if the response property $.status is 202 then response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync" and the response property $.id is equal to "id"
 
   @connected_network_type_subscriptions_08_receive_notification_when_network_type_changed
   Scenario: Receive notification for network-type-changed event
