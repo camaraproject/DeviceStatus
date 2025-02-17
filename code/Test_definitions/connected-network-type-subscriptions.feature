@@ -101,7 +101,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body is an empty list
+    And the response body is an empty array
 
   @connected_network_type_subscriptions_07_delete_subscription_based_on_an_existing_subscription-id
   Scenario: Delete a subscription based on existing subscription-id.
