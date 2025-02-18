@@ -193,7 +193,7 @@ Feature: CAMARA Device Roaming Status API, v1.0.0-rc.1 - Operation getRoamingSta
     And the response property "$.message" contains a user friendly text
 
   @device_roaming_status_401.3_malformed_access_token
-  Scenario: Invalid access token
+  Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
     And the request body is set to a valid request body
     When the request "getRoamingStatus" is sent

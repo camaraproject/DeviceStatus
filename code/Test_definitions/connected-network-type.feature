@@ -183,7 +183,7 @@ Feature: CAMARA Connected Network Type API, v0.1.0-rc.1 - Operation getConnected
     And the response property "$.message" contains a user friendly text
 
   @connected_network_type_401.3_malformed_access_token
-  Scenario: Invalid access token
+  Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
     And the request body is set to a valid request body
     When the request "getConnectedNetworkType" is sent

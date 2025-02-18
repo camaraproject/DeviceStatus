@@ -414,7 +414,7 @@ Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - - Operation to m
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_creation_401.3_malformed_access_token
-  Scenario: Invalid access token
+  Scenario: Malformed access token
     Given the header "Authorization" is set to an invalid access token
     And use BaseUrL
     And the request body is set to a valid request body
@@ -443,7 +443,7 @@ Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - - Operation to m
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_retrieve_401.6_malformed_access_token
-  Scenario: Invalid access token
+  Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     When the request "retrieveDeviceRoamingStatusSubscription" is sent
@@ -471,7 +471,7 @@ Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - - Operation to m
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_delete_401.9_malformed_access_token
-  Scenario: Invalid access token
+  Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     When the request "deleteDeviceRoamingStatusSubscription" is sent

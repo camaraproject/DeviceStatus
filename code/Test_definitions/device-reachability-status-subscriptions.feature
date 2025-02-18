@@ -293,7 +293,7 @@ Feature: CAMARA Device Reachability Status API, v0.7.0-rc.1 - Operation to manag
     And the response property "$.message" contains a user friendly text
 
   @reachability_status_subscriptions_creation_401.3_malformed_access_token
-  Scenario: Invalid access token
+  Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     And the request body is set to a valid request body
@@ -322,7 +322,7 @@ Feature: CAMARA Device Reachability Status API, v0.7.0-rc.1 - Operation to manag
     And the response property "$.message" contains a user friendly text
 
   @reachability_status_subscriptions_retrieve_401.6_malformed_access_token
-  Scenario: Invalid access token
+  Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     When the request "retrieveDeviceReachabilityStatusSubscription" is sent
@@ -350,7 +350,7 @@ Feature: CAMARA Device Reachability Status API, v0.7.0-rc.1 - Operation to manag
     And the response property "$.message" contains a user friendly text
 
   @reachability_status_subscriptions_delete_401.9_malformed_access_token
-  Scenario: Invalid access token
+  Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     When the request "deleteDeviceReachabilityStatusSubscription" is sent
