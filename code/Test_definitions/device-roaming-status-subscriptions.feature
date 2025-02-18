@@ -21,19 +21,42 @@ Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - - Operation to m
 # Happy path scenarios
 ##########################
 
-  @roaming_status_subscriptions_01_sync_creation
-  Scenario Outline: Check sync subscription creation - This scenario could be bypass if async creation is provided (following scenario)
+  @roaming_status_subscriptions_01.1_sync_creation_2legs
+  Scenario Outline: Check sync subscription creation with 2-legged-access-token - This scenario could be bypass if async creation is provided (following scenario)
     Given use BaseURL
     When the request "createDeviceRoamingStatusSubscription" is sent
     And "$.types" is one of the allowed values "<subscription-creation-types>"
     And "$.protocol"="HTTP"
-    And a valid phone number identified by the token or provided in the request body
+    And a valid phone number identified by "$.config.subscriptionDetail.device.phoneNumber"
     And "$.sink" is set to provided callbackUrl
     Then the response code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And types, protocol, sink and config.subscriptionDetail.phoneNumber are present with provided value
+    And types, protocol, sink and config.subscriptionDetail.device.phoneNumber are present with provided value
+    And startsAt is valued with a datetime corresponding to the date time of the response
+
+    Examples:
+      | subscription-creation-types                                                             |
+      | org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status                 |
+      | org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on                     |
+      | org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off                    |
+      | org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country         |
+
+  @roaming_status_subscriptions_01.2_sync_creation_3legs
+  Scenario Outline: Check sync subscription creation with 3-legged-access-token - This scenario could be bypass if async creation is provided (following scenario)
+    Given use BaseURL
+    When the request "createDeviceRoamingStatusSubscription" is sent
+    And this device is identified by the token
+    And "$.types" is one of the allowed values "<subscription-creation-types>"
+    And "$.protocol"="HTTP"
+    And "$.sink" is set to provided callbackUrl
+    Then the response code is 201
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And types, protocol and sink are present with provided value
+    And config.subscriptionDetail.device is not existing in the response
     And startsAt is valued with a datetime corresponding to the date time of the response
 
     Examples:
