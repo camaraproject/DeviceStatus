@@ -362,7 +362,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
 
   @connected_network_type_subscriptions_creation_401.3_invalid_access_token
   Scenario: Invalid access token
-    Given the header "Authorization" is set to an invalid access token
+    Given the header "Authorization" is set to a malformed or expired token
     And use BaseURL
     And the request body is set to a valid request body
     When the request "createConnectedNetworkTypeSubscription" is sent

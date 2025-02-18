@@ -195,7 +195,7 @@ Feature: CAMARA Device Reachability Status API, v1.0.0-rc.1 - Operation getReach
 
   @device_reachability_status_401.3_invalid_access_token
   Scenario: Invalid access token
-    Given the header "Authorization" is set to an invalid access token
+    Given the header "Authorization" is set to a malformed or expired token
     And the request body is set to a valid request body
     When the request "getReachabilityStatus" is sent
     Then the response status code is 401
@@ -211,7 +211,7 @@ Feature: CAMARA Device Reachability Status API, v1.0.0-rc.1 - Operation getReach
   @device_reachability_status_403_permission_denied
   Scenario: OAuth2 token access does not have the required scope
     # To test this, a token has to be obtained for a different device
-    Given the header "Authorization" is set to a valid access token, but without the required scope
+    Given header "Authorization" set to an access token not including scope "device-reachability-status:read"
     And the request body is set to a valid request body
     When the request "getReachabilityStatus" is sent
     Then the response status code is 403
