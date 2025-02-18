@@ -1,4 +1,4 @@
-Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
+Feature: CAMARA Device Roaming Status API, v1.0.0-rc.1 - Operation getRoamingStatus
   # Input to be provided by the implementation to the tester
   #
   # Implementation indications:
@@ -11,7 +11,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
   # References to OAS spec schemas refer to schemas specifies in device-roaming-status.yaml
 
   Background: Common getRoamingStatus setup
-    Given the resource "/device-roaming-status/vwip/retrieve"
+    Given the resource "/device-roaming-status/v1rc1/retrieve"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -181,7 +181,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
-	
+
   @device_roaming_status_401.2_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
@@ -191,7 +191,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
-	
+
   @device_roaming_status_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token

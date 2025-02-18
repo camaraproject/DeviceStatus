@@ -1,4 +1,4 @@
-Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage roaming subscriptions
+Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - - Operation to manage roaming subscriptions
 
   # Input to be provided by the implementation to the tester
   #
@@ -13,14 +13,14 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
   # References to OAS spec schemas refer to schemas specified in device-roaming-status-subscriptions.yaml, version vwip
 
   Background: Common Device Roaming Status Subscriptions setup
-    Given the resource "{apiroot}/device-roaming-status-subscriptions/vwip" as base-url
+    Given the resource "{apiroot}/device-roaming-status-subscriptions/v0.7rc1/subscriptions" as base-url
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
 
 ##########################
 # Happy path scenarios
 ##########################
-  
+
   @roaming_status_subscriptions_01_sync_creation
   Scenario Outline: Check sync subscription creation - This scenario could be bypass if async creation is provided (following scenario)
     Given use BaseURL
@@ -480,7 +480,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - - Operation to manage r
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  
+
 ##################
 # Error code 403
 ##################

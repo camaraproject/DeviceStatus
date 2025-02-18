@@ -1,4 +1,4 @@
-Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to manage connected network type subscriptions
+Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operations to manage connected network type subscriptions
 
   # Input to be provided by the implementation to the tester
   #
@@ -14,7 +14,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
   # References to OAS spec schemas refer to schemas specifies in connected-network-type-subscriptions.yaml
 
   Background: Connected Network Type Subscriptions setup
-    Given the resource "{apiroot}/connected-network-type-subscriptions/vwip/subscriptions" as base-url
+    Given the resource "{apiroot}/connected-network-type-subscriptions/v0.1rc1/subscriptions" as base-url
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
 
@@ -427,7 +427,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations to m
     And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
-  
+
 ##################
 # Error code 403
 ##################
