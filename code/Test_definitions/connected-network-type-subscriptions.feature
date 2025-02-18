@@ -461,7 +461,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
   @connected_network_type_subscriptions_404.1_retrieve_unknown_subscription_id
   Scenario: Get subscription when subscription-id is unknown to the system
     Given the path parameter property "$.subscriptionId" is unknown to the system
-    And use BaseUrL
+    And use BaseURL
     When the request "retrieveConnectedNetworkTypeSubscription" is sent with subscriptionId="id"
     Then the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
