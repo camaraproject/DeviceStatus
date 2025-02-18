@@ -343,7 +343,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
   @connected_network_type_subscriptions_creation_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the request header "Authorization" is removed
-    And use BaseUrL
+    And use BaseURL
     And the request body is set to a valid request body
     When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response property "$.status" is 401
