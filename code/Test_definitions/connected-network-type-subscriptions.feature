@@ -442,19 +442,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_create_403.2_invalid_token_context
-  Scenario: subscription creation with invalid access token context for requested events subscription
-    # To test this, a token does not have the required device identifier
-    Given a valid subscription request body
-    And use BaseUrL
-    And the request body property "$.device" is set to a valid testing device supported by the service
-    And header "Authorization" set to access token referring different device
-    When the request "createConnectedNetworkTypeSubscription" is sent
-    Then the response property "$.status" is 422
-    And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
-    And the response property "$.message" contains a user friendly text
-
-  @connected_network_type_subscriptions_create_403.3_subscription_mismatch_for_requested_events_subscription
+  @connected_network_type_subscriptions_create_403.2_subscription_mismatch_for_requested_events_subscription
   Scenario: subscription creation with invalid access token for requested events subscription
     # To test this, a token contains an unsupported event type for this API
     Given a valid subscription request body
