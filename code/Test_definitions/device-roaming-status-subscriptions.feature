@@ -413,7 +413,7 @@ Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - - Operation to m
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @roaming_status_subscriptions_creation_401.3_invalid_access_token
+  @roaming_status_subscriptions_creation_401.3_malformed_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     And use BaseUrL
@@ -442,9 +442,9 @@ Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - - Operation to m
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @roaming_status_subscriptions_retrieve_401.6_invalid_access_token
+  @roaming_status_subscriptions_retrieve_401.6_malformed_access_token
   Scenario: Invalid access token
-    Given the header "Authorization" is set to a malformed or expired token
+    Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     When the request "retrieveDeviceRoamingStatusSubscription" is sent
     Then the response header "Content-Type" is "application/json"
@@ -470,9 +470,9 @@ Feature: Device Roaming Status Subscriptions API, v0.7.0-rc.1 - - Operation to m
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @roaming_status_subscriptions_delete_401.9_invalid_access_token
+  @roaming_status_subscriptions_delete_401.9_malformed_access_token
   Scenario: Invalid access token
-    Given the header "Authorization" is set to a malformed or expired token
+    Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     When the request "deleteDeviceRoamingStatusSubscription" is sent
     Then the response header "Content-Type" is "application/json"

@@ -360,9 +360,9 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
     And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_creation_401.3_invalid_access_token
+  @connected_network_type_subscriptions_creation_401.3_malformed_access_token
   Scenario: Invalid access token
-    Given the header "Authorization" is set to a malformed or expired token
+    Given the header "Authorization" is set to a malformed token
     And use BaseURL
     And the request body is set to a valid request body
     When the request "createConnectedNetworkTypeSubscription" is sent
@@ -389,9 +389,9 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
     And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_retrieve_401.6_invalid_access_token
+  @connected_network_type_subscriptions_retrieve_401.6_malformed_access_token
   Scenario: Invalid access token
-    Given the header "Authorization" is set to an invalid access token
+    Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     When the request "retrieveConnectedNetworkTypeSubscription" is sent
     Then the response header "Content-Type" is "application/json"
@@ -417,9 +417,9 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
     And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_delete_401.9_invalid_access_token
+  @connected_network_type_subscriptions_delete_401.9_malformed_access_token
   Scenario: Invalid access token
-    Given the header "Authorization" is set to an invalid access token
+    Given the header "Authorization" is set to a malformed token
     And use BaseUrL
     When the request "deleteConnectedNetworkTypeSubscription" is sent
     Then the response header "Content-Type" is "application/json"

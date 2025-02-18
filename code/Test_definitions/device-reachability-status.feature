@@ -193,9 +193,9 @@ Feature: CAMARA Device Reachability Status API, v1.0.0-rc.1 - Operation getReach
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @device_reachability_status_401.3_invalid_access_token
+  @device_reachability_status_401.3_malformed_access_token
   Scenario: Invalid access token
-    Given the header "Authorization" is set to a malformed or expired token
+    Given the header "Authorization" is set to a malformed token
     And the request body is set to a valid request body
     When the request "getReachabilityStatus" is sent
     Then the response status code is 401
