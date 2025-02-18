@@ -200,7 +200,7 @@ Feature: CAMARA Connected Network Type API, v0.1.0-rc.1 - Operation getConnected
   @connected_network_type_403_permissions_denied
   Scenario: Client does not have sufficient permissions to perform this action
     # To test this, a token has to be obtained for a different device
-    Given the header "Authorization" is set to a valid access token, but without the required scope
+    Given header "Authorization" set to an access token not including scope "connected-network-type:read"
     And the request body is set to a valid request body
     When the request "getConnectedNetworkType" is sent
     Then the response status code is 403
