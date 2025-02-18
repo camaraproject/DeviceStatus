@@ -353,7 +353,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
   @connected_network_type_subscriptions_creation_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to a previously valid but now expired access token
-    And use BaseUrL
+    And use BaseURL
     And the request body is set to a valid request body
     When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response property "$.status" is 401
