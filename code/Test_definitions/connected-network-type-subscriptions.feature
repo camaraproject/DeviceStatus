@@ -435,8 +435,8 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
   @connected_network_type_subscriptions_create_403.1_permission_denied
   Scenario: subscription creation without having the required scope
     # To test this, a token does not have the required scope
-    Given header "Authorization" set to access token referring different scope
-    And use BaseUrL
+    Given header "Authorization" set to an access token not including scope "connected-network-type-subscriptions:org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed:create"
+    And use BaseURL
     When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
