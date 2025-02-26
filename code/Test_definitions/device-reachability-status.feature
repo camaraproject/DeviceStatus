@@ -1,5 +1,5 @@
 @Device_reachability_status
-Feature: CAMARA Device reachability status API, vwip - Operations for reachability status
+Feature: CAMARA Device reachability status API, vwip - Operation getReachabilityStatus
   # Input to be provided by the implementation to the tester
   #
   # Implementation indications:
