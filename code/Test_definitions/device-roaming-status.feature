@@ -1,4 +1,5 @@
-Feature: CAMARA Device Roaming Status API, v1.0.0-rc.1 - Operation getRoamingStatus
+@Device_Roaming_Status
+Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
   # Input to be provided by the implementation to the tester
   #
   # Implementation indications:
@@ -11,7 +12,7 @@ Feature: CAMARA Device Roaming Status API, v1.0.0-rc.1 - Operation getRoamingSta
   # References to OAS spec schemas refer to schemas specifies in device-roaming-status.yaml
 
   Background: Common getRoamingStatus setup
-    Given the resource "/device-roaming-status/v1rc1/retrieve"
+    Given the resource "/device-roaming-status/vwip/retrieve" set as base-url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value

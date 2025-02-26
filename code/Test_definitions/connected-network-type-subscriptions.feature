@@ -1,4 +1,5 @@
-Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operations to manage connected network type subscriptions
+@Connected_network_type_subscription
+Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on subscriptions
 
   # Input to be provided by the implementation to the tester
   #
@@ -14,7 +15,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0-rc.1 - Operatio
   # References to OAS spec schemas refer to schemas specifies in connected-network-type-subscriptions.yaml
 
   Background: Connected Network Type Subscriptions setup
-    Given the resource "{apiroot}/connected-network-type-subscriptions/v0.1rc1/subscriptions" as base-url
+    Given the resource "{apiroot}/connected-network-type-subscriptions/vwip" as base-url
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
 

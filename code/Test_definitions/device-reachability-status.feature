@@ -1,4 +1,5 @@
-Feature: CAMARA Device Reachability Status API, v1.0.0-rc.1 - Operation getReachabilityStatus
+@Device_reachability_status
+Feature: CAMARA Device reachability status API, vwip - Operations for reachability status
   # Input to be provided by the implementation to the tester
   #
   # Implementation indications:
@@ -10,8 +11,8 @@ Feature: CAMARA Device Reachability Status API, v1.0.0-rc.1 - Operation getReach
   #
   # References to OAS spec schemas refer to schemas specifies in device-reachability-status.yaml
 
-  Background: Common getReachabilityStatus setup
-    Given the resource "{api-root}/device-reachability-status/v1rc1/retrieve" set as base-url
+  Background: Common Device reachability status setup
+    Given the resource "{api-root}/device-reachability-status/vwip/retrieve" set as base-url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
