@@ -75,6 +75,7 @@ Feature: CAMARA Device reachability status API, vwip - Operation getReachability
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is false
+    And if the response property "$.lastStatusTime" is present, then this property is in a valid date-time format
     And the response property "$.connectivity" is not present
 
 #################
