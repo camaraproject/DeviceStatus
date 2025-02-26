@@ -49,7 +49,7 @@ Feature: CAMARA Device reachability status API, vwip - Operation getReachability
     And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is true
     And the response property "$.connectivity" includes "DATA"
-    And if the response property "$.lastStatusTime" is present, then this property is in a valid date-time format
+    And if the response property "$.lastStatusTime" is present, then the value has a valid date-time format
 
   @device_reachability_status_03_reachable_and_connected_data_and_sms
   Scenario: Check the reachability status if device is connected with DATA and SMS
@@ -63,7 +63,7 @@ Feature: CAMARA Device reachability status API, vwip - Operation getReachability
     And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is true
     And the response property "$.connectivity" includes both "DATA" and "SMS"
-    And if the response property "$.lastStatusTime" is present, then this property is in a valid date-time format
+    And if the response property "$.lastStatusTime" is present, then the value has a valid date-time format
 
   @device_reachability_status_04_not_reachable
   Scenario: Check the reachability status for an unreachable device
@@ -75,7 +75,7 @@ Feature: CAMARA Device reachability status API, vwip - Operation getReachability
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is false
-    And if the response property "$.lastStatusTime" is present, then this property is in a valid date-time format
+    And if the response property "$.lastStatusTime" is present, then the value has a valid date-time format
     And the response property "$.connectivity" is not present
 
 #################
