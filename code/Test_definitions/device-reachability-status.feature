@@ -71,7 +71,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is false
-    And the response property "$.connectivity" is not returned
+    And the response property "$.connectivity" is not present
 
 #################
 # Error scenarios for management of input parameter device
