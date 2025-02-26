@@ -149,7 +149,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
   # When the service is only offered to certain types of devices or subscriptions, e.g. IoT, B2C, etc.
   @device_reachability_status_C01.07_device_not_supported
   Scenario: Service not available for the device
-    Given that the service is not available for all devices commercialized by the operator
+    Given that the service is not available for all devices commercialized by the API provider
     And a valid device, identified by the token or provided in the request body, for which the service is not applicable
     When the request "getReachabilityStatus" is sent
     Then the response status code is 422
