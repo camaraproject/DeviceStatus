@@ -50,7 +50,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
 
   @device_reachability_status_03_reachable_and_connected_data_and_sms
   Scenario: Check the reachability status if device is connected with DATA and SMS
-    Given a valid device reachability status request body
+    Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the request body is set to a valid request body
     And the device is connected with data and sms and supported by the service
     When the request "getReachabilityStatus" is sent
