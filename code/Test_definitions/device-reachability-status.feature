@@ -39,7 +39,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
   Scenario: Check the reachability status if device is connected with DATA
     Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the request body is set to a valid request body
-    And the device is connected with data and supported by the service
+    And the device has data connectivity and is supported by the service
     When the request "getReachabilityStatus" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
