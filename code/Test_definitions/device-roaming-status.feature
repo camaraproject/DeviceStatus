@@ -83,7 +83,6 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
       | $.device.ipv6Address       | /components/schemas/DeviceIpv6Address       |
       | $.device.networkIdentifier | /components/schemas/NetworkAccessIdentifier |
 
-
   # This scenario may happen e.g. with 2-legged access tokens, which do not identify a single device.
   @device_roaming_status_C01.03_device_not_found
   Scenario: Some identifier cannot be matched to a device
@@ -191,7 +190,6 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
 
   @device_roaming_status_403_permission_denied
    Scenario: OAuth2 token access does not have the required scope
-    # To test this, a token has to be obtained for a different device
     Given header "Authorization" set to an access token not including scope "device-roaming-status:read"
     And the request body is set to a valid request body
     When the request "getRoamingStatus" is sent
