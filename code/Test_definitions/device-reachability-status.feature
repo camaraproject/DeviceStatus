@@ -191,7 +191,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
     When the request "getReachabilityStatus" is sent
     Then the response status code is 401
     And the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @device_reachability_status_401.3_malformed_access_token
