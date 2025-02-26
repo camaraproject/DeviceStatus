@@ -215,7 +215,6 @@ Feature: CAMARA Device reachability status API, vwip - Operation getReachability
 
   @device_reachability_status_403_permission_denied
   Scenario: OAuth2 token access does not have the required scope
-    # To test this, a token has to be obtained for a different device
     Given header "Authorization" set to an access token not including scope "device-reachability-status:read"
     And the request body is set to a valid request body
     When the request "getReachabilityStatus" is sent
