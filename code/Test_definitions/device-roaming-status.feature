@@ -33,7 +33,7 @@ Feature: CAMARA Device Roaming Status API, vwip - Operation getRoamingStatus
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/RoamingStatusResponse"
     And the response property "$.roaming" is "true"
-    And if the response property "$.lastStatusTime" exists then this property is in a valid date-time format
+    And if the response property "$.lastStatusTime" exists then the value has a valid date-time format
 
   @device_roaming_status_01.1_roaming_status_true_with_country_code
   Scenario: Check the roaming status when device is in the roaming mode
