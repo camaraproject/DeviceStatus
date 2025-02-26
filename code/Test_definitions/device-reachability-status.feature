@@ -49,6 +49,7 @@ Feature: CAMARA Device reachability status API, vwip - Operation getReachability
     And the response body complies with the OAS schema at "#/components/schemas/ReachabilityStatusResponse"
     And the response property "$.reachable" is true
     And the response property "$.connectivity" includes "DATA"
+    And if the response property "$.lastStatusTime" is present, then this property is in a valid date-time format
 
   @device_reachability_status_03_reachable_and_connected_data_and_sms
   Scenario: Check the reachability status if device is connected with DATA and SMS
