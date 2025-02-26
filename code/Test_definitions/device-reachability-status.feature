@@ -108,7 +108,7 @@ Feature: CAMARA Device reachability status API, vwip - Operations for reachabili
   @device_reachability_status_C01.03_device_not_found
   Scenario: Some identifier cannot be matched to a device
     Given the header "Authorization" is set to a valid access token which does not identify a single device
-    And the request body property "$.device" is compliant with the schema but does not identify a valid device
+    And the request body property "$.device" is compliant with the schema, but does not identify a device whose connectivity is managed by the API provider
     When the request "getReachabilityStatus" is sent
     Then the response status code is 404
     And the response property "$.status" is 404
