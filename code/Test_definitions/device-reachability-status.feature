@@ -36,7 +36,6 @@ Feature: CAMARA Device reachability status API, vwip - Operation getReachability
     And the response property "$.connectivity" includes "SMS"
     And if the response property "$.lastStatusTime" is present, then the value has a valid date-time format
 
-
   @device_reachability_status_02_reachable_and_connected_data
   Scenario: Check the reachability status if device is connected with DATA
     Given a valid testing device supported by the service, identified by the token or provided in the request body
@@ -224,3 +223,20 @@ Feature: CAMARA Device reachability status API, vwip - Operation getReachability
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
+
+#################
+# Error code 503
+#################
+
+  @device_reachability_status_503_network_error
+   Scenario: Network error temporarily prevents the device reachability status from being retrieved
+    # This test is for use by the API provider only
+    Given a valid testing device supported by the service, identified by the token or provided in the request body
+    And the request body is set to a valid request body
+    And the device is supported by the service, and may be reachable or not reachable
+    When the request "getReachabilityStatus" is sent
+    And a network error prevents the device reachability status from being retrieved
+    Then the response status code is 503
+    And the response property "$.status" is 503
+    And the response property "$.code" is "UNAVAILABLE"
+    And the response property "$.message" contains a user friendly text indicating a temporary network error
