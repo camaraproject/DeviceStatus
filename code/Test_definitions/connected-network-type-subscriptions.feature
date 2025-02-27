@@ -1,5 +1,5 @@
-@Connected_network_type_subscription
-Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on subscriptions
+@Connected_Network_Type_Subscription
+Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations createConnectedNetworkTypeSubscription, retrieveConnectedNetworkTypeSubscriptionList, retrieveConnectedNetworkTypeSubscription and deleteConnectedNetworkTypeSubscription
 
   # Input to be provided by the implementation to the tester
   #
@@ -24,100 +24,123 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
 ##########################
 
   @connected_network_type_subscriptions_01.1_sync_creation_2legs
-  Scenario Outline: Check sync subscription creation with 2-legged-access-token - This scenario could be bypass if async creation is provided (following scenario)
-    Given use BaseURL
+  Scenario Outline: Synchronous subscription creation with 2-legged-access-token
+    # Some implementations may only support asynchronous subscription creation
+    Given the header "Authorization" is set to a valid access token which does not identify any device
     When the request "createConnectedNetworkTypeSubscription" is sent
-    And "$.types" is one of the allowed values "<subscription-creation-types>"
-    And "$.protocol"="HTTP"
+    And request property "$.types" is one of the allowed values "<subscription-creation-types>"
+    And request property "$.protocol" is equal to "HTTP"
     And a valid phone number identified by "$.config.subscriptionDetail.device.phoneNumber"
-    And "$.sink" is set to provided callbackUrl
+    And request property "$.sink" is set to a valid callbackUrl
     Then the response code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And types, protocol, sink and config.subscriptionDetail.device.phoneNumber are present with provided value
-    And startsAt is valued with a datetime corresponding to the date time of the response
+    And the response properties "$.types", "$.protocol", "$.sink" and "$.config.subscriptionDetail.device.phoneNumber" are present with the values provided in the request
+    And the response property "$.id" is present
+    And the response property "$.startsAt", if present, has a valid value with date-time format
+    And the response property "$.expiresAt", if present, has a valid value with date-time format
+    And the response property "$.status", if present, has the value "ACTIVATION_REQUESTED", "ACTIVE" or "INACTIVE"
 
     Examples:
       | subscription-creation-types                                                             |
       | org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed          |
 
   @connected_network_type_subscriptions_01.2_sync_creation_3legs
-  Scenario Outline: Check sync subscription creation with 3-legged-access-token - This scenario could be bypass if async creation is provided (following scenario)
-    Given use BaseURL
+  Scenario Outline: Synchronous subscription creation with 3-legged-access-token
+    # Some implementations may only support asynchronous subscription creation
+    Given the header "Authorization" is set to a valid access token which identifies a valid device
     When the request "createConnectedNetworkTypeSubscription" is sent
-    And this device is identified by the token
-    And "$.types" is one of the allowed values "<subscription-creation-types>"
-    And "$.protocol"="HTTP"
-    And "$.sink" is set to provided callbackUrl
+    And request property "$.types" is one of the allowed values "<subscription-creation-types>"
+    And request property "$.protocol" is equal to "HTTP"
+    And request property "$.sink" is set to a valid callbackUrl
+    And request property "$.config.subscriptionDetail.device.phoneNumber" is not present
     Then the response code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And types, protocol and sink are present with provided value
-    And config.subscriptionDetail.device is not existing in the response
-    And startsAt is valued with a datetime corresponding to the date time of the response
+    And the response properties "$.types", "$.protocol" and "$.sink" are present with the values provided in the request
+    And the response property "$.id" is present
+    And the response property "$.startsAt", if present, has a valid value with date-time format
+    And the response property "$.expiresAt", if present, has a valid value with date-time format
+    And the response property "$.status", if present, has the value "ACTIVATION_REQUESTED", "ACTIVE" or "INACTIVE"
+    And the response property "$.config.subscriptionDetail.device" is not present
 
     Examples:
       | subscription-creation-types                                                             |
       | org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed          |
 
   @connected_network_type_subscriptions_02_async_creation
-  Scenario Outline: Check async subscription creation - This scenario could be bypass if previous scenario is provided
-    Given use BaseURL
+  Scenario Outline: Asynchronous subscription creation with 2- or 3-legged access token
+    # Some implementations may only support synchronous subscription creation
+    Given a valid target device, identified by either the access token or in the request body
     When the request "createConnectedNetworkTypeSubscription" is sent
-    And "$.types" is one of the allowed values "<subscription-creation-types>"
-    And "$.protocol"="HTTP"
-    And a valid phone number identified by the token or provided in the request body
-    And "$.sink" is set to provided callbackUrl
+    And request property "$.types" is one of the allowed values "<subscription-creation-types>"
+    And request property "$.protocol" is equal to "HTTP"
+    And request property "$.sink" is set to a valid callbackUrl
     Then the response code is 202
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
+    And the response property "$.id" is present
 
     Examples:
       | subscription-creation-types                                                             |
       | org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed          |
 
-  @connected_network_type_subscriptions_03_retrieve_by_id
-  Scenario: Check existing subscription is retrieved by id
-    Given a subscription is existing and identified by an "id"
-    And use BaseURL
-    When the request "retrieveConnectedNetworkTypeSubscription" is sent with subscriptionId="id"
+  @connected_network_type_subscriptions_03.1_retrieve_by_id_2legs
+  Scenario: Check existing subscription is retrieved by id with a 2-legged access token
+    Given a subscription exists and has a subscriptionId equal to "id"
+    And the header "Authorization" is set to a valid access token which does not identify any device 
+    When the request "retrieveConnectedNetworkTypeSubscription" is sent
+    And the path parameter "subscriptionId" is set to "id"
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And the response property $.id is equal to "id"
+    And the response property "$.id" is equal to "id"
+    And the response property "$.config.subscriptionDetail.device" is present
+
+  @connected_network_type_subscriptions_03.2_retrieve_by_id_3legs
+  Scenario: Check existing subscription is retrieved by id with a 3-legged access token
+    Given a subscription exists and has a subscriptionId equal to "id"
+    And the header "Authorization" is set to a valid access token which identifies the device associated with the subscription
+    When the request "retrieveConnectedNetworkTypeSubscription"
+    And the path parameter "subscriptionId" is set to "id"
+    Then the response code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response property "$.id" is equal to "id"
+    And the response property "$.config.subscriptionDetail.device" is not present
 
   @connected_network_type_subscriptions_04_retrieve_list_2legs
   Scenario: Check existing subscription(s) is/are retrieved in list
-    Given at least one subscription is existing for the API client making this request
-    And use BaseURL
+    Given at least one subscription is existing for the API consumer making this request
+    And the header "Authorization" is set to a valid access token which does not identify any device 
     When the request "retrieveConnectedNetworkTypeSubscriptionList" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And subscription(s) is/are listed
+    And the response body lists all subscriptions belonging to the API consumer
 
   @connected_network_type_subscriptions_05_retrieve_list_3legs
   Scenario: Check existing subscription(s) is/are retrieved in list
     Given the API consumer has at least one active subscription for the device
-    And this device is identified by the token
-    And use BaseURL
+    And the header "Authorization" is set to a valid access token which identifies a valid device associated with one or more subscriptions
     When the request "retrieveConnectedNetworkTypeSubscriptionList" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And the subscriptions for this device are listed
+    And the response body lists all subscriptions belonging to the API consumer for the identified device
+    And the response property "$.config.subscriptionDetail.device" is not present in any of the subscription records
 
   @connected_network_type_subscriptions_06_retrieve_empty_list_3legs
   Scenario: Check no existing subscription is retrieved in list
     Given the API consumer has no active subscriptions for the device
-    And this device is identified by the token
-    And use BaseURL
+    And the header "Authorization" is set to a valid access token which identifies a valid device
     When the request "retrieveConnectedNetworkTypeSubscriptionList" is sent
     Then the response code is 200
     And the response header "Content-Type" is "application/json"
@@ -125,66 +148,63 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the response body is an empty array
 
   @connected_network_type_subscriptions_07_delete_subscription_based_on_an_existing_subscription-id
-  Scenario: Delete a subscription based on existing subscription-id.
-    Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the request "deleteConnectedNetworkTypeSubscription" is sent with subscriptionId="id"
+  Scenario: Delete the subscription with subscriptionId equal to "id"
+    Given the API consumer has an active subscription with "subscriptionId" equal to "id"
+    When the request "deleteConnectedNetworkTypeSubscription" is sent
+    And the path parameter "subscriptionId" is set to "id"
     Then the response code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And if the response property $.status is 204 then response body is not available
-    And if the response property $.status is 202 then response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync" and the response property $.id is equal to "id"
+    And if the response property "$.status" is 204 then response body is not present
+    And if the response property "$.status" is 202 then response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync" and the response property "$.id" is equal to "id"
 
   @connected_network_type_subscriptions_08_receive_notification_when_network_type_changed
   Scenario: Receive notification for network-type-changed event
-    Given that subscriptions are created synchronously
-    When the request "createConnectedNetworkTypeSubscription" is sent
-    And a valid subscription request body
-    And the request body property "$.types" contains the element "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
-    Then the response code is 201
-    And if the device network type changed
-    Then event notification "network-type-changed" is received on callback-url
-    And sink credentials are received as expected
+    Given a valid subscription for a device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.types" contains the element "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+    And the subscription property "$.sink" is a valid callback URL
+    When the network type the device is connected to changes
+    Then event notification "network-type-changed" is sent to the specified callback URL
+    And the sink credentials specified when the subscription was created are included
     And notification body complies with the OAS schema at "#/components/schemas/EventNetworkTypeChange"
-    And the notification request property $.type="org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+    And the notification property "$.type" is equal to "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+    And the notification property "$.data.subscriptionId" is equal to "id"
 
   @connected_network_type_subscriptions_09_subscription_expiry
   Scenario: Receive notification for subscription-ends event on expiry
-    Given that subscriptions are created synchronously
-    When the request "createConnectedNetworkTypeSubscription" is sent
-    And a valid subscription request body
-    And the request body property "$.subscriptionExpireTime" is set to a value in the near future
-    Then the response code is 201
-    And the subscription is expired
-    And event notification "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends" is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And the notification request property $.type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
-    And the notification request property $.data.terminationReason is "SUBSCRIPTION_EXPIRED"
+    Given a valid subscription for a device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.subscriptionExpireTime" is set to a value in the near future
+    And the subscription property "$.sink" is a valid callback URL
+    When the subscriptionExpireTime is reached
+    Then a subscription termination event notification is sent to the callback URL
+    And the notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
+    And the notification property "$.type" is "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
+    And the notification property "$.data.subscriptionId" is equal to "id"
+    And the notification property "$.data.terminationReason" is equal to "SUBSCRIPTION_EXPIRED"
 
   @connected_network_type_subscriptions_10_subscription_end_when_max_events
   Scenario: Receive notification for subscription-ends event on max events reached
-    Given that subscriptions are created synchronously
-    When the request "createConnectedNetworkTypeSubscription" is sent
-    And a valid subscription request body
-    And the request body property "$.types" contains the element "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
-    And the request body property "$.subscriptionMaxEvents" is set to 1
-    Then the response code is 201
-    And event notification "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed" is received on callback-url
-    And event notification "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends" is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And the notification request property $.type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
-    And the notification request property $.data.terminationReason is "MAX_EVENTS_REACHED"
+    Given a valid subscription for a device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.subscriptionMaxEvents" is set to 1
+    And the subscription property "$.sink" is a valid callback URL
+    When a single notification with property "$.type" equal to "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed" has been sent to the callback URL
+    Then a subscription termination event notification is sent to the callback URL
+    And the notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
+    And the notification property "$.type" is equal to "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
+    And the notification property "$.data.subscriptionId" is equal to "id"
+    And the notification request property "$.data.terminationReason" is equal to "MAX_EVENTS_REACHED"
 
   @connected_network_type_subscriptions_11_subscription_delete_event_validation
   Scenario: Receive notification for subscription-ends event on deletion
-    Given that subscriptions are created synchronously
-    When the request "createConnectedNetworkTypeSubscription" is sent
-    And a valid subscription request body
-    Then the response code is 201
-    When the request "deleteConnectedNetworkTypeSubscription" is sent with subscriptionId="id"
+    Given a valid subscription for a device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.sink" is a valid callback URL    When the request "createConnectedNetworkTypeSubscription" is sent
+    When the request "deleteConnectedNetworkTypeSubscription" is sent
+    And the path parameter "subscriptionId" is set to "id"
     Then the response code is 202 or 204
-    And event notification "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends" is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And the notification request property $.type="org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
-    And the notification request property $.data.terminationReason is "SUBSCRIPTION_DELETED"
+    And a subscription termination event notification is sent to the callback URL
+    And the notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
+    And the notification property "$.type" is equal to "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
+    And the notification property "$.data.subscriptionId" is equal to "id"
+    And the notification request property "$.data.terminationReason" is equal to "SUBSCRIPTION_DELETED"
 
 ################
 # Error scenarios for management of input parameter device
@@ -368,7 +388,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations on s
     And the request body is set to a valid request body
     When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_creation_401.2_expired_access_token
