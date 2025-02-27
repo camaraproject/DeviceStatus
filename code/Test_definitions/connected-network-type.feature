@@ -205,7 +205,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the request body is set to a valid request body
     And the device is supported by the service, and may be connected or not connected to a mobile network
-    When the request "getRoamingStatus" is sent
+    When the request "getConnectedNetworkType" is sent
     And a network error prevents the connected network type from being retrieved
     Then the response status code is 503
     And the response property "$.status" is 503
