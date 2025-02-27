@@ -600,7 +600,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - Operations createDevice
     Given the header "Authorization" set to an access token that includes only a single subscription scope
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
     And the request body property "$.types" is equal to a valid type other than the event corresponding to the access token scope
-    When the request "createConnectedNetworkTypeSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
