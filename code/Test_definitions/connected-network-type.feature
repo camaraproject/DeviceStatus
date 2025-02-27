@@ -1,5 +1,5 @@
 @Connected_Network_Type
-Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve network type
+Feature: CAMARA Connected Network Type API, vwip - Operation getConnectedNetworkType
   # Input to be provided by the implementation to the tester
   #
   # Implementation indications:
@@ -17,7 +17,7 @@ Feature: CAMARA Connected Network Type API, vwip - Operations for retrieve netwo
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
-    And the request body is set by default to a request body compliant with the schema
+    And the request body is set by default to a request body compliant with the schema "#/components/schemas/ConnectedNetworkTypeRequest"
 
 ##########################
 # Happy path scenarios
