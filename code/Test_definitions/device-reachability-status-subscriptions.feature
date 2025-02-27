@@ -535,7 +535,7 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations createD
 ##################
 
   @reachability_status_subscriptions_create_403.1_permission_denied
-  Scenario: subscription creation without having the required scope
+  Scenario: Subscription creation without having the required scope
     # To test this, a token must not have the required scope
     Given the header "Authorization" set to an access token not including scope "device-reachability-status-subscriptions:org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data:create"
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
@@ -547,7 +547,7 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations createD
     And the response property "$.message" contains a user friendly text
 
   @reachability_status_subscriptions_create_403.2_permission_denied
-  Scenario: subscription creation without having the required scope
+  Scenario: Subscription creation without having the required scope
     # To test this, a token must not have the required scope
     Given the header "Authorization" set to an access token not including scope "device-reachability-status-subscriptions:org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms:create"
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
@@ -559,7 +559,7 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations createD
     And the response property "$.message" contains a user friendly text
 
   @reachability_status_subscriptions_create_403.3_permission_denied
-  Scenario: subscription creation without having the required scope
+  Scenario: Subscription creation without having the required scope
     # To test this, a token must not have the required scope
     Given the header "Authorization" set to an access token not including scope "device-reachability-status-subscriptions:org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected:create"
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
@@ -571,7 +571,7 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations createD
     And the response property "$.message" contains a user friendly text
 
   @reachability_status_subscriptions_create_403.4_subscription_mismatch_for_requested_events_subscription
-  Scenario: subscription creation with invalid access token for requested events subscription
+  Scenario: Subscription creation with invalid access token for requested events subscription
     Given the header "Authorization" set to an access token that includes only a single subscription scope
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
     And the request body property "$.types" is equal to a valid type other than the event corresponding to the access token scope
@@ -586,18 +586,20 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations createD
 ##################
 
   @reachability_status_subscriptions_404.1_retrieve_unknown_subscription_id
-  Scenario: Get subscription when subscription-id is unknown to the system
-    Given the path parameter property "$.subscriptionId" is unknown to the system
-    And use BaseUrL
-    When the request "retrieveDeviceReachabilityStatusSubscription" is sent with subscriptionId="id"
-    Then the response property "$.status" is 404
+  Scenario: Get subscription when subscriptionId is unknown to the system
+    Given that there is no valid subscription with "subscriptionId" equal to "id"
+    When the request "retrieveDeviceReachabilityStatusSubscription" is sent
+    And the path parameter "subscriptionId" is equal to "id"
+    Then the response status code is 404
+    And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
   @reachability_status_subscriptions_404.2_delete_unknown_subscription_id
-  Scenario: Delete subscription with subscription-id unknown to the system
-    Given the path parameter "subscriptionId" is set to the value unknown to system
+  Scenario: Delete subscription with subscriptionId unknown to the system
+    Given that there is no valid subscription with "subscriptionId" equal to "id"
     When the request "deleteDeviceReachabilityStatusSubscription" is sent
+    And the path parameter "subscriptionId" is equal to "id"
     Then the response code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
