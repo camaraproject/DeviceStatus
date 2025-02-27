@@ -1,4 +1,4 @@
-@DeviceReachabilityStatusSubscription
+@Device_Reachability_Status_Subscription
 Feature: Device Reachability Status Subscriptions API, vwip - Operations createDeviceReachabilityStatusSubscription, retrieveDeviceReachabilityStatusSubscriptionList, retrieveDeviceReachabilityStatusSubscription and deleteDeviceReachabilityStatusSubscription
 
   # Input to be provided by the implementation to the tester
@@ -97,137 +97,150 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations createD
       | org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms          |
       | org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected |
 
-  @reachability_status_subscriptions_03_retrieve_by_id
-  Scenario: Check existing subscription is retrieved by id
-    Given a subscription is existing and identified by an "id"
-    And use BaseURL
-    When the request "retrieveDeviceReachabilityStatusSubscription" is sent with subscriptionId="id"
-    Then the response code is 200
+  @reachability_status_subscriptions_03.1_retrieve_by_id_2legs
+  Scenario: Check existing subscription is retrieved by id with a 2-legged access token
+    Given a subscription exists and has a subscriptionId equal to "id"
+    And the header "Authorization" is set to a valid access token which does not identify any device 
+    When the request "retrieveDeviceReachabilityStatusSubscription" is sent
+    And the path parameter "subscriptionId" is set to "id"
+    Then the response status code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response property "$.id" is equal to "id"
+    And the response property "$.config.subscriptionDetail.device" is present
+
+  @reachability_status_subscriptions_03.2_retrieve_by_id_3legs
+  Scenario: Check existing subscription is retrieved by id with a 3-legged access token
+    Given a subscription exists and has a subscriptionId equal to "id"
+    And the header "Authorization" is set to a valid access token which identifies the device associated with the subscription
+    When the request "retrieveDeviceReachabilityStatusSubscription" is sent
+    And the path parameter "subscriptionId" is set to "id"
+    Then the response status code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "#/components/schemas/Subscription"
+    And the response property "$.id" is equal to "id"
+    And the response property "$.config.subscriptionDetail.device" is not present
 
   @reachability_status_subscriptions_04_retrieve_list_2legs
   Scenario: Check existing subscription(s) is/are retrieved in list
-    Given at least one subscription is existing for the API client making this request
-    And use BaseURL
+    Given at least one subscription is existing for the API consumer making this request
+    And the header "Authorization" is set to a valid access token which does not identify any device 
     When the request "retrieveDeviceReachabilityStatusSubscriptionList" is sent
-    Then the response code is 200
+    Then the response status code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And subscription(s) is/are listed
+    And the response body lists all subscriptions belonging to the API consumer
 
   @reachability_status_subscriptions_05_retrieve_list_3legs
   Scenario: Check existing subscription(s) is/are retrieved in list
-    Given a subscription is existing for the device
-    And this device is identified by the token
-    And use BaseURL
+    Given the API consumer has at least one active subscription for the device
+    And the header "Authorization" is set to a valid access token which identifies a valid device associated with one or more subscriptions
     When the request "retrieveDeviceReachabilityStatusSubscriptionList" is sent
-    Then the response code is 200
+    Then the response status code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with an array of OAS schema defined at "#/components/schemas/Subscription"
-    And the subscriptions for this device are listed
+    And the response body lists all subscriptions belonging to the API consumer for the identified device
+    And the response property "$.config.subscriptionDetail.device" is not present in any of the subscription records
 
   @reachability_status_subscriptions_06_retrieve_empty_list_3legs
   Scenario: Check no existing subscription is retrieved in list
-    Given no subscription is existing for the device
-    And this device is identified by the token
-    And use BaseURL
+    Given the API consumer has no active subscriptions for the device
+    And the header "Authorization" is set to a valid access token which identifies a valid device
     When the request "retrieveDeviceReachabilityStatusSubscriptionList" is sent
-    Then the response code is 200
+    Then the response status code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response body is an empty list
+    And the response body is an empty array
 
   @reachability_status_subscriptions_07_delete_subscription_based_on_an_existing_subscription-id
-  Scenario: Delete a subscription based on existing subscription-id.
-    Given the path parameter "subscriptionId" is set to the identifier of an existing subscription
-    When the request "deleteDeviceReachabilityStatusSubscription" is sent with subscriptionId="id"
-    Then the response code is 202 or 204
+  Scenario: Delete the subscription with subscriptionId equal to "id"
+    Given the API consumer has an active subscription with "subscriptionId" equal to "id"
+    When the request "deleteDeviceReachabilityStatusSubscription" is sent
+    And the path parameter "subscriptionId" is set to "id"
+    Then the response status code is 202 or 204
     And the response header "x-correlator" has same value as the request header "x-correlator"
-    And if the response property $.status is 204 then response body is not available
-    And if the response property $.status is 202 then response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
+    And if the response property "$.status" is 204 then response body is not present
+    And if the response property "$.status" is 202 then response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync" and the response property "$.id" is equal to "id"
 
   @reachability_status_subscriptions_08_receive_notification_when_device_reachability_changed_to_data_usage
   Scenario: Receive notification for reachability-data event
-    Given that subscriptions are created synchronously
-    When the request "createDeviceReachabilityStatusSubscription" is sent
-    And a valid subscription request body
-    And the request body property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
-    Then the response code is 201
-    And if the device reachability is changed to data usage
-    And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data" is received on callback-url
-    And sink credentials are received as expected
+    Given a valid subscription for that device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+    And the subscription property "$.sink" is a valid callback URL
+    And the device does not have data connectivity with the API provider's network
+    When the device's data connectivity status changes (e.g. data connectivity is enabled)
+    Then event notification "reachability-data" is sent to the specified callback URL
+    And the sink credentials specified when the subscription was created are included
     And notification body complies with the OAS schema at "#/components/schemas/EventReachabilityData"
-    And type="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+    And the notification property "$.type" is equal to "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
+    And the notification property "$.data.subscriptionId" is equal to "id"
 
   @reachability_status_subscriptions_09_receive_notification_when_device_reachability_changed_to_sms_usage
   Scenario: Receive notification for reachability-sms event
-    Given that subscriptions are created synchronously
-    When the request "createDeviceReachabilityStatusSubscription" is sent
-    And a valid subscription request body
-    And the request body property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
-    Then the response code is 201
-    And if the device reachability is changed to sms usage
-    And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms" is received on callback-url
-    And sink credentials are received as expected
+    Given a valid subscription for that device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
+    And the subscription property "$.sink" is a valid callback URL
+    And the device does not have sms connectivity with the API provider's network
+    When the device's sms connectivity status changes (e.g. sms connectivity is enabled)
+    Then event notification "reachability-sms" is sent to the specified callback URL
+    And the sink credentials specified when the subscription was created are included
     And notification body complies with the OAS schema at "#/components/schemas/EventReachabilitySms"
-    And type="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
+    And the notification property "$.type" is equal to "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-sms"
+    And the notification property "$.data.subscriptionId" is equal to "id"
 
   @reachability_status_subscriptions_10_receive_notification_when_device_reachability_changed_to_disconnected
   Scenario: Receive notification for reachability-disconnected event
-    Given that subscriptions are created synchronously
-    When the request "createDeviceReachabilityStatusSubscription" is sent
-    And a valid subscription request body
-    And the request body property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
-    Then the response code is 201
-    And if the device reachability is changed to disconnected
-    And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected" is received on callback-url
-    And sink credentials are received as expected
+    Given a valid subscription for that device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
+    And the subscription property "$.sink" is a valid callback URL
+    And the device has data and/or sms connectivity with the API provider's network
+    When the device loses all connectivity with the API provider's network (e.g. the device is switched off)
+    Then event notification "reachability-disconnected" is sent to the specified callback URL
+    And the sink credentials specified when the subscription was created are included
     And notification body complies with the OAS schema at "#/components/schemas/EventReachabilityDisconnected"
-    And type="org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
+    And the notification property "$.type" is equal to "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected"
+    And the notification property "$.data.subscriptionId" is equal to "id"
 
   @reachability_status_subscriptions_11_subscription_expiry
   Scenario: Receive notification for subscription-ends event on expiry
-    Given that subscriptions are created synchronously
-    When the request "createDeviceReachabilityStatusSubscription" is sent
-    And a valid subscription request body
-    And the request body property "$.subscriptionExpireTime" is set to a value in the near future
-    Then the response code is 201
-    And the subscription is expired
-    And event notification "subscription-ends" is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
-    And the response property "$.terminationReason" is "SUBSCRIPTION_EXPIRED"
+    Given a valid subscription for a device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.subscriptionExpireTime" is set to a value in the near future
+    And the subscription property "$.sink" is a valid callback URL
+    When the subscriptionExpireTime is reached
+    Then a subscription termination event notification is sent to the callback URL
+    And the notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
+    And the notification property "$.type" is "org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
+    And the notification property "$.data.subscriptionId" is equal to "id"
+    And the notification property "$.data.terminationReason" is equal to "SUBSCRIPTION_EXPIRED"
 
   @reachability_status_subscriptions_12_subscription_end_when_max_events
   Scenario: Receive notification for subscription-ends event on max events reached
-    Given that subscriptions are created synchronously
-    When the request "createDeviceReachabilityStatusSubscription" is sent
-    And a valid subscription request body
-    And the request body property "$.types" contains the element "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data"
-    And the request body property "$.subscriptionMaxEvents" is set to 1 
-    Then the response code is 201
-    And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.reachability-data" is received on callback-url
-    And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends" is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
-    And the response property "$.terminationReason" is "MAX_EVENTS_REACHED"
+    Given a valid subscription for a device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.subscriptionMaxEvents" is set to 1
+    And the subscription property "$.sink" is a valid callback URL
+    When a single notification corresponding to subscription property "$.type" has been sent to the callback URL
+    Then a subscription termination event notification is sent to the callback URL
+    And the notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
+    And the notification property "$.type" is equal to "org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
+    And the notification property "$.data.subscriptionId" is equal to "id"
+    And the notification request property "$.data.terminationReason" is equal to "MAX_EVENTS_REACHED"
 
   @reachability_status_subscriptions_13_subscription_delete_event_validation
   Scenario: Receive notification for subscription-ends event on deletion
-    Given that subscriptions are created synchronously
-    When the request "createDeviceReachabilityStatusSubscription" is sent
-    And a valid subscription request body
-    Then the response code is 201
-    When the request "deleteDeviceReachabilityStatusSubscription" is sent with subscriptionId="id"
-    Then the response code is 202 or 204
-    And event notification "org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends" is received on callback-url
-    And notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
-    And type="org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
-    And the response property "$.terminationReason" is "SUBSCRIPTION_DELETED"
+    Given a valid subscription for a device exists with "subscriptionId" equal to "id"
+    And the subscription property "$.sink" is a valid callback URL
+    When the request "deleteDeviceReachabilityStatusSubscription" is sent
+    And the path parameter "subscriptionId" is set to "id"
+    And the response status code is 202 or 204
+    Then a subscription termination event notification is sent to the callback URL
+    And the notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
+    And the notification property "$.type" is equal to "org.camaraproject.device-reachability-status-subscriptions.v0.subscription-ends"
+    And the notification property "$.data.subscriptionId" is equal to "id"
+    And the notification request property "$.data.terminationReason" is equal to "SUBSCRIPTION_DELETED"
 
 ##################
 # Error code 400
