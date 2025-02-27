@@ -186,7 +186,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations crea
     Given a valid subscription for a device exists with "subscriptionId" equal to "id"
     And the subscription property "$.subscriptionMaxEvents" is set to 1
     And the subscription property "$.sink" is a valid callback URL
-    When a single notification with property "$.type" equal to "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed" has been sent to the callback URL
+    When a single notification corresponding to subscription property "$.type" has been sent to the callback URL
     Then a subscription termination event notification is sent to the callback URL
     And the notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
     And the notification property "$.type" is equal to "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
@@ -196,11 +196,11 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations crea
   @connected_network_type_subscriptions_11_subscription_delete_event_validation
   Scenario: Receive notification for subscription-ends event on deletion
     Given a valid subscription for a device exists with "subscriptionId" equal to "id"
-    And the subscription property "$.sink" is a valid callback URL    When the request "createConnectedNetworkTypeSubscription" is sent
+    And the subscription property "$.sink" is a valid callback URL
     When the request "deleteConnectedNetworkTypeSubscription" is sent
     And the path parameter "subscriptionId" is set to "id"
-    Then the response status code is 202 or 204
-    And a subscription termination event notification is sent to the callback URL
+    And the response status code is 202 or 204
+    Then a subscription termination event notification is sent to the callback URL
     And the notification body complies with the OAS schema at "#/components/schemas/EventSubscriptionEnds"
     And the notification property "$.type" is equal to "org.camaraproject.connected-network-type-subscriptions.v0.subscription-ends"
     And the notification property "$.data.subscriptionId" is equal to "id"
