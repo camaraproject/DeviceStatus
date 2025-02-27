@@ -1,5 +1,5 @@
 @DeviceReachabilityStatusSubscription
-Feature: Device Reachability Status Subscriptions API, vwip - Operations Reachability Status Subscription
+Feature: Device Reachability Status Subscriptions API, vwip - Operations createDeviceReachabilityStatusSubscription, retrieveDeviceReachabilityStatusSubscriptionList, retrieveDeviceReachabilityStatusSubscription and deleteDeviceReachabilityStatusSubscription
 
   # Input to be provided by the implementation to the tester
   #
@@ -24,19 +24,24 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations Reachab
 ##########################
 
   @reachability_status_subscriptions_01.1_sync_creation_2legs
-  Scenario Outline: Check sync subscription creation with 2-legged-access-token - This scenario could be bypass if async creation is provided (following scenario)
-    Given use BaseURL
+  Scenario Outline: Synchronous subscription creation with 2-legged-access-token
+    # Some implementations may only support asynchronous subscription creation
+    Given the header "Authorization" is set to a valid access token which does not identify any device
+    And the request body is compliant with the OAS schema at "#/component/schemas/SubscriptionRequest"
     When the request "createDeviceReachabilityStatusSubscription" is sent
-    And "$.types" is one of the allowed values "<subscription-creation-types>"
-    And "$.protocol"="HTTP"
+    And request property "$.types" is one of the allowed values "<subscription-creation-types>"
+    And request property "$.protocol" is equal to "HTTP"
     And a valid phone number identified by "$.config.subscriptionDetail.device.phoneNumber"
-    And "$.sink" is set to provided callbackUrl
-    Then the response code is 201
+    And request property "$.sink" is set to a valid callbackUrl
+    Then the response status code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And types, protocol, sink and config.subscriptionDetail.device.phoneNumber are present with provided value
-    And startsAt is valued with a datetime corresponding to the date time of the response
+    And the response properties "$.types", "$.protocol", "$.sink" and "$.config.subscriptionDetail.device.phoneNumber" are present with the values provided in the request
+    And the response property "$.id" is present
+    And the response property "$.startsAt", if present, has a valid value with date-time format
+    And the response property "$.expiresAt", if present, has a valid value with date-time format
+    And the response property "$.status", if present, has the value "ACTIVATION_REQUESTED", "ACTIVE" or "INACTIVE"
 
     Examples:
       | subscription-creation-types                                                             |
@@ -45,20 +50,25 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations Reachab
       | org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected |
 
   @reachability_status_subscriptions_01.2_sync_creation_3legs
-  Scenario Outline: Check sync subscription creation with 3-legged-access-token - This scenario could be bypass if async creation is provided (following scenario)
-    Given use BaseURL
+  Scenario Outline: Synchronous subscription creation with 3-legged-access-token
+    # Some implementations may only support asynchronous subscription creation
+    Given the header "Authorization" is set to a valid access token which identifies a valid device
+    And the request body is compliant with the OAS schema at "#/component/schemas/SubscriptionRequest"
     When the request "createDeviceReachabilityStatusSubscription" is sent
-    And this device is identified by the token
-    And "$.types" is one of the allowed values "<subscription-creation-types>"
-    And "$.protocol"="HTTP"
-    And "$.sink" is set to provided callbackUrl
-    Then the response code is 201
+    And request property "$.types" is one of the allowed values "<subscription-creation-types>"
+    And request property "$.protocol" is equal to "HTTP"
+    And request property "$.sink" is set to a valid callbackUrl
+    And request property "$.config.subscriptionDetail.device.phoneNumber" is not present
+    Then the response status code is 201
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/Subscription"
-    And types, protocol and sink are present with provided value
-    And config.subscriptionDetail.device is not existing in the response
-    And startsAt is valued with a datetime corresponding to the date time of the response
+    And the response properties "$.types", "$.protocol" and "$.sink" are present with the values provided in the request
+    And the response property "$.id" is present
+    And the response property "$.startsAt", if present, has a valid value with date-time format
+    And the response property "$.expiresAt", if present, has a valid value with date-time format
+    And the response property "$.status", if present, has the value "ACTIVATION_REQUESTED", "ACTIVE" or "INACTIVE"
+    And the response property "$.config.subscriptionDetail.device" is not present
 
     Examples:
       | subscription-creation-types                                                             |
@@ -67,17 +77,19 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations Reachab
       | org.camaraproject.device-reachability-status-subscriptions.v0.reachability-disconnected |
 
   @reachability_status_subscriptions_02_async_creation
-  Scenario Outline: Check async subscription creation - This scenario could be bypass if previous scenario is provided
-    Given use BaseURL
+  Scenario Outline: Asynchronous subscription creation with 2- or 3-legged access token
+    # Some implementations may only support synchronous subscription creation
+    Given a valid target device, identified by either the access token or in the request body
+    And the request body is compliant with the OAS schema at "#/component/schemas/SubscriptionRequest"
     When the request "createDeviceReachabilityStatusSubscription" is sent
-    And "$.types" is one of the allowed values "<subscription-creation-types>"
-    And "$.protocol"="HTTP"
-    And a valid phone number identified by the token or provided in the request body
-    And "$.sink" is set to provided callbackUrl
-    Then the response code is 202
+    And request property "$.types" is one of the allowed values "<subscription-creation-types>"
+    And request property "$.protocol" is equal to "HTTP"
+    And request property "$.sink" is set to a valid callbackUrl
+    Then the response status code is 202
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/SubscriptionAsync"
+    And the response property "$.id" is present
 
     Examples:
       | subscription-creation-types                                                             |
