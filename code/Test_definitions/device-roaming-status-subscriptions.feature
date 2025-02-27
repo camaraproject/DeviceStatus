@@ -439,7 +439,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - Operations createDevice
   Scenario: Expired access token
     Given the header "Authorization" is set to a previously valid but now expired access token
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
-    When the request "createDeviceReachabilityStatusSubscription" is sent
+    When the request "createDeviceRoamingStatusSubscription" is sent
     Then the response status code is 401
     And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
