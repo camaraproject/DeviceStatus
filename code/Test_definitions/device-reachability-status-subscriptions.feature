@@ -420,6 +420,7 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations createD
     And the response property "$.message" contains a user friendly text
 
   @reachability_status_subscriptions_creation_401.2_expired_access_token
+  Scenario: Expired access token
     Given the header "Authorization" is set to a previously valid but now expired access token
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
     When the request "createDeviceReachabilityStatusSubscription" is sent
@@ -603,4 +604,19 @@ Feature: Device Reachability Status Subscriptions API, vwip - Operations createD
     Then the response code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
+
+##################
+# Error code 422
+##################
+
+  @reachability_status_subscriptions_422.1_multi_event_not_supported
+  Scenario: Multi-event subscriptions are not supported
+    Given a valid 2- or 3-legged access token
+    And a request body that is compliant with the OAS schema at "#/component/schemas/SubscriptionRequest"
+    And request property "$.types" includes more than one subscription-type
+    When the request "createDeviceReachabilityStatusSubscription" is sent
+    Then the response status code is 422
+    And the response property "$.status" is 422
+    And the response property "$.code" is "MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED"
     And the response property "$.message" contains a user friendly text
