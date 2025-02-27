@@ -512,11 +512,11 @@ Feature: CAMARA Connected Network Type Subscriptions API, vwip - Operations crea
     And the response property "$.message" contains a user friendly text
 
   @connected_network_type_subscriptions_create_403.2_subscription_mismatch_for_requested_events_subscription
-  Scenario: subscription creation with invalid access token for requested events subscription
+  Scenario: Subscription creation with invalid access token for requested events subscription
     # Note - currently "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed" is the only valid subscription type for this API
-    Given the header "Authorization" set to an access token not including scope "connected-network-type-subscriptions:org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed:create"
+    Given the header "Authorization" set to an access token that includes only a single subscription scope
     And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
-    And the request body property "$.types" is equal to a valid type other than "org.camaraproject.connected-network-type-subscriptions.v0.network-type-changed"
+    And the request body property "$.types" is equal to a valid type other than the event corresponding to the access token scope
     When the request "createConnectedNetworkTypeSubscription" is sent
     Then the response status code is 403
     And the response property "$.status" is 403
