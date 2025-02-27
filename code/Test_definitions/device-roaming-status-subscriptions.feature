@@ -448,71 +448,104 @@ Feature: Device Roaming Status Subscriptions API, vwip - Operations createDevice
 
   @roaming_status_subscriptions_creation_401.3_malformed_access_token
   Scenario: Malformed access token
-    Given the header "Authorization" is set to an invalid access token
-    And use BaseUrL
-    And the request body is set to a valid request body
+    Given the header "Authorization" is set to a malformed token
+    And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
     When the request "createDeviceRoamingStatusSubscription" is sent
-    Then the response header "Content-Type" is "application/json"
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_retrieve_401.4_no_authorization_header
   Scenario: No Authorization header
-    Given the header "Authorization" is removed
-    And use BaseUrL
+    Given the request header "Authorization" is removed
     When the request "retrieveDeviceRoamingStatusSubscription" is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_retrieve_401.5_expired_access_token
   Scenario: Expired access token
-    Given the header "Authorization" is set to an expired access token
-    And use BaseUrL
+    Given the header "Authorization" is set to a previously valid but now expired access token
     When the request "retrieveDeviceRoamingStatusSubscription" is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_retrieve_401.6_malformed_access_token
   Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
-    And use BaseUrL
     When the request "retrieveDeviceRoamingStatusSubscription" is sent
-    Then the response header "Content-Type" is "application/json"
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_delete_401.7_no_authorization_header
   Scenario: No Authorization header
-    Given the header "Authorization" is removed
-    And use BaseUrL
+    Given the request header "Authorization" is removed
     When the request "deleteDeviceRoamingStatusSubscription" is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_delete_401.8_expired_access_token
   Scenario: Expired access token
-    Given the header "Authorization" is set to an expired access token
-    And use BaseUrL
+    Given the header "Authorization" is set to a previously valid but now expired access token
     When the request "deleteDeviceRoamingStatusSubscription" is sent
-    Then the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_delete_401.9_malformed_access_token
   Scenario: Malformed access token
     Given the header "Authorization" is set to a malformed token
-    And use BaseUrL
     When the request "deleteDeviceRoamingStatusSubscription" is sent
-    Then the response header "Content-Type" is "application/json"
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
+  @roaming_status_subscriptions_retrieve__list_401.10_no_authorization_header
+  Scenario: No Authorization header
+    Given the request header "Authorization" is removed
+    When the request "deleteDeviceRoamingStatusSubscriptionList" is sent
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
+    And the response property "$.message" contains a user friendly text
+
+  @roaming_status_subscriptions_retrieve_list_401.11_expired_access_token
+  Scenario: Expired access token
+    Given the header "Authorization" is set to a previously valid but now expired access token
+    When the request "deleteDeviceRoamingStatusSubscriptionList" is sent
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
+    And the response property "$.message" contains a user friendly text
+
+  @roaming_status_subscriptions_retrieve_list_401.12_malformed_access_token
+  Scenario: Malformed access token
+    Given the header "Authorization" is set to a malformed token
+    When the request "deleteDeviceRoamingStatusSubscriptionList" is sent
+    Then the response status code is 401
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
+    And the response property "$.message" contains a user friendly text
 
 ##################
 # Error code 403
@@ -520,23 +553,56 @@ Feature: Device Roaming Status Subscriptions API, vwip - Operations createDevice
 
   @roaming_status_subscriptions_create_403.1_permission_denied
   Scenario: subscription creation without having the required scope
-    # To test this, a token does not have the required scope
-    Given header "Authorization" set to an access token not including scope "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status:create"
-    And use BaseUrL
+    Given the header "Authorization" set to an access token not including scope "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on:create"
+    And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
+    And the request body property "$.types" is equal to "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-on"
     When the request "createDeviceRoamingStatusSubscription" is sent
-    Then the response property "$.status" is 403
+    Then the response status code is 403
+    And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
 
-  @roaming_status_subscriptions_create_403.2_subscription_mismatch_for_requested_events_subscription
-  Scenario: subscription creation with invalid access token for requested events subscription
-    # To test this, a token contains an unsupported event type for this API
-    Given a valid subscription request body
-    And use BaseUrL
-    And the request body property "$.device" is set to a valid testing device supported by the service
-    And the request body property "$.types" contains the supported event type in this API
+  @roaming_status_subscriptions_create_403.2_permission_denied
+  Scenario: subscription creation without having the required scope
+    Given the header "Authorization" set to an access token not including scope "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off:create"
+    And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
+    And the request body property "$.types" is equal to "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-off"
     When the request "createDeviceRoamingStatusSubscription" is sent
-    Then the response property "$.status" is 403
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
+
+  @roaming_status_subscriptions_create_403.1_permission_denied
+  Scenario: subscription creation without having the required scope
+    Given the header "Authorization" set to an access token not including scope "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status:create"
+    And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
+    And the request body property "$.types" is equal to "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-status"
+    When the request "createDeviceRoamingStatusSubscription" is sent
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
+
+  @roaming_status_subscriptions_create_403.1_permission_denied
+  Scenario: subscription creation without having the required scope
+    Given the header "Authorization" set to an access token not including scope "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country:create"
+    And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
+    And the request body property "$.types" is equal to "device-roaming-status-subscriptions:org.camaraproject.device-roaming-status-subscriptions.v0.roaming-change-country"
+    When the request "createDeviceRoamingStatusSubscription" is sent
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
+
+  @roaming_status_subscriptions_create_403.5_subscription_mismatch_for_requested_events_subscription
+  Scenario: Subscription creation with invalid access token for requested events subscription
+    Given the header "Authorization" set to an access token that includes only a single subscription scope
+    And the request body is compliant with the schema "#/components/schemas/SubscriptionRequest"
+    And the request body property "$.types" is equal to a valid type other than the event corresponding to the access token scope
+    When the request "createConnectedNetworkTypeSubscription" is sent
+    Then the response status code is 403
+    And the response property "$.status" is 403
     And the response property "$.code" is "SUBSCRIPTION_MISMATCH"
     And the response property "$.message" contains a user friendly text
 
@@ -545,18 +611,20 @@ Feature: Device Roaming Status Subscriptions API, vwip - Operations createDevice
 ##################
 
   @roaming_status_subscriptions_404.1_retrieve_unknown_subscription_id
-  Scenario: Get subscription when subscription-id is unknown to the system
-    Given the path parameter property "$.subscriptionId" is unknown to the system
-    And use BaseUrL
-    When the request "retrieveDeviceRoamingStatusSubscription" is sent with subscriptionId="id"
-    Then the response property "$.status" is 404
+  Scenario: Get subscription when subscriptionId is unknown to the system
+    Given that there is no valid subscription with "subscriptionId" equal to "id"
+    When the request "retrieveDeviceRoamingStatusSubscription" is sent
+    And the path parameter "subscriptionId" is equal to "id"
+    Then the response status code is 404
+    And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
     And the response property "$.message" contains a user friendly text
 
   @roaming_status_subscriptions_404.2_delete_unknown_subscription_id
-  Scenario: Delete subscription with subscription-id unknown to the system
-    Given the path parameter "subscriptionId" is set to the value unknown to system
+  Scenario: Delete subscription with subscriptionId unknown to the system
+    Given that there is no valid subscription with "subscriptionId" equal to "id"
     When the request "deleteDeviceRoamingStatusSubscription" is sent
+    And the path parameter "subscriptionId" is equal to "id"
     Then the response code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "NOT_FOUND"
