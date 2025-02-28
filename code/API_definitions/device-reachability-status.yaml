@@ -179,6 +179,7 @@ components:
     ReachabilityStatusResponse:
       type: object
       required:
+        - lastStatusTime
         - reachable
       properties:
         lastStatusTime:
