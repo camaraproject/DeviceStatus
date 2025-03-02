@@ -38,9 +38,9 @@ The API definition(s) are based on
 ## device-roaming-status v1.0.0
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-roaming-status.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-roaming-status.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/device-roaming-status.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-roaming-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-roaming-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/device-roaming-status.yaml)
 
 ### Added
 
@@ -55,9 +55,9 @@ The API definition(s) are based on
 ## device-roaming-status-subscriptions v0.7.0
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/device-roaming-status-subscriptions.yaml)
 
 ### Added
 
@@ -76,9 +76,9 @@ The API definition(s) are based on
 ## device-reachability-status v1.0.0
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-reachability-status.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-reachability-status.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/device-reachability-status.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-reachability-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-reachability-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/device-reachability-status.yaml)
 
 ### Added
 
@@ -94,9 +94,9 @@ The API definition(s) are based on
 ## device-reachability-status-subscriptions v0.7.0
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/device-reachability-status-subscriptions.yaml)
 
 ### Added
 
@@ -115,9 +115,9 @@ The API definition(s) are based on
 ## connected-network-type v0.1.0
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/connected-network-type.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/connected-network-type.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/connected-network-type.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/connected-network-type.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/connected-network-type.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/connected-network-type.yaml)
 
 ### Added
 * Create connected-network-type.yaml by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/158
@@ -133,9 +133,9 @@ The API definition(s) are based on
 ## connected-network-type-subscriptions v0.1.0
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/connected-network-type-subscriptions.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/connected-network-type-subscriptions.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/connected-network-type-subscriptions.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/connected-network-type-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/connected-network-type-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/connected-network-type-subscriptions.yaml)
 
 ### Added
 * Create connected-network-type-subscriptions.yaml by @VijayKesharwani in https://github.com/camaraproject/DeviceStatus/pull/171
