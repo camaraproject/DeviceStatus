@@ -1,5 +1,6 @@
 # Changelog DeviceStatus
 ## Table of Contents
+- [r2.2](#r22)
 - [r2.1](#r21)
 - [r1.3](#r13)
 - [r1.2](#r12)
@@ -19,6 +20,137 @@ The below sections record the changes for each API version in each release as fo
   - for the first release-candidate, all changes since the last public release
   - for subsequent release-candidate(s), only the delta to the previous release-candidate
   - for a public release, the consolidated changes since the previous public release
+# r2.2
+## Release Notes
+
+This pre-release contains the definition and documentation of
+* device-roaming-status v1.0.0
+* device-roaming-status-subscriptions v0.7.0
+* device-reachability-status v1.0.0
+* device-reachability-status-subscriptions v0.7.0
+* connected-network-type 0.1.0
+* connected-network-type-subscriptions 0.1.0
+
+The API definition(s) are based on
+* Commonalities v0.5.0
+* Identity and Consent Management v0.3.0
+
+## device-roaming-status v1.0.0
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-roaming-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-roaming-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/device-roaming-status.yaml)
+
+### Added
+
+### Changed
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update device error model by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/232
+
+### Fixed
+
+### Removed
+
+## device-roaming-status-subscriptions v0.7.0
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/device-roaming-status-subscriptions.yaml)
+
+### Added
+
+### Changed
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/237
+* Alignment with Commonalities Subscription Model - APIs Subscription by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/250
+
+### Fixed
+* Fix example for SUBSCRIPTION_ACTIVE by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/231
+* Fix dateTime literals by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/240
+
+### Removed
+* remove `allOf` in `sinkCredential` by @dfischer-tech in https://github.com/camaraproject/DeviceStatus/pull/226
+
+## device-reachability-status v1.0.0
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-reachability-status.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-reachability-status.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/device-reachability-status.yaml)
+
+### Added
+
+### Changed
+* rework reachability-status to support reachability with multiple connectivity-types by @maxl2287 in https://github.com/camaraproject/DeviceStatus/pull/221
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update device error model by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/232
+
+### Fixed
+
+### Removed
+
+## device-reachability-status-subscriptions v0.7.0
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/device-reachability-status-subscriptions.yaml)
+
+### Added
+
+### Changed
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/237
+* Alignment with Commonalities Subscription Model - APIs Subscription by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/250
+
+### Fixed
+* Fix example for SUBSCRIPTION_ACTIVE by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/231
+* Fix dateTime literals by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/240
+
+### Removed
+* remove `allOf` in `sinkCredential` by @dfischer-tech in https://github.com/camaraproject/DeviceStatus/pull/226
+
+## connected-network-type v0.1.0
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/connected-network-type.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/connected-network-type.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/connected-network-type.yaml)
+
+### Added
+* Create connected-network-type.yaml by @gmuratk in https://github.com/camaraproject/DeviceStatus/pull/158
+
+### Changed
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update device error model by @fernandopradocabrillo in https://github.com/camaraproject/DeviceStatus/pull/232
+ 
+### Fixed 
+
+### Removed
+
+## connected-network-type-subscriptions v0.1.0
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/connected-network-type-subscriptions.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.1/code/API_definitions/connected-network-type-subscriptions.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/DeviceStatus/blob/r2.1/code/API_definitions/connected-network-type-subscriptions.yaml)
+
+### Added
+* Create connected-network-type-subscriptions.yaml by @VijayKesharwani in https://github.com/camaraproject/DeviceStatus/pull/171
+  
+### Changed
+* Update documentation with handling of access token and multi-SIM scenarios by @eric-murray in https://github.com/camaraproject/DeviceStatus/pull/228
+* Update documentation with clarification for initialEvent by @bigludo7 in https://github.com/camaraproject/DeviceStatus/pull/247
+* Alignment with Commonalities Subscription Model - APIs Subscription by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/250
+
+### Fixed
+* Fix dateTime literals by @sachinvodafone in https://github.com/camaraproject/DeviceStatus/pull/240
+
+### Removed
+
+**Full Changelog**: https://github.com/camaraproject/DeviceStatus/compare/r1.3...r2.2
 
 # r2.1
 ## Release Notes
