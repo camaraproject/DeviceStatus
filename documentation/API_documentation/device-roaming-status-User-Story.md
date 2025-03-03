@@ -1,31 +1,15 @@
-# User Story Template
-This document specifies the template for documenting user stories related to API families in CAMARA project. 
+# Device Roaming Status User Story
 
 | Item                      | Description | Support Qualifier |
 |---------------------------|-------------|-------------------|
-| Summary                   |             | M                 |
-| Roles, Actor(s) and scope |             | M                 |
-| NF Requirements           |             | O                 |
-| Pre-conditions            |             | M                 |
-| Begins when               |             | M                 |
-| Step 1                    |             | (M/O/CM)          |
-| Step 2                    |             | (M/O/CM           |
-| ...                       |             | (M/O/CM)          |
-| Step N                    |             | (M/O/CM)          |
-| Ends when                 |             | M                 |
-| Post-conditions           |             | M                 |
-| Exceptions                |             | M                 | 
-
-
-Some notes related to the above template:
-
-- The **Support Qualifier** column allows capturing the need for specifying the item. _Options -> M (Mandatory); O (Optional); CM (Conditional Mandatory)_.
-- The **Summary** item provides a user story description as a user persona, following the same syntax structure -> "**As a** (Persona), **I want** (Need), **so that** (Goal)".
-  - A user story based on _user persona_ focuses on expectations from the Point-of-View of an end-user. This is contrary to a user story based on _system persona_, which is designed to represent background system functions that do not require interaction from the end-user (i.e., elaborate on the behind-the-scenes integration tasks that are not user-centric).
-- The **Roles, Actor(s) and scope** item allows linking a user story with existing Cloud/NaaS reference architectures. The architectures that are within the scope of the CAMARA project are detailed in this document: [Reference.Architectures.pptx](/documentation/SupportingDocuments/Reference.Architectures.pptx)
-  - Roles: specifies the role(s) that the CAMARA API customer plays for the user story. _Options -> customer:user; customer:administrator; customer:business manager_.
-  - Actor(s): API usage should not be restricted to a particular actor (e.g., application service provider, hyperscaler, application developer, or end user where e.g. consent is required). Examples may use a particular actor to perform a role in the API flow, but that does not exclude other Actors from performing the role.
-  - Scope: specifies the service lifecycle area(s) that the user story impacts on. _Options -> Design time; Prospect to Order (P2O); Usage to Cash (U2C); Order to Activate (O2A); Trouble to Resolution (T2R)_.
+| Summary                   |      As an enterprise application developer, I want to query the roaming status of a user's device, so that I can determine if a device is in a foreign network and in which country it is located. This API can be used to identify fraud, ensure regulatory compliance, or enforce territorial restrictions on video and audio content.       | M                 |
+| Roles, Actor(s) and scope |    **Roles:** Customer:Developer<br>**Actors:** Application service providers (ASP), hyperscalers, application developers.<br>**Scope:** Order To Activate (OTA) - Get roaming status of a device         | M                 |
+| NF Requirements           |       -      | O                 |
+| Pre-conditions            |      - The customer:developer has been successfully onboarded to the API platform of the service provider  <br>- The customer application has requested and received an access token with the required scope for the API        | M                 |
+| Begins when               |      The customer application server makes a POST request to retrieve the roaming status of a user's device       | M                 |
+| Ends when                 |      The service provider returns the roaming status of the device with a timestamp when the status information was updated. In case of a roaming situation also the roaming country name and code shall be returned.        |                  |
+| Post-conditions           |       -      | M                 |
+| Exceptions                |      Several exceptions might occur during the API operations:<br>- Unauthorized: Invalid credentials (e.g., expired access token).<br>- Incorrect input data (e.g., malformed phone number). <br>- Not found: The phone number is not associated with a CSP customer account      | M                 | 
 
 # Linking a user story to API design
 
