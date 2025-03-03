@@ -2,12 +2,12 @@
 
 | Item                      | Description | Support Qualifier |
 |---------------------------|-------------|-------------------|
-| Summary                   |      As an enterprise application developer, I want to query the connectivity status of a user's device, so that I can determine whether the device is reachable via SMS, data (mobile internet), or both, enabling better communication or service management decisions based on real-time device availability.       | M                 |
-| Roles, Actor(s) and scope |    **Roles:** Customer:Developer<br>**Actors:** Application service providers (ASP), hyperscalers, application developers.<br>**Scope:** Order To Activate (OTA) - Get roaming status of a device         | M                 |
+| Summary                   |      As an enterprise application developer, I want to query the reachability status of a user's device, so that I can determine whether the device is reachable via SMS, data (mobile internet), or both, enabling better communication or service management decisions based on real-time device availability.       | M                 |
+| Roles, Actor(s) and scope |    **Roles:** Customer:Developer<br>**Actors:** Application service providers (ASP), hyperscalers, application developers.<br>**Scope:** Order To Activate (OTA) - Get connectivity status of a device         | M                 |
 | NF Requirements           |       -      | O                 |
 | Pre-conditions            |      - The customer:developer has been successfully onboarded to the API platform of the service provider  <br>- The customer application has requested and received an access token with the required scope for the API        | M                 |
-| Begins when               |      The customer application server makes a POST request to retrieve the roaming status of a user's device       | M                 |
-| Ends when                 |      The service provider returns the roaming status of the device with a timestamp when the status information was updated. In case of a roaming situation also the roaming country name and code shall be returned.        |                  |
+| Begins when               |      The customer application server makes a POST request to retrieve the reachability status of a user's device       | M                 |
+| Ends when                 |      The service provider returns the reachability status of the device with a timestamp when the status information was updated. In case of the device is reachable, additionally, the type of the connectivity (data, sms or both) is returned as well.         |                  |
 | Post-conditions           |       -      | M                 |
 | Exceptions                |      Several exceptions might occur during the API operations:<br>- Unauthorized: Invalid credentials (e.g., expired access token).<br>- Incorrect input data (e.g., malformed phone number). <br>- Not found: The phone number is not associated with a CSP customer account      | M                 | 
 
