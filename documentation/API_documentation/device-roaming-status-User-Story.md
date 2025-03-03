@@ -2,7 +2,7 @@
 
 | Item                      | Description | Support Qualifier |
 |---------------------------|-------------|-------------------|
-| Summary                   |      As an enterprise application developer, I want to query the roaming status of a user's device, so that I can determine if a device is in a foreign network and in which country it is located. This API can be used to identify fraud, ensure regulatory compliance, or enforce territorial restrictions on video and audio content.       | M                 |
+| Summary                   |      As an enterprise application developer, I want to query the roaming status of a user's device, so that I can determine whether a device is in a foreign network and in which country it is located. This API can be used to identify fraud, ensure regulatory compliance, or enforce territorial restrictions on video and audio content.       | M                 |
 | Roles, Actor(s) and scope |    **Roles:** Customer:Developer<br>**Actors:** Application service providers (ASP), hyperscalers, application developers.<br>**Scope:** Order To Activate (OTA) - Get roaming status of a device         | M                 |
 | NF Requirements           |       -      | O                 |
 | Pre-conditions            |      - The customer:developer has been successfully onboarded to the API platform of the service provider  <br>- The customer application has requested and received an access token with the required scope for the API        | M                 |
