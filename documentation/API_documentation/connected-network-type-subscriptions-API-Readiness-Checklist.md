@@ -1,6 +1,6 @@
 # API Readiness Checklist
 
-Checklist for connected-network-type-subscriptions 0.1.0-rc.1 in r2.1.
+Checklist for connected-network-type-subscriptions 0.1.0 in r2.2.
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status | Reference information |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|
@@ -10,7 +10,7 @@ Checklist for connected-network-type-subscriptions 0.1.0-rc.1 in r2.1.
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |   Y   |      |
 |  5 | API documentation                            |   M   |         M         |    M    |    M   |   Y   | inline in YAML |
 |  6 | User stories                                 |   O   |         O         |    O    |    M   |  N    |      |
-|  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   N   | /code/Test_definitions/connected-network-type-subscriptions.feature |
+|  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   Y   | /code/Test_definitions/connected-network-type-subscriptions.feature |
 |  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   N   |     |
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |   N   |     |
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |   Y   |      |

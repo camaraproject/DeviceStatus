@@ -1,5 +1,5 @@
 @Device_Status_Roaming_Subscription
-Feature: Device Roaming Status Subscriptions API, vwip - Operations createDeviceRoamingStatusSubscription, retrieveDeviceRoamingStatusSubscriptionList, retrieveDeviceRoamingStatusSubscription and deleteDeviceRoamingStatusSubscription
+Feature: Device Roaming Status Subscriptions API, v0.7.0 - Operations createDeviceRoamingStatusSubscription, retrieveDeviceRoamingStatusSubscriptionList, retrieveDeviceRoamingStatusSubscription and deleteDeviceRoamingStatusSubscription
 
   # Input to be provided by the implementation to the tester
   #
@@ -14,7 +14,7 @@ Feature: Device Roaming Status Subscriptions API, vwip - Operations createDevice
   # References to OAS spec schemas refer to schemas specified in device-roaming-status-subscriptions.yaml
 
   Background: Common Device Roaming Status Subscriptions setup
-    Given the resource "{apiroot}/device-roaming-status-subscriptions/vwip" as base-url
+    Given the resource "{apiroot}/device-roaming-status-subscriptions/v0.7" as base-url
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
 
