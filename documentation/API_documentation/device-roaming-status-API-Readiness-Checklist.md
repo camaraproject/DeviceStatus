@@ -9,7 +9,7 @@ Checklist for device-roaming-status 1.0.0 in r2.2.
 |  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |   Y   |  r2.2    |
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |   Y   |      |
 |  5 | API documentation                            |   M   |         M         |    M    |    M   |   Y   | inline in YAML |
-|  6 | User stories                                 |   O   |         O         |    O    |    M   |  Y    |   TODO   |
+|  6 | User stories                                 |   O   |         O         |    O    |    M   |  Y    |   /documentation/API_documentation/device-roaming-status-User-Story.md   |
 |  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   Y | /code/Test_definitions/device-roaming-status.feature |
 |  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   Y   |  /code/Test_definitions/device-roaming-status.feature   |
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |   Y   |   TODO  |
