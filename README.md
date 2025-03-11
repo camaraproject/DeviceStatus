@@ -7,7 +7,10 @@
 <a href="https://github.com/camaraproject/DeviceStatus/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/DeviceStatus?style=plastic"></a>
 
 # DeviceStatus
-Repository to describe, develop, document and test the DeviceStatus APIs
+Incubating API Repository to evolve and maintain the definitions and documentation of DeviceStatus Service API(s) within the Sub Project [Device Status](https://lf-camaraproject.atlassian.net/wiki/x/6wApBQ)
+
+* API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/x/AgDe
+* Sub Project home page: https://lf-camaraproject.atlassian.net/wiki/x/fzLe
 
 ## Scope
 * Service APIs for “Device Status” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))  
@@ -15,8 +18,9 @@ Repository to describe, develop, document and test the DeviceStatus APIs
   - check if a device is reachable or is not connected to the network
   - check if a device is roaming, and in which country
   - receive notifications if the connectivity or roaming status of the device changes
-* Describe, develop, document and test the APIs (with 1-2 Telcos)  
-* Started: July 2022 
+* Describe, develop, document and test the APIs (with 1-2 Telcos)
+* Started: July 2022
+* Incubating stage since: February 2025 
 
 ## Release Information
 
