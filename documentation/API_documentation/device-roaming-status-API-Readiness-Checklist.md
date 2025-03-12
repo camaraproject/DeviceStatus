@@ -17,7 +17,7 @@ Checklist for device-roaming-status 1.0.0 in r2.2.
 | 11 | Change log updated                           |   M   |         M         |    M    |    M   |   Y   | [/CHANGELOG.md](/CHANGELOG.md) |
 | 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |   Y   |   see (1)   |
 
-(1) GSMA certified implementation of previous version by AT&T and China Telecom, multiple implementation by other operators (source: https://open-gateway.gsma.com/map as of 2025-03-11)
+(1) GSMA certified implementations of previous version by multiple operators (source: https://open-gateway.gsma.com/map as of 2025-03-11)
 
 Note: the checklists of a public API version and of its preceding release-candidate API version can be the same.
 
