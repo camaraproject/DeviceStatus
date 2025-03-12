@@ -5,6 +5,7 @@
 <a href="https://github.com/camaraproject/DeviceStatus" title="Repo Size"><img src="https://img.shields.io/github/repo-size/camaraproject/DeviceStatus?style=plastic"></a>
 <a href="https://github.com/camaraproject/DeviceStatus/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
 <a href="https://github.com/camaraproject/DeviceStatus/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/DeviceStatus?style=plastic"></a>
+<a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Incubating API Repository"><img src="https://img.shields.io/badge/Incubating%20API%20Repository-green?style=plastic"></a>
 
 # DeviceStatus
 Incubating API Repository to evolve and maintain the definitions and documentation of DeviceStatus Service API(s) within the Sub Project [Device Status](https://lf-camaraproject.atlassian.net/wiki/x/6wApBQ)
