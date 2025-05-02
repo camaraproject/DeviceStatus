@@ -131,14 +131,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.7.0
+  version: wip
   x-camara-commonalities: 0.5
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/DeviceStatus
 
 servers:
-  - url: "{apiRoot}/device-roaming-status-subscriptions/v0.7"
+  - url: "{apiRoot}/device-roaming-status-subscriptions/vwip"
     variables:
       apiRoot:
         default: http://localhost:9091
