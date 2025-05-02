@@ -465,7 +465,7 @@ Feature: CAMARA Connected Network Type Subscriptions API, v0.1.0 - Operations cr
     And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
     And the response property "$.message" contains a user friendly text
 
-  @connected_network_type_subscriptions_retrieve__list_401.10_no_authorization_header
+  @connected_network_type_subscriptions_retrieve_list_401.10_no_authorization_header
   Scenario: No Authorization header
     Given the request header "Authorization" is removed
     When the request "retrieveConnectedNetworkTypeSubscriptionList" is sent
