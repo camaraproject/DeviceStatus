@@ -173,6 +173,7 @@ components:
     ConnectedNetworkTypeResponse:
       type: object
       required:
+        - lastStatusTime
         - connectedNetworkType
       properties:
         lastStatusTime:
