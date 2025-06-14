@@ -8,10 +8,10 @@
 <a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Incubating API Repository"><img src="https://img.shields.io/badge/Incubating%20API%20Repository-green?style=plastic"></a>
 
 # DeviceStatus
+
 Incubating API Repository to evolve and maintain the definitions and documentation of DeviceStatus Service API(s) within the Sub Project [Device Status](https://lf-camaraproject.atlassian.net/wiki/x/6wApBQ)
 
-* API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/x/AgDe
-* Sub Project home page: https://lf-camaraproject.atlassian.net/wiki/x/fzLe
+* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/fzLe)
 
 ## Scope
 * Service APIs for “Device Status” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))  
