@@ -16,6 +16,7 @@ Checklist for device-reachability-status 1.0.0 in r2.2.
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |   Y   |      |
 | 11 | Change log updated                           |   M   |         M         |    M    |    M   |   Y   | [/CHANGELOG.md](/CHANGELOG.md) |
 | 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |   Y   |   see (1)   |
+| 13 | API description (for marketing)              |   O   |         O         |    M    |    M   |      | [wiki link](https://lf-camaraproject.atlassian.net/wiki/xxx) |
 
 (1) GSMA certified implementations of previous version by multiple operators (source: https://open-gateway.gsma.com/map as of 2025-03-11)
 
