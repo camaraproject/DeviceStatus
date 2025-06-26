@@ -13,6 +13,14 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 
 * API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/fzLe)
 
+> [!WARNING]  
+> After the Camara Spring25 meta release this repository has been separated into 3 individual repositories:
+> - [Device Roaming Status](https://github.com/camaraproject/DeviceRoamingStatus)
+> - [Device Reachability Status](https://github.com/camaraproject/DeviceReachabilityStatus)
+> - [Connected Network Type](https://github.com/camaraproject/ConnectedNetworkType)
+> 
+> This repository should be only used for maintenance of previous releases. For contributions to the API development please use exclusively the new repositories. Thanks!
+
 ## Scope
 * Service APIs for “Device Status” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))  
 * It provides the API consumer with the ability to:  
