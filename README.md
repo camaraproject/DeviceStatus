@@ -31,14 +31,45 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 * Started: July 2022
 * Incubating stage since: February 2025 
 
+<!-- CAMARA:RELEASE-INFO:START -->
+<!-- This section is automatically maintained by the CAMARA project-administration tooling: https://github.com/camaraproject/project-administration -->
+
 ## Release Information
 
-* The latest public release is available here: https://github.com/camaraproject/DeviceStatus/releases/latest
-* For changes see [CHANGELOG.md](https://github.com/camaraproject/DeviceStatus/blob/main/CHANGELOG.md) 
-<!-- * Further release information is available within (link to release tracker page on wiki when available) -->
-<!-- Pre-releases are available in https://github.com/camaraproject/DeviceStatus/releases> -->
+> [!NOTE]
+> Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
-* Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available public release**.
+* **NEW**: The latest public release is [r2.2](https://github.com/camaraproject/DeviceStatus/releases/tag/r2.2) (Spring25), with the following API versions:
+  * **connected-network-type-subscriptions v0.1.0**
+  [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/connected-network-type-subscriptions.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/connected-network-type-subscriptions.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/connected-network-type-subscriptions.yaml)
+  * **connected-network-type v0.1.0**
+  [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/connected-network-type.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/connected-network-type.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/connected-network-type.yaml)
+  * **device-reachability-status-subscriptions v0.7.0**
+  [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-reachability-status-subscriptions.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-reachability-status-subscriptions.yaml)
+  * **device-reachability-status v1.0.0**
+  [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/device-reachability-status.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-reachability-status.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-reachability-status.yaml)
+  * **device-roaming-status-subscriptions v0.7.0**
+  [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-roaming-status-subscriptions.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-roaming-status-subscriptions.yaml)
+  * **device-roaming-status v1.0.0**
+  [[YAML]](https://github.com/camaraproject/DeviceStatus/blob/r2.2/code/API_definitions/device-roaming-status.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-roaming-status.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/DeviceStatus/r2.2/code/API_definitions/device-roaming-status.yaml)
+* The latest public release is always available here: https://github.com/camaraproject/DeviceStatus/releases/latest
+* Other releases of this repository are available in https://github.com/camaraproject/DeviceStatus/releases
+* For changes see [CHANGELOG.md](https://github.com/camaraproject/DeviceStatus/blob/main/CHANGELOG.md)
+
+_The above section is automatically synchronized by CAMARA project-administration._
+<!-- CAMARA:RELEASE-INFO:END -->
 
 ## Contributing
 * Meetings
